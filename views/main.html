@@ -1,0 +1,146 @@
+{% extends 'layout.html' %}
+{% block login %}
+<div class="profile-wrap">
+        <!--<div class="profile">-->
+        <div>
+          {% if user and user.id%}
+            <div class="user-name">{{'안녕하세요! ' + user.nick + '님'}}</div>
+          <input id="my-id" type="hidden" value="{{user.id}}">
+          <a id="my-profile" href="/profile" class="btn">내 프로필</a>
+          <a id="logout" href="/auth/logout" class="btn">로그아웃</a>
+        {% else %}
+        <div class="login-group">
+          <label id="login-text">LOGIN</label>
+        </div>
+          <form id="login-form" action="/auth/login" method="post">
+            <div class="login-group">
+              <label for="email">이메일</label>
+              <input id="email" type="email" name="email" required autofocus>
+            </div>
+            <div class="login-group">
+              <label for="password">비밀번호</label>
+              <input id="password" type="password" name="password" required>
+            </div>
+            <a id="join" href="/join" >회원가입</a>
+            <button id="login" type="submit">로그인</button>
+            <a id="kakao" href="/auth/kakao">카카오톡</a>
+          </form>
+        {% endif %}
+    </div>
+</div>
+{%endblock%}
+{%block rooms%}
+<div class="rooms">
+<p>방 여러 개 자리</p>
+</div>
+{%endblock%}
+{% block content %}
+    <div class="timeline">
+      {% if user %}
+        <div>
+          <form id="twit-form" action="/post" method="post" enctype="multipart/form-data">
+            <div class="input-group">
+              <textarea id="twit" name="content" maxlength="100"></textarea>
+            </div>
+            <div>
+              <button id="twit-btn" type="submit" class="btn">짹짹</button>
+            </div>
+          </form>
+        </div>
+      {% endif %}
+      <div class="twits">
+        {% for twit in twits %}
+          <div class="twit">
+            <input type="hidden" value="{{twit.User.id}}" class="twit-user-id">
+            <input type="hidden" value="{{twit.id}}" class="twit-id">
+            <div class="twit-author">{{twit.User.nick}}<p>{{twit.msg}}</p></div>
+            {%if user and twit.User.id==user.id%}
+             <button class="delete" value="{{twit.id}}">삭제하기</button>
+            {%endif%}
+            {%set likeid=false%}
+            {%for like in twit.Likers%}
+              {% if like.id===user.id%}
+                {%set likeid=true%}
+              {%endif%}
+            {%endfor%}
+            {%if user and user.id!=twit.User.id and twit and not likeid%}
+              <button class="twit-like">좋아요</button>
+            {% elif user and user.id!=twit.User.id and twit and likeid%}
+              <button class="twit-like-cancel">좋아요취소</button>
+            {% endif %}
+            <div class="twit-content">{{twit.content}}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <script>
+
+    document.querySelectorAll('.delete').forEach(function(tag) {
+      tag.addEventListener('click', function() {
+        const myId = document.querySelector('#my-id');
+        const twitId = tag.parentNode.querySelector('.twit-id').value;
+        if (myId) {
+          const userId = tag.parentNode.querySelector('.twit-user-id').value;
+          if (userId === myId.value) {
+            if (confirm('게시글을 삭제하시겠습니까?')) {
+              axios.delete(`/post/${twitId}`)
+                .then(() => {
+                  location.reload();
+                })
+                .catch((err) => {
+                  console.error(err);
+                });
+            }
+          }
+        }
+     });
+    });
+ 
+    document.querySelectorAll('.twit-like').forEach(function(tag) {
+      tag.addEventListener('click', function() {
+        const twitId = tag.parentNode.querySelector('.twit-id').value;
+            if (confirm('좋아요하시겠습니까?')) {
+              axios.post(`/post/${twitId}/like`)
+                .then(() => {
+                  location.reload();
+                })
+                .catch((err) => {
+                  console.error(err);
+                });
+          }
+        });
+    });
+    document.querySelectorAll('.twit-like-cancel').forEach(function(tag) {
+      tag.addEventListener('click', function() {
+        const myId = document.querySelector('#my-id');
+        const twitId = tag.parentNode.querySelector('.twit-id').value;
+        if (myId) {
+          const userId = tag.parentNode.querySelector('.twit-user-id').value;
+          if (userId !== myId.value) {
+            if (confirm('좋아요 취소하시겠습니까?')) {
+              axios.delete(`/post/${twitId}/like`)
+                .then(() => {
+                  location.reload();   //새로고침
+                })
+                .catch((err) => {
+                  console.error(err);
+                });
+            }
+          }
+        }
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block script %}
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      window.onload = () => {
+        if (new URL(location.href).searchParams.get('loginError')) {
+          alert(new URL(location.href).searchParams.get('loginError'));
+        }
+      };
+
+    </script>
+{% endblock %}

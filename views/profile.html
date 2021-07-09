@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+<!--
+  <div class="change-nickname">
+    <form method="post" action="/user/profile">
+        <input id="change-nick" type="text" name="nick">
+       <button id="change-nick" type="submit" class="btn">닉네임 수정</button>
+    </form>
+  </div> 
+-->
+
+{% block content %}
+    <div class=profile>
+        <div> 
+        <form id="update-profile" action="/user/fix" method="post">   
+            <div class="input-nick">
+                닉네임 : <input type="text" id="edit-nick" name="nick" value="{{user.nick}}"> 
+            </div>
+            <div class="input-show-level">
+                {% if user.level_show == 0 %} 
+                <input type="radio" name="chk" value=0 checked="checked">공개 
+                <input type="radio" name="chk" value=1>비공개
+                {% else %}
+                <input type="radio" name="chk" value=0 >공개
+                <input type="radio" name="chk" value=1 checked="checked" >비공개
+                {% endif %}
+            </div>
+            <div class="show-promise">
+              나의 다짐 --
+                {% for promise in promises %}
+                    <div>{{promise.msg}}</div>
+                {% endfor %}    
+            </div>
+            <button id="edit-nick" value="수정" type="submit">수정</button>
+        </form>
+        <button type="button" class="OK" id="btn" onclick="document.location.href='/'">확인</button>
+        
+        </div>
+{% endblock %}
+{% block script %}
+  <script>
+  
+  </script>
+{% endblock %}
