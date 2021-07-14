@@ -1,11 +1,6 @@
 const passport=require('passport');
 const LocalStrategy=require('passport-local').Strategy;
-const os = require('os');
-
-/* 맥이면 bcrypt, 그 외면 bcryptjs */
-if (os.type=='Darwin'){
-    const bcrypt=require('bcrypt');
-} else const bcrypt=require('bcryptjs');
+const bcrypt=require('bcryptjs');
 
 
 const User=require('../models/user');
