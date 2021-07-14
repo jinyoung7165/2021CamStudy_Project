@@ -5,7 +5,8 @@ const os = require('os');
 /* 맥이면 bcrypt, 그 외면 bcryptjs */
 if (os.type=='Darwin'){
     const bcrypt=require('bcrypt');
-} else const bcrypt=require('bcrypt');
+} else {const bcrypt=require('bcryptjs')
+};
 
 
 const User=require('../models/user');
