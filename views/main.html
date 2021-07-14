@@ -58,23 +58,26 @@
              <button class="delete" value="{{twit.id}}">삭제하기</button>
             {%endif%}
             {%set likeid=false%}
-            {%for like in twit.Likers%}
+            {%set likerNum=0%}
+            {%for like in twit.Liker%}
               {% if like.id===user.id%}
                 {%set likeid=true%}
               {%endif%}
+              {%set likerNum=likerNum+1 %}
             {%endfor%}
             {%if user and user.id!=twit.User.id and twit and not likeid%}
               <button class="twit-like">좋아요</button>
             {% elif user and user.id!=twit.User.id and twit and likeid%}
               <button class="twit-like-cancel">좋아요취소</button>
             {% endif %}
+            <h2>{{likerNum}}</h2>
             <div class="twit-content">{{twit.content}}</div>
           </div>
         {% endfor %}
       </div>
     </div>
-    <script>
 
+    <script>
     document.querySelectorAll('.delete').forEach(function(tag) {
       tag.addEventListener('click', function() {
         const myId = document.querySelector('#my-id');
