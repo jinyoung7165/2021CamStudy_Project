@@ -23,6 +23,7 @@ router.get('/join',isNotLoggedIn,(req,res)=>{
     res.render('join',{title:'회원가입- CamStudy'});
 });
 
+
 router.get('/',async(req,res,next)=>{
     try{
         const posts=await Post.findAll({//게시글 조회
