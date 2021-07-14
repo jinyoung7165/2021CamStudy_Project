@@ -41,6 +41,11 @@ module.exports = class User extends Sequelize.Model {
         type:Sequelize.STRING(30),
         allowNull:true,
       },
+      video:{
+        type:Sequelize.INTEGER,
+        allowNull:false,
+        defaultValue:0,
+      },
     }, {
       sequelize,
       timestamps: true,
@@ -68,6 +73,7 @@ module.exports = class User extends Sequelize.Model {
     });
 
     db.User.belongsToMany(db.Post,{through:'Like',as:'Liked'});
+    db.User.hasMany(db.Chat);
 
     //db.User.findAll({ include: [{ model: db.Post, as: 'Liked' }] })
   }
