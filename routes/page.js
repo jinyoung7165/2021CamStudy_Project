@@ -47,6 +47,10 @@ router.get('/',async(req,res,next)=>{
     }
 });
 
+// 방 들어가면 library.html 렌더링 방주소랑 사용자아이디 전달 (nick으로 할까 id로 할까?)
+app.get('/:url', (req, res) => {     
+    res.render('room', { roomUrl: req.params.url, userId:req.user.id})
+  })
 
 
 module.exports=router;
