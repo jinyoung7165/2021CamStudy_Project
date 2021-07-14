@@ -26,6 +26,13 @@ router.get('/join',isNotLoggedIn,(req,res)=>{
 
 router.get('/',async(req,res,next)=>{
     try{
+        const rooms=await Room.findAll({//모든 룸 가져옴
+            include:[{
+                model:User,
+                attributes:['id','nick'],//아이디와 닉네임을 join해서 제공
+            }],
+            order:[['createdAt','ASC']],//게시글의 순서는 오래된 순으로 정렬
+        });
         const posts=await Post.findAll({//게시글 조회
             include:[{
                 model:User,
@@ -40,6 +47,7 @@ router.get('/',async(req,res,next)=>{
         res.render('main',{
             title:'CamStudy',
             twits:posts,//게시글 조회 결과를 넣음
+            room:rooms,
         });
     }catch(err){
         console.error(err);
@@ -48,8 +56,8 @@ router.get('/',async(req,res,next)=>{
 });
 
 // 방 들어가면 library.html 렌더링 방주소랑 사용자아이디 전달 (nick으로 할까 id로 할까?)
-app.get('/:url', (req, res) => {     
-    res.render('room', { roomUrl: req.params.url, userId:req.user.id})
+router.get('/:url', (req, res) => {     
+    res.render('library', { roomUrl: req.params.url, userId:req.user.id})
   })
 
 
