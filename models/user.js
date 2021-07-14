@@ -63,9 +63,12 @@ module.exports = class User extends Sequelize.Model {
     });
     db.User.belongsToMany(db.User,{
       foreignKey:'followerID',
-      as:'Followings',
       through:'Follow',
+      as:'Followings',
     });
+
     db.User.belongsToMany(db.Post,{through:'Like',as:'Liked'});
+
+    //db.User.findAll({ include: [{ model: db.Post, as: 'Liked' }] })
   }
 };
