@@ -20,11 +20,6 @@ module.exports = class Room extends Sequelize.Model {
         type: Sequelize.INTEGER(100),
         allowNull: true,
       },
-      mic_avail_room: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
       img: {
         type: Sequelize.STRING(100),
         allowNull: true,

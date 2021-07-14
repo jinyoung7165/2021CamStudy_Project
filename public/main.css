@@ -87,9 +87,9 @@ input[type='text'], input[type='email'], input[type='password'], textarea {
 .timeline {
   margin-top: 10px;
   width: 100%;
-  display: inline-block;
   border-radius: 4px;
   vertical-align: top;
+  display: inline-block;
 }
 @media screen and (min-width: 800px) { .timeline { width: 500px; } }
 #twit-form {
@@ -111,6 +111,13 @@ input[type='text'], input[type='email'], input[type='password'], textarea {
   line-height: 37px;
 }
 #img { display: none; }
+.twits{
+  margin-top: 10px;
+  width: 100%;
+  border-radius: 4px;
+  vertical-align: top;
+  height: 300px;
+  overflow: scroll;}
 #twit { width: 100%; min-height: 72px; }
 #twit-btn {
   float: right;
