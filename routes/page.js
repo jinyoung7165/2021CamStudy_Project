@@ -32,7 +32,7 @@ router.get('/',async(req,res,next)=>{
             },{
                 model:User,
                 attributes:['id'],//좋아요를 누른 사용자 정보 가져옴
-                as:'Likers',
+                as:'Liker',
             }],
             order:[['createdAt','DESC']],//게시글의 순서는 최신순으로 정렬
         });
