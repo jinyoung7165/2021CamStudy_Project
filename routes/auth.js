@@ -1,9 +1,9 @@
 const express=require('express');
 const passport=require('passport');
-const bcrypt=require('bcryptjs');
 const {isLoggedIn,isNotLoggedIn}=require('./middlewares');
 const User=require('../models/user');
-
+const os = require('os');
+const bcrypt=require('bcrypt');
 const router=express.Router();
 
 router.post('/join',isNotLoggedIn,async(req,res,next)=>{ //회원가입 라우터
@@ -55,7 +55,7 @@ router.get('/kakao',passport.authenticate('kakao')); //GET /auth/kakao 로 접�
 router.get('/kakao/callback',passport.authenticate('kakao',{ //로그인 후 성공 여부를 GET /auth/kakao/callback으로 받음.카카오로그인 전략 다시 수행
     failureRedirect:'/', //로그인 실패 시 이동할  페이지
 }),(req,res)=>{
-    res.redirect('/'); //로그인 성공 시 이동할 페이지
+    res.redirect('/join'); //로그인 성공 시 이동할 페이지
 });
 
 module.exports=router;
