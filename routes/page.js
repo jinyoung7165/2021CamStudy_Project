@@ -33,6 +33,7 @@ router.get('/',async(req,res,next)=>{
             }],
             order:[['createdAt','ASC']],//게시글의 순서는 오래된 순으로 정렬
         });
+        console.log(rooms);
         const posts=await Post.findAll({//게시글 조회
             include:[{
                 model:User,
@@ -47,7 +48,7 @@ router.get('/',async(req,res,next)=>{
         res.render('main',{
             title:'CamStudy',
             twits:posts,//게시글 조회 결과를 넣음
-            room:rooms,
+            rooms:rooms,
         });
     }catch(err){
         console.error(err);
@@ -56,8 +57,11 @@ router.get('/',async(req,res,next)=>{
 });
 
 // 방 들어가면 library.html 렌더링 방주소랑 사용자아이디 전달 (nick으로 할까 id로 할까?)
-router.get('/:url', (req, res) => {     
-    res.render('library', { roomUrl: req.params.url, userId:req.user.id})
+router.get('/library/:url', (req, res) => {
+    const room=Room.findOne({
+        where:{room_url:req.params.url},
+    });     
+    res.render('library', { roomUrl: req.params.url, userId:req.user.id,room:room})
   })
 
 
