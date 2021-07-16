@@ -4,6 +4,7 @@ const {User,Post,Room,Chat}=require('../models');
 const router=express.Router();
 const http=require('http');
 const sequelize = require('sequelize');
+
 router.use((req,res,next)=>{
     res.locals.user=req.user; //passport.deserializeUser를 통해 req.user에 user정보 저장한 것을 담음
     next();
@@ -69,6 +70,7 @@ router.post('/room', async (req, res, next) => {
       owner: req.session.id,
       description: req.body.description,
     });
+    await newRoom.addUser(req.user.id);
     const io = req.app.get('io'); //io 객체 가져오기
     io.of('/room').emit('newRoom', newRoom); // room 네임 스페이스에 연결한 모든 클라이언트에 데이터를 보내는 메서드
     res.redirect(`/library/${newRoom.id}`);
@@ -81,7 +83,6 @@ router.post('/room', async (req, res, next) => {
 // 방 들어가면 library.html 렌더링 방주소랑 사용자아이디 전달 (nick으로 할까 id로 할까?)
 router.get('/library/:id', async(req, res) => {
     const room=await Room.findOne({where:{id:req.params.id}});
-    console.log(req.user.id);
     await room.addUser(req.user.id);
     const io = req.app.get('io');
     await Room.update({ // 방인원수 update
@@ -99,18 +100,19 @@ router.get('/library/:id', async(req, res) => {
         id:req.params.id,
       },
     },{
-      model:User
-    }]
+      model:User,
+    }
+  ]
   });
-    const users=await User.findAll({
+  const users=await User.findAll({
       include:[{
         model:Room,
         where:{
           id:req.params.id,
         },
       }]
-    });
-    return res.render('library', { roomId: req.params.id, userId:req.session.id, users,room,chats})
+  });
+  return res.render('library', { roomId: req.params.id,users,room,chats})
   });
 
 
@@ -144,16 +146,16 @@ router.delete('/library/:id', async (req, res, next) => {
 
 router.post('/library/:id/chat', async(req,res,next) => {
     try{
-      console.log("++++++++++++"+req.user.id);
-      console.log(req.sessionID);
       const chat = await Chat.create({
         chating: req.body.chat,
         UserId: req.user.id,
         RoomId:req.params.id,
       });
-      
-      console.log("++++++++++++"+chat.chating);
-      req.app.get('io').of('/library').to(req.params.id).emit('chat',chat);
+      const chatt=await Chat.findOne({ //user nick 같이 보내려면 include필요
+        include:[{model:User}],
+        where:{chating:req.body.chat},
+      })
+      req.app.get('io').of('/library').to(req.params.id).emit('chat',chatt);
       res.send('ok');
     } catch(error){
       console.log(error);

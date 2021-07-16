@@ -52,7 +52,7 @@
         <span class="close">&times;</span>         
         <p>참가자들</p>
         {% for user in users %}
-        {{user.nick}}   level : 
+        {{user.nick}}   level : {{user.level}}
         {% endfor %}
       </div>
     </div>
@@ -70,21 +70,18 @@
         <fieldset>
           <legend>채팅 내용</legend>
           <div id="chat-list">
-            <h2>{{user}}</h2> 
             {% for chat in chats %}
-            <h2>{{chat.user.nick}}</h2> 
-            
-              {% if chat.user == user %}
-                <div class="mine" style="color:{{chat.user}}">
-                  <div>{{chat.chating}}</div>
+              {% if chat.User.id == user.id %}
+                <div class="mine" style="color:{{user.id}}">
+                  <div>{{chat.User.nick}}: {{chat.chating}}</div>
                 </div>
               {% elif chat.User == 'system' %}
                 <div class="system">
                   <div>{{chat.chating}}</div>
                 </div>
               {% else %}
-                <div class="other" style="color:{{chat.user}}">
-                  <div>{{chat.user}}: {{chat.chating}}</div>
+                <div class="other" style="color:{{chat.user.id}}">
+                  <div>{{chat.User.nick}}: {{chat.chating}}</div>
                 </div>
               {% endif %}
             {% endfor %}
@@ -123,16 +120,15 @@
   });
   socket.on('chat', function (data) {
     const div = document.createElement('div');
-    console.log('------------{{userId}}---'+data.user);
-    if (data.user === '{{userId}}') {
+    if (data.user === '{{user.id}}') {
       div.classList.add('mine');
     } else {
       div.classList.add('other');
     }
     const name = document.createElement('div');
-    name.textContent = data.user;
+    name.textContent = data.User.nick+": "+data.chating;
     div.appendChild(name);
-    div.style.color = data.user;
+    div.style.color = data.UserId;
     document.querySelector('#chat-list').appendChild(div);
   });
 
@@ -140,7 +136,7 @@
     e.preventDefault();
     if (e.target.chat.value) {
       axios.post('/library/{{roomId}}/chat', {
-        chat: e.target.chat.value,
+        chat: this.chat.value,
       })
         .then(() => {
           e.target.chat.value = '';
