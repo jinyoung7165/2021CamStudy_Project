@@ -56,9 +56,9 @@ router.get('/',async(req,res,next)=>{
     }
 });
 
-// router.get('/room', (req, res) => {
-//   res.render('room', { title: 'GIF 채팅방 생성' });
-// });
+router.get('/room', (req, res) => {
+  res.render('room', { title: 'GIF 채팅방 생성' });
+});
   
 /* 채팅방을 만드는 라우터 */
 router.post('/room', async (req, res, next) => {
@@ -70,7 +70,7 @@ router.post('/room', async (req, res, next) => {
       description: req.body.description,
     });
     const io = req.app.get('io'); //io 객체 가져오기
-    io.of('/library').emit('newRoom', newRoom); // room 네임 스페이스에 연결한 모든 클라이언트에 데이터를 보내는 메서드
+    io.of('/room').emit('newRoom', newRoom); // room 네임 스페이스에 연결한 모든 클라이언트에 데이터를 보내는 메서드
     res.redirect(`/library/${newRoom.id}`);
   } catch (error) {
     console.error(error);

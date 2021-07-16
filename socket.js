@@ -55,22 +55,10 @@ module.exports = (server, app, sessionMiddleware) => {
         }]
       });
       const room=await Room.findOne({
-        where:{id:roomId}, 
-        include:[{
-          model:Chat,
-          where:{
-            roomId,
-          },
-          attributes:['id'],
-        },{
-          model:User,
-          where:{
-            roomId,
-          },
-        }]
+        where:{id:roomId}
       });
-      await room.removeUser(user);
       socket.leave(roomId);
+      await room.removeUser(user);
       if (room.participants_num == 0) { // 유저가 0명이면 방 삭제
          axios.delete(`http://localhost:8001/library/${roomId}`)
           .then(() => {
