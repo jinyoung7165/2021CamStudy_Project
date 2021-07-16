@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 module.exports = class Room extends Sequelize.Model {
   static init(sequelize) {
     return super.init({
-      room_url: {
+      title: {
         type: Sequelize.STRING(100),
         allowNull: false,
         unique: true,
@@ -11,6 +11,7 @@ module.exports = class Room extends Sequelize.Model {
       description: {
         type: Sequelize.STRING(15),
         allowNull: false,
+        default:"",
       },
       participants_num: {
         type: Sequelize.INTEGER(100),
@@ -20,6 +21,11 @@ module.exports = class Room extends Sequelize.Model {
       img: {
         type: Sequelize.STRING(100),
         allowNull: true,
+      },
+      max: { 
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        default:10,  // 임의로 설정
       },
     }, {
       sequelize,

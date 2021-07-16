@@ -1,8 +1,9 @@
 const express=require('express');
 const {isLoggedIn,isNotLoggedIn}=require('./middlewares');
-const {User,Post,Room}=require('../models');
+const {User,Post,Room,Chat}=require('../models');
 const router=express.Router();
-
+const http=require('http');
+const sequelize = require('sequelize');
 router.use((req,res,next)=>{
     res.locals.user=req.user; //passport.deserializeUser를 통해 req.user에 user정보 저장한 것을 담음
     next();
@@ -33,7 +34,6 @@ router.get('/',async(req,res,next)=>{
             }],
             order:[['createdAt','ASC']],//게시글의 순서는 오래된 순으로 정렬
         });
-        console.log(rooms);
         const posts=await Post.findAll({//게시글 조회
             include:[{
                 model:User,
@@ -56,13 +56,109 @@ router.get('/',async(req,res,next)=>{
     }
 });
 
+// router.get('/room', (req, res) => {
+//   res.render('room', { title: 'GIF 채팅방 생성' });
+// });
+  
+/* 채팅방을 만드는 라우터 */
+router.post('/room', async (req, res, next) => {
+  try {
+    const newRoom = await Room.create({
+      title: req.body.title,
+      max: req.body.max,
+      owner: req.session.id,
+      description: req.body.description,
+    });
+    const io = req.app.get('io'); //io 객체 가져오기
+    io.of('/library').emit('newRoom', newRoom); // room 네임 스페이스에 연결한 모든 클라이언트에 데이터를 보내는 메서드
+    res.redirect(`/library/${newRoom.id}`);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+  
 // 방 들어가면 library.html 렌더링 방주소랑 사용자아이디 전달 (nick으로 할까 id로 할까?)
-router.get('/library/:url', (req, res) => {
-    const room=Room.findOne({
-        where:{room_url:req.params.url},
-    });     
-    res.render('library', { roomUrl: req.params.url, userId:req.user.id,room:room})
-  })
+router.get('/library/:id', async(req, res) => {
+    const room=await Room.findOne({where:{id:req.params.id}});
+    console.log(req.user.id);
+    await room.addUser(req.user.id);
+    const io = req.app.get('io');
+    await Room.update({ // 방인원수 update
+      participants_num: sequelize.literal(`participants_num + 1`), // 쿼리 문자열 추가해주는 기능
+    }, {
+      where:{id:req.params.id},  
+    }); 
+    if (!room) {
+      return res.redirect('/?error=존재하지 않는 방입니다.');
+    }
+    const chats = await Chat.findAll({  
+      include:[{
+      model:Room,
+      where:{
+        id:req.params.id,
+      },
+    },{
+      model:User
+    }]
+  });
+    const users=await User.findAll({
+      include:[{
+        model:Room,
+        where:{
+          id:req.params.id,
+        },
+      }]
+    });
+    return res.render('library', { roomId: req.params.id, userId:req.session.id, users,room,chats})
+  });
 
+
+router.delete('/library/:id', async (req, res, next) => {
+  try {
+    const room = await Room.findOne({
+      include:[{
+        model:Chat,
+        where:{
+          roomId:req.params.id,
+        },
+        attributes:['id'],
+      },{
+        model:User,
+        where:{
+          roomId:req.params.id,
+        },
+      }]
+    });
+    await Chat.destroy({ where:{RoomId:req.params.id} });
+    await Room.destroy({ where: {id: req.params.id} });
+    res.send('ok');
+    setTimeout(() => {
+      req.app.get('io').of('/room').emit('removeRoom', req.params.id);
+    }, 2000);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.post('/library/:id/chat', async(req,res,next) => {
+    try{
+      console.log("++++++++++++"+req.user.id);
+      console.log(req.sessionID);
+      const chat = await Chat.create({
+        chating: req.body.chat,
+        UserId: req.user.id,
+        RoomId:req.params.id,
+      });
+      
+      console.log("++++++++++++"+chat.chating);
+      req.app.get('io').of('/library').to(req.params.id).emit('chat',chat);
+      res.send('ok');
+    } catch(error){
+      console.log(error);
+      next(error);
+    }
+  });
 
 module.exports=router;
