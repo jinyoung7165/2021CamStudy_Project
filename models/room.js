@@ -8,17 +8,14 @@ module.exports = class Room extends Sequelize.Model {
         allowNull: false,
         unique: true,
       },
-      chating: {
-        type: Sequelize.STRING(40),
-        allowNull: true,
-      },
       description: {
         type: Sequelize.STRING(15),
         allowNull: false,
       },
       participants_num: {
         type: Sequelize.INTEGER(100),
-        allowNull: true,
+        allowNull: false,
+        defaultValue:0,
       },
       img: {
         type: Sequelize.STRING(100),
@@ -38,5 +35,6 @@ module.exports = class Room extends Sequelize.Model {
 
   static associate(db) {
     db.Room.hasMany(db.User);
+    db.Room.hasOne(db.Chat);
   }
 };

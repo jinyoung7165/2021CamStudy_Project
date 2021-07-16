@@ -2,14 +2,23 @@ const socket = io('/')
 const videoGrid = document.getElementById('video-grid')
 const myPeer = new Peer(undefined, { // webRTC에서 사용하는것
   host: '/',
-  port: '3001'
+  port: '8001'
 })
+var newDiv = document.createElement("div");
+// and give it some content
+var newContent = document.createTextNode("환영합니다!");
+// add the text node to the newly created div
+newDiv.appendChild(newContent);
+
+// add the newly created element and its content into the DOM
+var currentDiv = document.getElementById("div1");
+document.body.insertBefore(newDiv, currentDiv);
 const myVideo = document.createElement('video')
 myVideo.muted = true
 const peers = {}
 navigator.mediaDevices.getUserMedia({
   video: true,
-  audio: true
+  audio: false,
 }).then(stream => {
   addVideoStream(myVideo, stream)
 
