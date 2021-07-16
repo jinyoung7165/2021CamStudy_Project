@@ -26,16 +26,15 @@ module.exports = (server, app, sessionMiddleware) => {
 
   library.on('connection', (socket) => {
     console.log('library 네임스페이스에 접속');
-    
-    const req = socket.request;
-    const { headers: { referer } } = req; 
+    //const req = socket.request;
+    const { headers: { referer } } = socket.request; 
     const roomId = referer
       .split('/')[referer.split('/').length - 1]
       .replace(/\?.+/, '');
     socket.join(roomId);
     socket.to(roomId).emit('join', {
       user: 'system',
-      chat: '님이 입장',
+      chat: `님이 입장`,
     });
 
     socket.on('disconnect', async() => {
@@ -70,7 +69,7 @@ module.exports = (server, app, sessionMiddleware) => {
       } else {
         socket.to(roomId).emit('exit', {
           user: 'system',
-          chat: `님이 퇴장하셨습니다.`,
+          chat: `${user.nick}님이 퇴장하셨습니다.`,
         });
       }
     });
