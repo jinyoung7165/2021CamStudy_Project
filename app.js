@@ -7,6 +7,7 @@ const nunjucks=require('nunjucks');
 const dotenv=require('dotenv');
 const passport=require('passport');
 const bodyParser = require('body-parser');
+const http=require('http');
 
 dotenv.config();
 const pageRouter=require('./routes/page');
@@ -15,6 +16,8 @@ const postRouter=require('./routes/post');
 const userRouter=require('./routes/user');
 const {sequelize}=require('./models');  //index.js생략 가능
 const passportConfig=require('./passport');
+const socket=require('socket.io');
+const webSocket = require('./socket.js');
 
 const app=express();
 passportConfig(); //패스포트 설정
@@ -39,15 +42,16 @@ app.use('/img',express.static(path.join(__dirname,'uploads'))); //upload한 이�
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 app.use(cookieparser(process.env.COOKIE_SECRET));
-app.use(session({
-    resave:false,
-    saveUninitialized:false,
-    secret:process.env.COOKIE_SECRET,
+const sessionMiddleware=session({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET,
     cookie:{
-        httpOnly:true,
-        secure:false,
+      httpOnly:true,
+      secure: false,
     },
-}));
+  });
+app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());  //req.session에 passport정보 저장
 
@@ -67,6 +71,8 @@ app.use((err,req,res,next)=>{
     res.status(err.status||500);
     res.render('error');
 });
-app.listen(app.get('port'),()=>{
+const server=app.listen(app.get('port'),()=>{
     console.log(app.get('port'),'번 포트에서 대기 중');
 });
+
+webSocket(server, app, sessionMiddleware);
