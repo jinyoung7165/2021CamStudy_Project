@@ -2,7 +2,7 @@ const passport=require('passport');
 const local=require('./localStrategy');
 const kakao=require('./kakaoStrategy');
 const User=require('../models/user');
-const Post=require('../models/user');
+const Post=require('../models/post');
 
 module.exports=()=>{
     passport.serializeUser((user,done)=>{ //로그인 시 실행. req.session객체에 사용자정보객체를 세션에 id를 통해 저장

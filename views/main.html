@@ -31,9 +31,67 @@
 {%endblock%}
 {%block rooms%}
 <div class="rooms">
- {%for room in rooms%}
-<a id="room" href="/library/{{room.room_url}}">library</a>
-{%endfor%}
+{%for room in rooms%}
+      <tr data-id="{{room.id}}">
+        <td>{{room.title}}</td>
+        <td>{{room.description}}</td> 
+        {% if user %}
+        <td>
+          <button data-id="{{room.id}}" class="join-btn">입장</button>
+        </td>
+        {% endif %}
+      </tr>
+  {%endfor%}
+  {% if user %}
+    <a href="/room" id="create-library">방 생성</a>
+  {% endif %}
+
+  <script src="/socket.io/socket.io.js"></script>
+      <script>
+        const socket = io.connect('http://localhost:8005/room', { // 네임스페이스
+          path: '/socket.io',
+        });
+      
+        socket.on('newRoom', function (data) { // 새 방 이벤트 시 새 방 생성
+          const tr = document.createElement('tr');
+          let td = document.createElement('td');
+          td.textContent = data.title;
+          tr.appendChild(td);
+          //td = document.createElement('td');
+          //td.textContent = data.password ? '비밀방' : '공개방';
+          //tr.appendChild(td);
+          td = document.createElement('td');
+          td.textContent = data.max;
+          tr.appendChild(td);
+          td = document.createElement('td');
+          td.style.color = data.owner;
+          td.textContent = data.owner;
+          tr.appendChild(td);
+          td = document.createElement('td');
+          const button = document.createElement('button');
+          button.textContent = '입장';
+          button.dataset.password = data.password ? 'true' : 'false';
+          button.dataset.id = data._id;
+          button.addEventListener('click', addBtnEvent);
+          td.appendChild(button);
+          tr.appendChild(td);
+          tr.dataset.id = data._id;
+          document.querySelector('table tbody').appendChild(tr); // 화면에 추가
+        });
+      
+        socket.on('removeRoom', function (data) { // 방 제거 이벤트 시 id가 일치하는 방 제거
+          document.querySelectorAll('tbody tr').forEach(function (tr) {
+            if (tr.dataset.id === data) {
+              tr.parentNode.removeChild(tr);
+            }
+          });
+        });
+
+        function addBtnEvent(e) { // 방 입장 클릭 시
+          location.href = '/library/' + e.target.dataset.id;
+        }
+        
+      </script>
 </div>
 {%endblock%}
 {% block content %}
@@ -79,8 +137,16 @@
         {% endfor %}
       </div>
     </div>
-
+    
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
+    function addBtnEvent(e) { // 방 입장 클릭 시
+    location.href = '/library/' + e.target.dataset.id;  
+  }
+
+  document.querySelectorAll('.join-btn').forEach(function (btn) {
+    btn.addEventListener('click', addBtnEvent);
+  });
     document.querySelectorAll('.delete').forEach(function(tag) {
       tag.addEventListener('click', function() {
         const myId = document.querySelector('#my-id');
@@ -140,7 +206,7 @@
 {% endblock %}
 
 {% block script %}
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</script>
     <script>
       window.onload = () => {
         if (new URL(location.href).searchParams.get('loginError')) {

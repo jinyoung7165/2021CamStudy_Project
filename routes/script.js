@@ -1,18 +1,12 @@
-const socket = io('/')
-const videoGrid = document.getElementById('video-grid')
-const myPeer = new Peer(undefined, { // webRTC에서 사용하는것
-  host: '/',
-  port: '8001'
-})
-var newDiv = document.createElement("div");
-// and give it some content
-var newContent = document.createTextNode("환영합니다!");
-// add the text node to the newly created div
-newDiv.appendChild(newContent);
+const socket = io('/');
+const http=require('http');
 
-// add the newly created element and its content into the DOM
-var currentDiv = document.getElementById("div1");
-document.body.insertBefore(newDiv, currentDiv);
+const videoGrid = document.getElementById('video-grid');
+const myPeer = new Peer(undefined, { // webRTC에서 사용하는것
+  host: '/peerjs',
+  port: '8001'
+});
+
 const myVideo = document.createElement('video')
 myVideo.muted = true
 const peers = {}
@@ -40,9 +34,9 @@ socket.on('user-disconnected', userId => {
 })
 
 myPeer.on('open', id => {
-  socket.emit('join-room', ROOM_ID, id)
+  socket.emit('join-room', ROOM_URL, id)
 })
-
+console.log(">>>>"+ROOM_URL);
 // 새로운 사용자 연결
 function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)
