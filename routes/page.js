@@ -102,7 +102,9 @@ router.get('/library/:id', async(req, res) => {
     }, {
       where:{id:req.params.id},  
     }); 
-
+    const resultroom=await Room.findOne(
+      {where:{id:req.params.id}}
+    );
     nums = (await Chat.findAndCountAll({
       include:[{
         model:Room,
@@ -135,7 +137,7 @@ router.get('/library/:id', async(req, res) => {
         },
       }]
   });
-  return res.render('library', { roomId: req.params.id,users,room,chats})
+  return res.render('library', { roomId: req.params.id,users,room:resultroom,chats})
   });
 
 
