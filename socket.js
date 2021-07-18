@@ -26,6 +26,10 @@ module.exports = (server, app, sessionMiddleware) => {
 
   library.on('connection',async(socket) => {
     console.log('library 네임스페이스에 접속');
+
+    const startTime = new Date();
+    console.log(">>"+startTime);
+
     const req = socket.request;
     const { headers: { referer } } = socket.request; 
     const roomId = referer
@@ -57,6 +61,23 @@ module.exports = (server, app, sessionMiddleware) => {
           attributes:['id'],
         }]
       });
+
+      const endTime = new Date();
+      console.log(">>"+endTime);
+
+      const access_time = endTime.getTime() - startTime.getTime();
+      const hour = (access_time / 1000 / 60 / 60).toFixed(3);
+      console.log("---"+hour);
+      total_time = total_time + hour;
+      console.log("---"+total_time);
+
+      await User.update({
+        total_time: sequelize.literal(`total_time+${hour}`),
+        //sequelize.literal(`participants_num + 1`)
+      },{
+        where: {id:req.session.passport.user},
+      })
+
       const room=await Room.findOne({
         where:{id:roomId}
       });
