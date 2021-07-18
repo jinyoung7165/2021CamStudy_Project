@@ -51,7 +51,7 @@
       <div class="modal-content">
         <span class="close">&times;</span>   
         <div id="participants-list">      
-        <p>참가자들</p>
+        <p>참가자들</p>({{room.participants_num}})
         {% for user in users %}
         <div class="user">
         <span class="nick">{{user.nick}}</span><span class="level"> level : {{user.level}}</span>

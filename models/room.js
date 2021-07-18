@@ -31,6 +31,12 @@ module.exports = class Room extends Sequelize.Model {
         type: Sequelize.STRING(100),
         allowNull: false,
       },
+      option: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue:false,
+
+      }
     }, {
       sequelize,
       timestamps: true,

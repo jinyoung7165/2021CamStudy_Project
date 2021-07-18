@@ -53,6 +53,7 @@ module.exports = (server, app, sessionMiddleware) => {
         where:{id:roomId},  
       }); 
       const user=await User.findOne({
+        where:{id:req.session.passport.user},
         include:[{
           model:Room,
           where:{
@@ -61,29 +62,40 @@ module.exports = (server, app, sessionMiddleware) => {
           attributes:['id'],
         }]
       });
-
       const endTime = new Date();
-      console.log(">>"+endTime);
-
-      const access_time = endTime.getTime() - startTime.getTime();
-      const hour = (access_time / 1000 / 60 / 60).toFixed(3);
-      console.log("---"+hour);
-      total_time = total_time + hour;
-      console.log("---"+total_time);
+      const access_time = ((endTime.getTime() - startTime.getTime())/1000).toFixed(0); //1000
+      console.log(">>>"+access_time);
+      //const hour =(access_time / 60 / 60).toFixed(0); //3.5
+      let resulthour=parseInt(user.total_time,10)+parseInt(access_time,10);
+      console.log("---"+resulthour);
+      let resultlevel=((resulthour/3600)*20000).toFixed(0);
+      if ((resulthour/3600*20000)-resultlevel>=0.5){
+        resultlevel+=0.5;
+      }
 
       await User.update({
-        total_time: sequelize.literal(`total_time+${hour}`),
-        //sequelize.literal(`participants_num + 1`)
+        total_time: resulthour
       },{
-        where: {id:req.session.passport.user},
-      })
+        where: {id:user.id},
+      });
+      await User.update({
+        level: resultlevel,
+      },{
+        where: {id:user.id},
+      });
 
+      const resultuser=await User.findOne({
+        where:{id:user.id,RoomId:roomId},
+      })
+      console.log("---"+resultuser.total_time);
       const room=await Room.findOne({
         where:{id:roomId}
       });
       socket.leave(roomId);
       await room.removeUser(user);
-      if (room.participants_num == 0) { // 유저가 0명이면 방 삭제
+     
+      if (room.participants_num == 0 || room.option) { // 유저가 0명이면 방 삭제
+        
          axios.delete(`http://localhost:8001/library/${roomId}`)
           .then(() => {
             console.log('방 제거 요청 성공');

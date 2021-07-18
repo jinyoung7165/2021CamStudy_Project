@@ -18,7 +18,7 @@ module.exports = class User extends Sequelize.Model {
         unique: true,
       },
       level: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull:false,
         defaultValue: 0,
       },
@@ -28,7 +28,7 @@ module.exports = class User extends Sequelize.Model {
         defaultValue: 0,
       },
       total_time: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull:false,
         defaultValue: 0,
       },

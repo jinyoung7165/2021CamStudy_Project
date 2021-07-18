@@ -69,9 +69,9 @@ router.post('/room', async (req, res, next) => {
       description: req.body.description,
       password: req.body.password,
     });
-    await newRoom.addUser(req.user.id);
     const io = req.app.get('io'); //io 객체 가져오기
     io.of('/room').emit('newRoom', newRoom); // room 네임 스페이스에 연결한 모든 클라이언트에 데이터를 보내는 메서드
+    await newRoom.addUser(req.user.id);
     if(req.body.password){
       res.redirect(`/library/${newRoom.id}?password=${req.body.password}`);
     }
@@ -140,12 +140,14 @@ router.delete('/library/:id', async (req, res, next) => {
         },
       }]
     });
+
     await Chat.destroy({ where:{RoomId:req.params.id} });
-    await Room.destroy({ where: {id: req.params.id} });
-    res.send('ok');
-    setTimeout(() => {
-      req.app.get('io').of('/room').emit('removeRoom', req.params.id);
-    }, 2000);
+      await Room.destroy({ where: {id: req.params.id} });
+      res.send('ok');
+      setTimeout(() => {
+        req.app.get('io').of('/room').emit('removeRoom', req.params.id);
+      }, 2000);
+    
   } catch (error) {
     console.error(error);
     next(error);
