@@ -131,6 +131,11 @@ router.get('/library/:id', async(req, res) => {
       where:{
         id:req.params.id,
       },
+    },{
+      model:User,
+      where:{
+        RoomId:req.params.id,
+      }
     }]
   });
   return res.render('library', { roomId: req.params.id,users,room:resultroom,chats})

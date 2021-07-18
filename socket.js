@@ -2,10 +2,8 @@ const SocketIO = require('socket.io');
 const axios = require('axios');
 const cookieParser = require('cookie-parser');
 const cookie = require('cookie');
-const { connect } = require('./routes/page');
 const sequelize = require('sequelize');
 const {Room,User,Chat}=require('./models/');
-const { findAll } = require('./models/user');
 
 module.exports = (server, app, sessionMiddleware) => {
   const io = SocketIO(server, { path: '/socket.io' });
@@ -13,12 +11,20 @@ module.exports = (server, app, sessionMiddleware) => {
   const room = io.of('/room'); 
   const library = io.of('/library'); 
   
-  io.use((socket, next) => {
+ /* io.use((socket, next) => {
     cookieParser(process.env.COOKIE_SECRET)(socket.request, socket.request.res, next);
     sessionMiddleware(socket.request, socket.request.res, next);
   });
+*/
+const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
+room.use(wrap(cookieParser(process.env.COOKIE_SECRET)));
+room.use(wrap(sessionMiddleware));
+library.use(wrap(cookieParser(process.env.COOKIE_SECRET)));
+library.use(wrap(sessionMiddleware));
 
   room.on('connection', async(socket) => {
+    console.log(">>>>>>>>>>+++++++++++++\n");
+    console.log(socket.request.sessionID); 
     console.log('room 네임스페이스에 접속');
     socket.on('disconnect', () => {
       console.log('room 네임스페이스 접속 해제');
@@ -29,14 +35,18 @@ module.exports = (server, app, sessionMiddleware) => {
     console.log('library 네임스페이스에 접속');
 
     const startTime = new Date();
-    console.log(">>"+startTime);
-
     const req = socket.request;
+
+    console.log(">>>>>>>>>>+++++++++++++\n");
+    console.log(req.sessionID); 
+    console.log('\n');
+
     const { headers: { referer } } = socket.request; 
     const roomId = referer
       .split('/')[referer.split('/').length - 1]
       .replace(/\?.+/, '');
     socket.join(roomId);
+    
     const user=await User.findOne({
       where:{id:req.session.passport.user},
     });
@@ -115,11 +125,13 @@ module.exports = (server, app, sessionMiddleware) => {
             console.error(error);
           });
         }
-         }
+      }
       else {
           socket.to(roomId).emit('exit', {
-          leftuser:user,
-          room
+            user: 'system',
+            chat: `${user.nick}님이 퇴장하셨습니다`,
+            leftuser:user,
+            room
           });
       }
     });

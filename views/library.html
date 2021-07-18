@@ -114,6 +114,7 @@
     div2.classList.add('system');
     const chat = document.createElement('div');
     div2.textContent = data.chat;
+    console.log(">>>>"+chat);
     div2.appendChild(chat);
     document.querySelector('#chat-list').appendChild(div2);
   });
@@ -123,12 +124,12 @@
     leftuser.remove();
     document.querySelectorAll('.user').querySelector(`span[data-nick='${data.leftuser.nick}']`).remove();
     
-    const div = document.createElement('div');
-    div.classList.add('system');
+    const div3 = document.createElement('div');
+    div3.classList.add('system');
     const chat = document.createElement('div');
-    div.textContent = data.leftuser.nick+"님이 퇴장하셨습니다.";
-    div.appendChild(chat);
-    document.querySelector('#chat-list').appendChild(div);
+    div3.textContent = data.chat;
+    div3.appendChild(chat);
+    document.querySelector('#chat-list').appendChild(div3);
   });
   socket.on('chat', function (data) {
     const div = document.createElement('div');
@@ -167,7 +168,7 @@
   var mdls = document.getElementsByClassName("mdl");
   var spanes = document.getElementsByClassName("close");
   var funcs = [];
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>"+mdls);
+
   // Modal을 띄우고 닫는 클릭 이벤트를 정의한 함수
   function Modal(num) {
     return function() {
@@ -186,6 +187,7 @@
   for(var j = 0; j < mdls.length; j++) {
     funcs[j]();
   }
+  
   /* 모달을 닫는 코드 */
   window.onclick = function(event) {
     if (event.target.className == "modal") {
