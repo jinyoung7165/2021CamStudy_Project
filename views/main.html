@@ -142,7 +142,13 @@
           <div class="twit">
             <input type="hidden" value="{{twit.User.id}}" class="twit-user-id">
             <input type="hidden" value="{{twit.id}}" class="twit-id">
-            <div class="twit-author">{{twit.User.nick}}<p>{{twit.msg}}</p></div>
+            <div class="twit-author">
+              {{twit.User.nick}}
+              <p>{{twit.msg}}</p>
+              {% if user.level_show == 0 %}
+                <p>{{twit.user.level}}</p>
+              {%endif%}
+            </div>
             {%if user and twit.User.id==user.id%}
              <button class="delete" value="{{twit.id}}">삭제하기</button>
             {%endif%}
