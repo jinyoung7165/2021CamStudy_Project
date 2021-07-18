@@ -2,7 +2,6 @@ const express=require('express');
 const {isLoggedIn,isNotLoggedIn}=require('./middlewares');
 const {User,Post,Room,Chat}=require('../models');
 const router=express.Router();
-const http=require('http');
 const sequelize = require('sequelize');
 
 router.use((req,res,next)=>{
@@ -89,13 +88,13 @@ router.get('/library/:id', async(req, res) => {
     await room.addUser(req.user.id);
     const io = req.app.get('io');
     if (!room) {
-      return res.redirect('/?error=존재하지 않는 방입니다.');
+      return res.redirect('/?RoomError=존재하지 않는 방입니다.');
     }
-    else if (room.password && room.password !== req.query.password) {
-      return res.redirect('/?error=비밀번호가 틀렸습니다.');
+    else if (req.query.password&&room.password && room.password !== req.query.password) {
+      return res.redirect('/?PwError=비밀번호가 틀렸습니다.');
     }
     else if (room.participants_num+1 > room.max) {
-      return res.redirect('/?error=허용 인원을 초과하였습니다.');
+      return res.redirect('/?RoomError=허용 인원을 초과하였습니다.');
     }
     await Room.update({ // 방인원수 update
       participants_num: sequelize.literal(`participants_num + 1`), // 쿼리 문자열 추가해주는 기능
