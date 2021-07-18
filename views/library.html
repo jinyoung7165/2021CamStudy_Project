@@ -67,6 +67,7 @@
         <span class="close">&times;</span>
         <fieldset>
           <legend>채팅 내용</legend>
+          <p>-- 이전대화 10개만 나타납니다 -- </p>
           <div id="chat-list">
             {% for chat in chats %}
               {% if chat.User.id == user.id %}

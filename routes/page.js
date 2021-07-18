@@ -101,7 +101,21 @@ router.get('/library/:id', async(req, res) => {
     }, {
       where:{id:req.params.id},  
     }); 
+
+    nums = (await Chat.findAndCountAll({
+      include:[{
+        model:Room,
+        where:{
+          id:req.params.id,
+        },
+      }]
+    })).count
+   
+    if (nums <10) {nums=10}
+
     const chats = await Chat.findAll({  
+      limit:10,
+      offset:nums-10,
       include:[{
       model:Room,
       where:{
