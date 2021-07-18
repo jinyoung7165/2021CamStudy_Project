@@ -97,8 +97,16 @@ router.get('/library/:id', async(req, res) => {
     else if (room.participants_num+1 > room.max) {
       return res.redirect('/?RoomError=허용 인원을 초과하였습니다.');
     }
-    await Room.update({ // 방인원수 update
-      participants_num: sequelize.literal(`participants_num + 1`), // 쿼리 문자열 추가해주는 기능
+    const users=await User.findAll({
+      include:[{
+        model:Room,
+        where:{
+          id:req.params.id,
+        },
+      }]
+  });
+  await Room.update({ // 방인원수 update
+      participants_num:users.length
     }, {
       where:{id:req.params.id},  
     }); 
@@ -113,9 +121,8 @@ router.get('/library/:id', async(req, res) => {
         },
       }]
     })).count
-   
-    if (nums <10) {nums=10}
 
+    if (nums <10) {nums=10}
     const chats = await Chat.findAll({  
       limit:10,
       offset:nums-10,
@@ -124,18 +131,7 @@ router.get('/library/:id', async(req, res) => {
       where:{
         id:req.params.id,
       },
-    },{
-      model:User,
-    }
-  ]
-  });
-  const users=await User.findAll({
-      include:[{
-        model:Room,
-        where:{
-          id:req.params.id,
-        },
-      }]
+    }]
   });
   return res.render('library', { roomId: req.params.id,users,room:resultroom,chats})
   });

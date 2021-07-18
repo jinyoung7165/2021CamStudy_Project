@@ -5,6 +5,7 @@ const cookie = require('cookie');
 const { connect } = require('./routes/page');
 const sequelize = require('sequelize');
 const {Room,User,Chat}=require('./models/');
+const { findAll } = require('./models/user');
 
 module.exports = (server, app, sessionMiddleware) => {
   const io = SocketIO(server, { path: '/socket.io' });
@@ -51,12 +52,15 @@ module.exports = (server, app, sessionMiddleware) => {
 
     socket.on('disconnect', async() => {
       console.log('library 네임스페이스 접속 해제');
-      await Room.update({
-        participants_num: sequelize.literal(`participants_num - 1`), // 쿼리 문자열 추가해주는 기능
-      }, {
-        where:{id:roomId},  
-      }); 
-      const user=await User.findOne({
+      const users=await User.findAll({//접속한 사람들
+        include:[{
+          model:Room,
+          where:{
+            id:roomId,
+          },
+        }]
+    });
+      let user=await User.findOne({//나간 사람
         where:{id:req.session.passport.user},
         include:[{
           model:Room,
@@ -69,14 +73,12 @@ module.exports = (server, app, sessionMiddleware) => {
       const endTime = new Date();
       const access_time = ((endTime.getTime() - startTime.getTime())/1000).toFixed(0); //1000
       console.log(">>>"+access_time);
-      //const hour =(access_time / 60 / 60).toFixed(0); //3.5
       let resulthour=parseInt(user.total_time,10)+parseInt(access_time,10);
       console.log("---"+resulthour);
       let resultlevel=((resulthour/3600)*0.5).toFixed(0);
       if ((resulthour/3600*0.5)-resultlevel>=0.5){
         resultlevel+=0.5;
       }
-
       await User.update({
         total_time: resulthour
       },{
@@ -87,17 +89,22 @@ module.exports = (server, app, sessionMiddleware) => {
       },{
         where: {id:user.id},
       });
-
-      const resultuser=await User.findOne({
+      user=await User.findOne({//나간사람 
         where:{id:user.id,RoomId:roomId},
       })
-      console.log("---"+resultuser.total_time);
-      const room=await Room.findOne({
+      let room=await Room.findOne({
         where:{id:roomId}
       });
-      socket.leave(roomId);
+      socket.leave(roomId); 
       await room.removeUser(user);
-     
+      await Room.update({
+        participants_num: sequelize.literal(`participants_num - 1`)
+     }, {
+       where:{id:roomId},  
+     });
+      room=await Room.findOne({
+      where:{id:roomId}
+      });
       if (room.participants_num == 0) { // 유저가 0명이면 방 삭제
         if(room.option==0){
          axios.delete(`http://localhost:8001/library/${roomId}`)
@@ -108,15 +115,11 @@ module.exports = (server, app, sessionMiddleware) => {
             console.error(error);
           });
         }
-        else{
-            socket.to(roomId).emit('exit', {
-              user: 'system',
-              chat: `${user.nick}님이 퇴장하셨습니다.`,});
-            } }
+         }
       else {
           socket.to(roomId).emit('exit', {
-          user: 'system',
-          chat: `${user.nick}님이 퇴장하셨습니다.`,
+          leftuser:user,
+          room
           });
       }
     });
