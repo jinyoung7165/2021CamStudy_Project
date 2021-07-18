@@ -97,19 +97,6 @@ router.get('/library/:id', async(req, res) => {
     else if (room.participants_num+1 > room.max) {
       return res.redirect('/?RoomError=허용 인원을 초과하였습니다.');
     }
-    const users=await User.findAll({
-      include:[{
-        model:Room,
-        where:{
-          id:req.params.id,
-        },
-      }]
-  });
-  await Room.update({ // 방인원수 update
-      participants_num:users.length
-    }, {
-      where:{id:req.params.id},  
-    }); 
     const resultroom=await Room.findOne(
       {where:{id:req.params.id}}
     );
@@ -121,8 +108,9 @@ router.get('/library/:id', async(req, res) => {
         },
       }]
     })).count
-
+   
     if (nums <10) {nums=10}
+
     const chats = await Chat.findAll({  
       limit:10,
       offset:nums-10,
@@ -133,10 +121,16 @@ router.get('/library/:id', async(req, res) => {
       },
     },{
       model:User,
-      where:{
-        RoomId:req.params.id,
-      }
-    }]
+    }
+  ]
+  });
+  const users=await User.findAll({
+      include:[{
+        model:Room,
+        where:{
+          id:req.params.id,
+        },
+      }]
   });
   return res.render('library', { roomId: req.params.id,users,room:resultroom,chats})
   });
