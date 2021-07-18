@@ -12,29 +12,33 @@ module.exports = (server, app, sessionMiddleware) => {
   const room = io.of('/room'); 
   const library = io.of('/library'); 
   
-  const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
-  room.use(wrap(cookieParser(process.env.COOKIE_SECRET)));
-  room.use(wrap(sessionMiddleware));
+  io.use((socket, next) => {
+    cookieParser(process.env.COOKIE_SECRET)(socket.request, socket.request.res, next);
+    sessionMiddleware(socket.request, socket.request.res, next);
+  });
 
-
-  room.on('connection', (socket) => {
+  room.on('connection', async(socket) => {
     console.log('room 네임스페이스에 접속');
     socket.on('disconnect', () => {
       console.log('room 네임스페이스 접속 해제');
     });
   });
 
-  library.on('connection', (socket) => {
+  library.on('connection',async(socket) => {
     console.log('library 네임스페이스에 접속');
-    //const req = socket.request;
+    const req = socket.request;
     const { headers: { referer } } = socket.request; 
     const roomId = referer
       .split('/')[referer.split('/').length - 1]
       .replace(/\?.+/, '');
     socket.join(roomId);
+    const user=await User.findOne({
+      where:{id:req.session.passport.user},
+    });
     socket.to(roomId).emit('join', {
       user: 'system',
-      chat: `님이 입장`,
+      chat: `${user.nick}님이 입장하셨습니다`,
+      newuser:user,
     });
 
     socket.on('disconnect', async() => {

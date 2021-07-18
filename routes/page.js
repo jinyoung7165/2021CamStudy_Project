@@ -67,13 +67,16 @@ router.post('/room', async (req, res, next) => {
     const newRoom = await Room.create({
       title: req.body.title,
       max: req.body.max,
-      owner: req.session.id,
       description: req.body.description,
+      password: req.body.password,
     });
     await newRoom.addUser(req.user.id);
     const io = req.app.get('io'); //io 객체 가져오기
     io.of('/room').emit('newRoom', newRoom); // room 네임 스페이스에 연결한 모든 클라이언트에 데이터를 보내는 메서드
-    res.redirect(`/library/${newRoom.id}`);
+    if(req.body.password){
+      res.redirect(`/library/${newRoom.id}?password=${req.body.password}`);
+    }
+    else{res.redirect(`/library/${newRoom.id}`);}
   } catch (error) {
     console.error(error);
     next(error);
@@ -85,14 +88,20 @@ router.get('/library/:id', async(req, res) => {
     const room=await Room.findOne({where:{id:req.params.id}});
     await room.addUser(req.user.id);
     const io = req.app.get('io');
+    if (!room) {
+      return res.redirect('/?error=존재하지 않는 방입니다.');
+    }
+    else if (room.password && room.password !== req.query.password) {
+      return res.redirect('/?error=비밀번호가 틀렸습니다.');
+    }
+    else if (room.participants_num+1 > room.max) {
+      return res.redirect('/?error=허용 인원을 초과하였습니다.');
+    }
     await Room.update({ // 방인원수 update
       participants_num: sequelize.literal(`participants_num + 1`), // 쿼리 문자열 추가해주는 기능
     }, {
       where:{id:req.params.id},  
     }); 
-    if (!room) {
-      return res.redirect('/?error=존재하지 않는 방입니다.');
-    }
     const chats = await Chat.findAll({  
       include:[{
       model:Room,

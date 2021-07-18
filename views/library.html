@@ -49,11 +49,15 @@
     <!-- 첫 번째 Modal -->
     <div class="modal">
       <div class="modal-content">
-        <span class="close">&times;</span>         
+        <span class="close">&times;</span>   
+        <div id="participants-list">      
         <p>참가자들</p>
         {% for user in users %}
-        {{user.nick}}   level : {{user.level}}
+        <div class="user">
+        <span class="nick">{{user.nick}}</span><span class="level"> level : {{user.level}}</span>
+        </div>
         {% endfor %}
+        </div>
       </div>
     </div>
  
@@ -61,12 +65,6 @@
     <div class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
-        <!---
-        <p>채팅내용</p>
-        {% for chat in chats %}
-        <p>{{chat.User.nick}} : {{chat.chating}}</p>
-        {% endfor %}
-        -->
         <fieldset>
           <legend>채팅 내용</legend>
           <div id="chat-list">
@@ -103,12 +101,22 @@
     path: '/socket.io',
   });
   socket.on('join', function (data) {
-    const div = document.createElement('div');
-    div.classList.add('system');
+    const div1 = document.createElement('div');
+    div1.classList.add('user');
+    const nick = document.createElement('span');
+    nick.textContent = data.newuser.nick
+    const level = document.createElement('span');
+    level.textContent = " level : "+data.newuser.level;
+    div1.appendChild(nick)
+    div1.appendChild(level)
+    document.querySelector('#participants-list').appendChild(div1);
+
+    const div2 = document.createElement('div');
+    div2.classList.add('system');
     const chat = document.createElement('div');
-    div.textContent = data.chat;
-    div.appendChild(chat);
-    document.querySelector('#chat-list').appendChild(div);
+    div2.textContent = data.chat;
+    div2.appendChild(chat);
+    document.querySelector('#chat-list').appendChild(div2);
   });
   socket.on('exit', function (data) {
     const div = document.createElement('div');
