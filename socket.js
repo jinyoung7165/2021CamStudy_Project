@@ -4,23 +4,28 @@ const cookieParser = require('cookie-parser');
 const cookie = require('cookie');
 const sequelize = require('sequelize');
 const {Room,User,Chat}=require('./models/');
+const passport = require("passport");
 
 module.exports = (server, app, sessionMiddleware) => {
   const io = SocketIO(server, { path: '/socket.io' });
   app.set('io', io);  
   const room = io.of('/room'); 
-  const library = io.of('/library'); 
+  const library = io.of('/library');
+  const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
+  io.use(wrap(cookieParser(process.env.COOKIE_SECRET)));
+  io.use(wrap(sessionMiddleware));
+  //library.use(wrap(cookieParser(process.env.COOKIE_SECRET)));
+  //library.use(wrap(sessionMiddleware));
+  io.use(wrap(passport.initialize()));
+  io.use(wrap(passport.session()));
+ 
   
- /* io.use((socket, next) => {
+/*io.use((socket, next) => {
     cookieParser(process.env.COOKIE_SECRET)(socket.request, socket.request.res, next);
     sessionMiddleware(socket.request, socket.request.res, next);
-  });
-*/
-const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
-room.use(wrap(cookieParser(process.env.COOKIE_SECRET)));
-room.use(wrap(sessionMiddleware));
-library.use(wrap(cookieParser(process.env.COOKIE_SECRET)));
-library.use(wrap(sessionMiddleware));
+    next();
+  });*/
+
 
   room.on('connection', async(socket) => {
     console.log(">>>>>>>>>>+++++++++++++\n");
@@ -62,14 +67,6 @@ library.use(wrap(sessionMiddleware));
 
     socket.on('disconnect', async() => {
       console.log('library 네임스페이스 접속 해제');
-      const users=await User.findAll({//접속한 사람들
-        include:[{
-          model:Room,
-          where:{
-            id:roomId,
-          },
-        }]
-    });
       let user=await User.findOne({//나간 사람
         where:{id:req.session.passport.user},
         include:[{
@@ -92,23 +89,39 @@ library.use(wrap(sessionMiddleware));
       await User.update({
         total_time: resulthour
       },{
-        where: {id:user.id},
+        where: {id:req.session.passport.user},
       });
       await User.update({
         level: resultlevel,
       },{
-        where: {id:user.id},
+        where: {id:req.session.passport.user},
       });
       user=await User.findOne({//나간사람 
-        where:{id:user.id,RoomId:roomId},
+        where:{id:req.session.passport.user},
       })
       let room=await Room.findOne({
-        where:{id:roomId}
+        where:{id:roomId}, 
+        include:[{
+          model:Chat,
+          where:{
+            roomId,
+          },
+        },{
+          model:User,
+        }]
       });
-      socket.leave(roomId); 
       await room.removeUser(user);
+      socket.leave(roomId); 
+      let users=await User.findAll({//접속한 사람들
+        include:[{
+          model:Room,
+          where:{
+            id:roomId,
+          },
+        }]
+    });
       await Room.update({
-        participants_num: sequelize.literal(`participants_num - 1`)
+        participants_num: users.length
      }, {
        where:{id:roomId},  
      });
@@ -126,15 +139,26 @@ library.use(wrap(sessionMiddleware));
           });
         }
       }
-      else {
-          socket.to(roomId).emit('exit', {
+      io.emit('exit',{
+        user: 'system',
+        chat: `${user.nick}님이 퇴장하셨습니다.`,
+        leftuser:user,
+        room
+      });
+      socket.to(roomId).emit('exit', {
+        user: 'system',
+        chat: `${user.nick}님이 퇴장하셨습니다.`,
+        leftuser:user,
+        room
+      });
+      /*else {
+          await socket.to(roomId).emit('exit', {
             user: 'system',
-            chat: `${user.nick}님이 퇴장하셨습니다`,
+            chat: `${user.nick}님이 퇴장하셨습니다.`,
             leftuser:user,
             room
           });
-      }
+      }*/
     });
   });
-  //server.listen(8001)
 }
