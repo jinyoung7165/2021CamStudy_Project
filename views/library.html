@@ -54,7 +54,7 @@
         <p id="participants">참가자들 ({{room.participants_num}})</p>
         {% for user in users %}
         <div class="user">
-        <span class="nick">{{user.nick}}</span><span class="level"> level : {{user.level}}</span>
+        <span class="nick" data-nick={{user.nick}}>{{user.nick}} level : {{user.level}}</span>
         </div>
         {% endfor %}
         </div>
@@ -102,15 +102,12 @@
     path: '/socket.io',
   });
   socket.on('join', function (data) {
-    document.querySelector('#participants').replaceWith("참가자들 (+data.room.participants_num");
+    document.querySelector('#participants').replaceWith("참가자들 ("+data.room.participants_num+")");
     const div1 = document.createElement('div');
     div1.classList.add('user');
     const nick = document.createElement('span');
-    nick.textContent = data.newuser.nick
-    const level = document.createElement('span');
-    level.textContent = " level : "+data.newuser.level;
+    nick.textContent = data.newuser.nick+" level : "+data.newuser.level;
     div1.appendChild(nick)
-    div1.appendChild(level)
     document.querySelector('#participants-list').appendChild(div1);
 
     const div2 = document.createElement('div');
@@ -121,10 +118,15 @@
     document.querySelector('#chat-list').appendChild(div2);
   });
   socket.on('exit', function (data) {
+    document.querySelector('#participants').replaceWith("참가자들 ("+data.room.participants_num+")");
+    const leftuser=document.querySelector(`span[data-nick='${data.leftuser.nick}']`);
+    leftuser.remove();
+    document.querySelectorAll('.user').querySelector(`span[data-nick='${data.leftuser.nick}']`).remove();
+    
     const div = document.createElement('div');
     div.classList.add('system');
     const chat = document.createElement('div');
-    div.textContent = data.chat;
+    div.textContent = data.leftuser.nick+"님이 퇴장하셨습니다.";
     div.appendChild(chat);
     document.querySelector('#chat-list').appendChild(div);
   });
