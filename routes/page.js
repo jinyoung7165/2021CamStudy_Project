@@ -21,6 +21,7 @@ router.get('/profile',isLoggedIn,async(req,res)=>{ //로그인되어 있을 때�
     });
     res.render('profile',{title:'내 정보- CamStudy',promises:posts});
 });
+
 router.get('/join',isNotLoggedIn,(req,res)=>{
     res.render('join',{title:'회원가입- CamStudy'});
 });
@@ -93,7 +94,18 @@ router.get('/library/:id', async(req, res) => {
     if (!room) {
       return res.redirect('/?error=존재하지 않는 방입니다.');
     }
+    nums = (await Chat.findAndCountAll({
+      include:[{
+        model:Room,
+        where:{
+          id:req.params.id,
+        },
+      }]
+    })).count
+      
     const chats = await Chat.findAll({  
+      limit:3,
+      offset:nums-3,
       include:[{
       model:Room,
       where:{
@@ -162,5 +174,6 @@ router.post('/library/:id/chat', async(req,res,next) => {
       next(error);
     }
   });
+
 
 module.exports=router;
