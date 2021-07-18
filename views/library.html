@@ -72,7 +72,7 @@
             {% for chat in chats %}
               {% if chat.User.id == user.id %}
                 <div class="mine" style="color:{{user.id}}">
-                  <div>{{chat.User.nick}}: {{chat.chating}}</div>
+                  <div>{{chat.User.nick}}: {{chat.chating}}</div><div class="chat-time">{{chat.createAt}}</div>
                 </div>
               {% elif chat.User == 'system' %}
                 <div class="system">
@@ -80,7 +80,7 @@
                 </div>
               {% else %}
                 <div class="other" style="color:{{chat.user.id}}">
-                  <div>{{chat.User.nick}}: {{chat.chating}}</div>
+                  <div>{{chat.User.nick}}: {{chat.chating}}</div><div class="chat-time">{{chat.createAt}}</div>
                 </div>
               {% endif %}
             {% endfor %}
