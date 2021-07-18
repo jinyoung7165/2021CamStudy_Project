@@ -39,10 +39,14 @@ module.exports = (server, app, sessionMiddleware) => {
     const user=await User.findOne({
       where:{id:req.session.passport.user},
     });
+    const room=await Room.findOne({
+      where:{id:roomId},
+    });
     socket.to(roomId).emit('join', {
       user: 'system',
       chat: `${user.nick}님이 입장하셨습니다`,
       newuser:user,
+      room,
     });
 
     socket.on('disconnect', async() => {
@@ -69,7 +73,7 @@ module.exports = (server, app, sessionMiddleware) => {
       let resulthour=parseInt(user.total_time,10)+parseInt(access_time,10);
       console.log("---"+resulthour);
       let resultlevel=((resulthour/3600)*0.5).toFixed(0);
-      if ((resulthour/3600*20000)-resultlevel>=0.5){
+      if ((resulthour/3600*0.5)-resultlevel>=0.5){
         resultlevel+=0.5;
       }
 

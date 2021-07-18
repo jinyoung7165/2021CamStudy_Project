@@ -51,7 +51,7 @@
       <div class="modal-content">
         <span class="close">&times;</span>   
         <div id="participants-list">      
-        <p>참가자들</p>({{room.participants_num}})
+        <p id="participants">참가자들 ({{room.participants_num}})</p>
         {% for user in users %}
         <div class="user">
         <span class="nick">{{user.nick}}</span><span class="level"> level : {{user.level}}</span>
@@ -102,6 +102,7 @@
     path: '/socket.io',
   });
   socket.on('join', function (data) {
+    document.querySelector('#participants').replaceWith("참가자들 (+data.room.participants_num");
     const div1 = document.createElement('div');
     div1.classList.add('user');
     const nick = document.createElement('span');
