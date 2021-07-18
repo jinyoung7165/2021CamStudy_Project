@@ -67,7 +67,7 @@
         <span class="close">&times;</span>
         <fieldset>
           <legend>채팅 내용</legend>
-          <p>--- 이전 채팅의 10개만 불러오도록 합니다 ---</p>
+          <p>--- 이전 채팅 10개만 불러옵니다. ---</p>
           <div id="chat-list">
             {% for chat in chats %}
               {% if chat.User.id == user.id %}
@@ -119,10 +119,10 @@
     document.querySelector('#chat-list').appendChild(div2);
   });
   socket.on('exit', function (data) {
+    console.log(">>>>>>>>>>>+++++++\n"+data);
     document.querySelector('#participants').replaceWith("참가자들 ("+data.room.participants_num+")");
     const leftuser=document.querySelector(`span[data-nick='${data.leftuser.nick}']`);
     leftuser.remove();
-    document.querySelectorAll('.user').querySelector(`span[data-nick='${data.leftuser.nick}']`).remove();
     
     const div3 = document.createElement('div');
     div3.classList.add('system');
