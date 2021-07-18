@@ -68,7 +68,7 @@ module.exports = (server, app, sessionMiddleware) => {
       //const hour =(access_time / 60 / 60).toFixed(0); //3.5
       let resulthour=parseInt(user.total_time,10)+parseInt(access_time,10);
       console.log("---"+resulthour);
-      let resultlevel=((resulthour/3600)*20000).toFixed(0);
+      let resultlevel=((resulthour/3600)*0.5).toFixed(0);
       if ((resulthour/3600*20000)-resultlevel>=0.5){
         resultlevel+=0.5;
       }
@@ -94,8 +94,8 @@ module.exports = (server, app, sessionMiddleware) => {
       socket.leave(roomId);
       await room.removeUser(user);
      
-      if (room.participants_num == 0 || room.option) { // 유저가 0명이면 방 삭제
-        
+      if (room.participants_num == 0) { // 유저가 0명이면 방 삭제
+        if(room.option==0){
          axios.delete(`http://localhost:8001/library/${roomId}`)
           .then(() => {
             console.log('방 제거 요청 성공');
@@ -103,11 +103,17 @@ module.exports = (server, app, sessionMiddleware) => {
           .catch((error) => {
             console.error(error);
           });
-      } else {
-        socket.to(roomId).emit('exit', {
+        }
+        else{
+            socket.to(roomId).emit('exit', {
+              user: 'system',
+              chat: `${user.nick}님이 퇴장하셨습니다.`,});
+            } }
+      else {
+          socket.to(roomId).emit('exit', {
           user: 'system',
           chat: `${user.nick}님이 퇴장하셨습니다.`,
-        });
+          });
       }
     });
   });

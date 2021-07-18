@@ -16,6 +16,9 @@
             <div class="input-nick">
                 닉네임 : <input type="text" id="edit-nick" name="nick" value="{{user.nick}}"> 
             </div>
+            <div class="level">
+                레벨 : {{user.level}}
+            </div>
             <div class="input-show-level">
                 {% if user.level_show == 0 %} 
                 <input type="radio" name="chk" value=0 checked="checked">공개 
