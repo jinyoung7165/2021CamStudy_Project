@@ -67,6 +67,7 @@
         <span class="close">&times;</span>
         <fieldset>
           <legend>채팅 내용</legend>
+          <p>--- 이전 채팅의 10개만 불러오도록 합니다 ---</p>
           <div id="chat-list">
             {% for chat in chats %}
               {% if chat.User.id == user.id %}
