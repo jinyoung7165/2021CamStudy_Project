@@ -2,7 +2,6 @@ const express=require('express');
 const {isLoggedIn,isNotLoggedIn}=require('./middlewares');
 const {User,Post,Room,Chat}=require('../models');
 const router=express.Router();
-const http=require('http');
 const sequelize = require('sequelize');
 
 router.use((req,res,next)=>{
@@ -70,9 +69,9 @@ router.post('/room', async (req, res, next) => {
       description: req.body.description,
       password: req.body.password,
     });
-    await newRoom.addUser(req.user.id);
     const io = req.app.get('io'); //io 객체 가져오기
     io.of('/room').emit('newRoom', newRoom); // room 네임 스페이스에 연결한 모든 클라이언트에 데이터를 보내는 메서드
+    await newRoom.addUser(req.user.id);
     if(req.body.password){
       res.redirect(`/library/${newRoom.id}?password=${req.body.password}`);
     }
@@ -89,13 +88,13 @@ router.get('/library/:id', async(req, res) => {
     await room.addUser(req.user.id);
     const io = req.app.get('io');
     if (!room) {
-      return res.redirect('/?error=존재하지 않는 방입니다.');
+      return res.redirect('/?RoomError=존재하지 않는 방입니다.');
     }
-    else if (room.password && room.password !== req.query.password) {
-      return res.redirect('/?error=비밀번호가 틀렸습니다.');
+    else if (req.query.password&&room.password && room.password !== req.query.password) {
+      return res.redirect('/?PwError=비밀번호가 틀렸습니다.');
     }
     else if (room.participants_num+1 > room.max) {
-      return res.redirect('/?error=허용 인원을 초과하였습니다.');
+      return res.redirect('/?RoomError=허용 인원을 초과하였습니다.');
     }
     await Room.update({ // 방인원수 update
       participants_num: sequelize.literal(`participants_num + 1`), // 쿼리 문자열 추가해주는 기능
@@ -141,12 +140,14 @@ router.delete('/library/:id', async (req, res, next) => {
         },
       }]
     });
+
     await Chat.destroy({ where:{RoomId:req.params.id} });
-    await Room.destroy({ where: {id: req.params.id} });
-    res.send('ok');
-    setTimeout(() => {
-      req.app.get('io').of('/room').emit('removeRoom', req.params.id);
-    }, 2000);
+      await Room.destroy({ where: {id: req.params.id} });
+      res.send('ok');
+      setTimeout(() => {
+        req.app.get('io').of('/room').emit('removeRoom', req.params.id);
+      }, 2000);
+    
   } catch (error) {
     console.error(error);
     next(error);
