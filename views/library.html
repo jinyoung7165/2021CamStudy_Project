@@ -60,13 +60,14 @@
         </div>
       </div>
     </div>
- 
     <h1 class="mdl">채팅</h1>
     <div class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
         <fieldset>
           <legend>채팅 내용</legend>
+          <p>--- 이전 채팅의 10개만 불러오도록 합니다 ---</p>
+          </form>
           <div id="chat-list">
             {% for chat in chats %}
               {% if chat.User.id == user.id %}

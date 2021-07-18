@@ -20,6 +20,7 @@ router.get('/profile',isLoggedIn,async(req,res)=>{ //로그인되어 있을 때�
     });
     res.render('profile',{title:'내 정보- CamStudy',promises:posts});
 });
+
 router.get('/join',isNotLoggedIn,(req,res)=>{
     res.render('join',{title:'회원가입- CamStudy'});
 });
@@ -101,17 +102,32 @@ router.get('/library/:id', async(req, res) => {
     }, {
       where:{id:req.params.id},  
     }); 
+
+    nums = (await Chat.findAndCountAll({
+      include:[{
+        model:Room,
+        where:{
+          id:req.params.id,
+        },
+      }]
+    })).count
+   
+    if (nums <10) {nums=10}
+
     const chats = await Chat.findAll({  
+      limit:10,
+      offset:nums-10,
       include:[{
       model:Room,
       where:{
         id:req.params.id,
       },
     },{
-      model:User,
+      model:User, 
     }
   ]
   });
+
   const users=await User.findAll({
       include:[{
         model:Room,
@@ -172,5 +188,6 @@ router.post('/library/:id/chat', async(req,res,next) => {
       next(error);
     }
   });
+
 
 module.exports=router;
