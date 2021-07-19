@@ -44,7 +44,7 @@
   display:none;
 }
 #chat-content:hover #chat-time{
-  display:block;
+  display:inline;
 }
 
 </style>
@@ -86,13 +86,12 @@
             {% for chat in chats %}
               {% if chat.User.id == user.id %}
                 <div class="mine" style="color:{{user.id}}">
-                  <div id="chat-content" onmouseover="$('#chat-time').show()"  onmouseout="$('#chat-time').hide()">
+                  <div id="chat-content">
                     {{chat.User.nick}}: {{chat.chating}}
                     <div id="chat-time">
                       {{chat.createdAt}}
                     </div>
                   </div>
-                  <!-- onmouseover="mouseOver(this)" onmouseout="mouseOut(this)" -->
                 </div>
               {% elif chat.User == 'system' %}
                 <div class="system">
@@ -165,8 +164,17 @@
     } else {
       div.classList.add('other');
     }
+
     const name = document.createElement('div');
-    name.textContent = data.User.nick+": "+data.chating+"         "+data.createdAt;
+    div.textContent = data.User.nick+": "+data.chating;
+
+    div.addEventListener("mouseover", function( event ) {
+      div.textContent = data.User.nick+": "+data.chating + " " + data.createdAt;
+    });
+    div.addEventListener("mouseout", function( event ) {
+      div.textContent = data.User.nick+": "+data.chating;
+    });
+
     div.appendChild(name);
     div.style.color = data.UserId;
     document.querySelector('#chat-list').appendChild(div);
@@ -186,16 +194,7 @@
         });
     }
   });
-
-  function mouseOver(obj){
-    obj.style.color="blue";
-  }
-  function mouseOut(obj){
-    obj.style.color="black";
-    obj.hide();
-  }
-
-</script>
+  </script>
 </body>
 
 <script>
