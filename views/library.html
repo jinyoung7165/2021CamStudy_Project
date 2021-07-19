@@ -54,7 +54,14 @@
         <p id="participants">참가자들 ({{room.participants_num}})</p>
         {% for user in users %}
         <div class="user">
-        <span class="nick" data-nick={{user.nick}}>{{user.nick}} level : {{user.level}}</span>
+          <span class="nick">
+            {{user.nick}}
+          </span>
+          {% if user.level_show == 0 %}
+            <span class="level"> 
+              level : {{user.level}}
+            </span>
+          {%endif%}
         </div>
         {% endfor %}
         </div>
