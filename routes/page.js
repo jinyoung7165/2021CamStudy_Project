@@ -185,10 +185,13 @@ router.post('/library/:id/chat', async(req,res,next) => {
         chating: req.body.chat,
         UserId: req.user.id,
         RoomId:req.params.id,
+        createdAt: req.body.createdAt,
       });
       const chatt=await Chat.findOne({ //user nick 같이 보내려면 include필요
         include:[{model:User}],
-        where:{chating:req.body.chat},
+        where:{
+          chating:req.body.chat,
+        },
       })
       req.app.get('io').of('/library').to(req.params.id).emit('chat',chatt);
       res.send('ok');

@@ -40,6 +40,13 @@
   text-decoration: none;
   cursor: pointer;
 }
+#chat-time{
+  display:none;
+}
+#chat-content:hover #chat-time{
+  display:block;
+}
+
 </style>
 
 <body>
@@ -79,7 +86,13 @@
             {% for chat in chats %}
               {% if chat.User.id == user.id %}
                 <div class="mine" style="color:{{user.id}}">
-                  <div>{{chat.User.nick}}: {{chat.chating}}</div><div class="chat-time">{{chat.createAt}}</div>
+                  <div id="chat-content" onmouseover="$('#chat-time').show()"  onmouseout="$('#chat-time').hide()">
+                    {{chat.User.nick}}: {{chat.chating}}
+                    <div id="chat-time">
+                      {{chat.createdAt}}
+                    </div>
+                  </div>
+                  <!-- onmouseover="mouseOver(this)" onmouseout="mouseOut(this)" -->
                 </div>
               {% elif chat.User == 'system' %}
                 <div class="system">
@@ -87,7 +100,13 @@
                 </div>
               {% else %}
                 <div class="other" style="color:{{chat.user.id}}">
-                  <div>{{chat.User.nick}}: {{chat.chating}}</div><div class="chat-time">{{chat.createAt}}</div>
+                  <div id="chat-content">
+                    {{chat.User.nick}}: {{chat.chating}}
+                    <div id="chat-time">
+                      {{chat.createdAt}}
+                    </div>
+                  </div>
+                  
                 </div>
               {% endif %}
             {% endfor %}
@@ -108,6 +127,7 @@
   const socket = io.connect('http://localhost:8001/library', {
     path: '/socket.io',
   });
+
   socket.on('join', function (data) {
     document.querySelector('#participants').replaceWith("참가자들 ("+data.room.participants_num+")");
     const div1 = document.createElement('div');
@@ -121,12 +141,11 @@
     div2.classList.add('system');
     const chat = document.createElement('div');
     div2.textContent = data.chat;
-    console.log(">>>>"+chat);
     div2.appendChild(chat);
     document.querySelector('#chat-list').appendChild(div2);
   });
+
   socket.on('exit', function (data) {
-    console.log(">>>>>>>>>>>+++++++\n"+data);
     document.querySelector('#participants').replaceWith("참가자들 ("+data.room.participants_num+")");
     const leftuser=document.querySelector(`span[data-nick='${data.leftuser.nick}']`);
     leftuser.remove();
@@ -138,6 +157,7 @@
     div3.appendChild(chat);
     document.querySelector('#chat-list').appendChild(div3);
   });
+
   socket.on('chat', function (data) {
     const div = document.createElement('div');
     if (data.user === '{{user.id}}') {
@@ -146,7 +166,7 @@
       div.classList.add('other');
     }
     const name = document.createElement('div');
-    name.textContent = data.User.nick+": "+data.chating;
+    name.textContent = data.User.nick+": "+data.chating+"         "+data.createdAt;
     div.appendChild(name);
     div.style.color = data.UserId;
     document.querySelector('#chat-list').appendChild(div);
@@ -166,6 +186,15 @@
         });
     }
   });
+
+  function mouseOver(obj){
+    obj.style.color="blue";
+  }
+  function mouseOut(obj){
+    obj.style.color="black";
+    obj.hide();
+  }
+
 </script>
 </body>
 
