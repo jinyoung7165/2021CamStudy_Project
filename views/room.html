@@ -3,7 +3,7 @@
 {% block content %}
   <fieldset>
     <legend>채팅방 생성</legend>
-    <form action="/room" method="post">
+    <form action="/room" method="post" enctype="multipart/form-data">
       <div>
         <input type="text" name="title" placeholder="방 제목">
       </div>
@@ -15,6 +15,10 @@
       </div>
       <div>
         <input type="password" name="password" placeholder="비밀번호(없으면 공개방)">
+      </div>
+      <div id="room-thumbnail">
+        <label for="thumbnail">썸네일</label>
+        <input type="file" id="thumbnail" name="img" required>
       </div>
       <div>
         <input type="radio" name="room_option" value=0 checked="checked">완전 삭제

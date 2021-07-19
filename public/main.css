@@ -192,3 +192,8 @@ video {
   height: 100%;
   object-fit: cover;
 }
+/* 썸네일 관련 */
+#room-thumbnail{
+  width:150px;
+  display: block;
+}
