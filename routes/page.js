@@ -14,7 +14,7 @@ router.get('/profile',isLoggedIn,async(req,res)=>{ //로그인되어 있을 때�
         include:[{
             model:User,
             where:{id:req.user.id},
-            attributes:['id','nick'],//아이디와 닉네임을 join해서 제공
+            attributes:['id','nick','level'],//아이디와 닉네임을 join해서 제공
         }],
         order:[['createdAt','DESC']],//게시글의 순서는 최신순으로 정렬
     });
@@ -68,6 +68,7 @@ router.post('/room', async (req, res, next) => {
       max: req.body.max,
       description: req.body.description,
       password: req.body.password,
+      option:req.body.room_option,
     });
     const io = req.app.get('io'); //io 객체 가져오기
     io.of('/room').emit('newRoom', newRoom); // room 네임 스페이스에 연결한 모든 클라이언트에 데이터를 보내는 메서드
@@ -96,12 +97,36 @@ router.get('/library/:id', async(req, res) => {
     else if (room.participants_num+1 > room.max) {
       return res.redirect('/?RoomError=허용 인원을 초과하였습니다.');
     }
-    await Room.update({ // 방인원수 update
-      participants_num: sequelize.literal(`participants_num + 1`), // 쿼리 문자열 추가해주는 기능
+    const users=await User.findAll({
+      include:[{
+        model:Room,
+        where:{
+          id:req.params.id,
+        },
+      }]
+  });
+  await Room.update({ // 방인원수 update
+      participants_num:users.length
     }, {
       where:{id:req.params.id},  
     }); 
+    const resultroom=await Room.findOne(
+      {where:{id:req.params.id}}
+    );
+    nums = (await Chat.findAndCountAll({
+      include:[{
+        model:Room,
+        where:{
+          id:req.params.id,
+        },
+      }]
+    })).count
+   
+    if (nums <10) {nums=10}
+
     const chats = await Chat.findAll({  
+      limit:10,
+      offset:nums-10,
       include:[{
       model:Room,
       where:{
@@ -112,7 +137,7 @@ router.get('/library/:id', async(req, res) => {
     }
   ]
   });
-  const users=await User.findAll({
+  const resultusers=await User.findAll({
       include:[{
         model:Room,
         where:{
@@ -120,7 +145,7 @@ router.get('/library/:id', async(req, res) => {
         },
       }]
   });
-  return res.render('library', { roomId: req.params.id,users,room,chats})
+  return res.render('library', { roomId: req.params.id,users:resultusers,room:resultroom,chats})
   });
 
 

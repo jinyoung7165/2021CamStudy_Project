@@ -46,7 +46,7 @@ input[type='text'], input[type='email'], input[type='password'], textarea {
 }
 
 .rooms{
-  display:inline-block;
+  float: left;
   position: relative;
   width: 100%; 
   height: 100%;
@@ -90,6 +90,28 @@ input[type='text'], input[type='email'], input[type='password'], textarea {
   border-radius: 4px;
   vertical-align: top;
   display: inline-block;
+}
+.room{
+  margin: 10px auto;
+  width: 100%;
+  height: 250px;
+  border-radius: 4px;
+  background: #9b94cd;
+  float: left;
+  border: 3px solid black
+}
+.room-box{
+  text-align: center;
+  margin:10px auto;
+  height: 200px;
+  width: 180px;
+  background: white;
+  float: left;
+  border: 3px solid black
+}
+.room-plus{
+  position: absolute;
+  left: 50%;
 }
 @media screen and (min-width: 800px) { .timeline { width: 500px; } }
 #twit-form {

@@ -64,9 +64,9 @@
   <div class="error-message">{{error}}</div>
   <a href="/room">채팅방 생성</a>
 -->
-<div class="roomdiv">
+<div class="room">
   {%for room in rooms%}
-      <div data-id="{{room.id}}">
+      <div class="room-box" data-id="{{room.id}}">
         <div>{{room.title}}</div>
         <div>{{room.description}}</div> 
         <div>{{room.participants_num}}/{{room.max}}</div>
@@ -80,14 +80,15 @@
         {% endif %}
       </div>
   {%endfor%}
-  </div>
+  <div class="room-plus">
   {% if user %}
     <a href="/room" id="create-library">방 생성</a>
   {% endif %}
-
+  </div>
+</div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    const socket = io.connect('http://localhost:8005/room', { // 네임스페이스
+    const socket = io.connect('http://localhost:8001/room', { // 네임스페이스
     path: '/socket.io',
   });
   socket.on('newRoom', function (data) { // 새 방 이벤트 시 새 방 생성
