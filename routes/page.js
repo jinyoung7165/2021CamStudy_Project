@@ -2,7 +2,30 @@ const express=require('express');
 const {isLoggedIn,isNotLoggedIn}=require('./middlewares');
 const {User,Post,Room,Chat}=require('../models');
 const router=express.Router();
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
 const sequelize = require('sequelize');
+
+
+try {
+  fs.readdirSync('uploads');
+} catch (error){
+  console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다.');
+  fs.mkdirSync('uploads');
+}
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req,file,cb){
+      cb(null, 'uploads/');
+    },
+    filename(req,file,cb){
+      const ext = path.extname(file.originalname);
+      cb(null,path.basename(file.originalname,ext) + new Date().valueOf() + ext);
+    },
+  }),
+  limits: {fileSize:5*1024*1024}, // 파일 사이즈: 5MB
+});
 
 router.use((req,res,next)=>{
     res.locals.user=req.user; //passport.deserializeUser를 통해 req.user에 user정보 저장한 것을 담음
@@ -56,18 +79,18 @@ router.get('/',async(req,res,next)=>{
     }
 });
 
-router.get('/room', (req, res) => {
+router.get('/room', isLoggedIn, (req, res) => {
   res.render('room', { title: 'GIF 채팅방 생성' });
 });
-  
 /* 채팅방을 만드는 라우터 */
-router.post('/room', async (req, res, next) => {
+router.post('/room',isLoggedIn, upload.single('img'), async (req, res, next) => {
   try {
     const newRoom = await Room.create({
       title: req.body.title,
       max: req.body.max,
       description: req.body.description,
       password: req.body.password,
+      img: req.file.filename,
       option:req.body.room_option,
     });
     const io = req.app.get('io'); //io 객체 가져오기
