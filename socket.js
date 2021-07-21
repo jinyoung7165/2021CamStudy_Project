@@ -45,7 +45,7 @@ module.exports = (server, app, sessionMiddleware) => {
     let count=0;
     let userCount = currentRoom ? currentRoom.length : 0;
     socket.to(roomId).emit('join', { 
-        chat: `${req.user.nick}님이 입장하셨습니다`,
+        chat: `${req.user.nick}님이 입장하셨습니다아아악socketJoin`,
         userCount,
         nick:req.user.nick,
         level:req.user.level,

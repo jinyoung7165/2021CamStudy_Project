@@ -132,15 +132,9 @@
     const div1 = document.createElement('div');
     div1.classList.add('user');
     const nick = document.createElement('span');
-    //let level = document.createElement('span');
-    //nick.textContent = data.nick + " level : "+data.level;
     nick.textContent=data.nick+" level : "+data.level;
-    //nick.setAttribute('data-nick',data.nick);
-    //level.setAttribute('data-level',data.level);
-    //div1.append(nick,level);
+    nick.setAttribute('data-nick',data.nick);
     div1.appendChild(nick);
-    //div1.append(nick);
-    //div1.appendChild(level);
     document.querySelector('#participants-list').appendChild(div1);
 
     let div2 = document.createElement('div');
@@ -153,17 +147,8 @@
       level:data.level,
       userCount:data.userCount,
       chat:`${data.nick}님이 입장하셨습니다`,
-      nick:data.nick,
+      nick:data.nick
     });
-    /*
-    io.to(data.roomId).emit('join',{
-      chat: `${data.nick}님이 입장하셨습니다`, //안보내짐
-      userCount:data.userCount,
-      nick:data.nick,
-      level:data.level,
-      roomId:data.roomId
-    });
-    */
    });
 
   socket.on('exit', function (data) {
@@ -177,17 +162,13 @@
     document.querySelector('#participants').replaceWith("참가자들 ("+data.userCount+")");
     let leftuser=document.querySelector(`span[data-nick='${data.user.nick}']`);
     leftuser.remove();
-    let leftlevel=document.querySelector(`span[data-level='${data.user.level}']`);
-    leftlevel.remove();
-    document.querySelector('#participants').append(leftuser,leftlevel);
+    document.querySelector('#participants').append(leftuser);
   });
  socket.on('exit-update',function(data){
    document.querySelector('#participants').replaceWith("참가자들 ("+data.userCount+")");
     let leftuser=document.querySelector(`span[data-nick='${data.user.nick}']`);
     leftuser.remove();
-    let leftlevel=document.querySelector(`span[data-level='${data.user.level}']`);
-    leftlevel.remove();
-    document.querySelector('#participants').append(leftuser,leftlevel);
+    document.querySelector('#participants').append(leftuser);
  })
   socket.on('chat', function (data) {
     let div = document.createElement('div');

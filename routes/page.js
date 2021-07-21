@@ -301,13 +301,15 @@ router.post('/library/:id/user', async(req,res,next) => {
   const chat=req.body.chat;
   const nick=req.body.nick;
   const userCount=req.body.userCount;
-  io.of('/library').to(roomId).emit('join',{
-      chat: `${nick}님이 입장하셨습니다`, 
-      userCount:userCount,
-      nick:nick,
-      level:level,
-      roomId:roomId
+  console.log(">>>>>>>>!!!!!!!!\nlibrary/id/user"+nick);
+  io.of('/library').to(roomId).broadcast.emit('join',{
+      chat: `${nick}님이 입장하셨library/id/user습니다`, 
+      userCount,
+      nick,
+      level,
+      roomId
   });
+  res.send('OK');
 
   
 });
