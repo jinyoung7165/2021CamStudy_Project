@@ -251,13 +251,14 @@ router.post('/library/user',async(req,res,next)=>{
         });
       }
     } 
-    else{
-      socket.to(req.body.roomId).emit('exit-update', {
+    /*else{
+      req.app.get('io').to(req.body.roomId).emit('exit', {
         user:resultuser,//나간 사람
-        userCount,//인간수
+        userCount:req.body.userCount,//인간수
         level:resultlevel,
+        roomId:req.body.roomId
       });
-    }
+    }*/
   }
   catch (error) {
     console.error(error.response);
@@ -294,7 +295,7 @@ router.delete('/library/:id', async (req, res, next) => {
   }
 });
 
-router.post('/library/:id/user', async(req,res,next) => {
+/*router.post('/library/:id/user', async(req,res,next) => {
   const io = req.app.get('io');
   const roomId=req.params.id;
   const level=req.body.level;
@@ -302,7 +303,7 @@ router.post('/library/:id/user', async(req,res,next) => {
   const nick=req.body.nick;
   const userCount=req.body.userCount;
   console.log(">>>>>>>>!!!!!!!!\nlibrary/id/user"+nick);
-  io.of('/library').to(roomId).broadcast.emit('join',{
+  io.of('/library').to(roomId).emit('join',{
       chat: `${nick}님이 입장하셨library/id/user습니다`, 
       userCount,
       nick,
@@ -310,10 +311,8 @@ router.post('/library/:id/user', async(req,res,next) => {
       roomId
   });
   res.send('OK');
-
-  
 });
-
+*/
 router.post('/library/:id/chat', async(req,res,next) => {
     try{
       const chat = await Chat.create({
