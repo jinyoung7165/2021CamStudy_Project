@@ -59,17 +59,16 @@
         <span class="close">&times;</span>   
         <div id="participants-list">      
         <p id="participants">참가자들 ({{room.participants_num}})</p>
-        {% for user in users %}
-        <div class="user">
-          <span class="nick">
-            {{user.nick}}
+       {% for user in users %}
+       <div class="user">
+        <span class="nick" data-nick="{{user.nick}}">
+          {%if user.level_show==0%}
+          {{user.nick}} level: {{user.level}}
+          {%else%}
+          {{user.nick}}
+          {% endif %}
           </span>
-          {% if user.level_show == 0 %}
-            <span class="level"> 
-              level : {{user.level}}
-            </span>
-          {%endif%}
-        </div>
+          </div>
         {% endfor %}
         </div>
       </div>
@@ -123,17 +122,18 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  const socket = io.connect('http://localhost:8001/library', {
+  let socket = io.connect('http://localhost:8001/library', {
     path: '/socket.io',
   });
 
   socket.on('join', function (data) {
-    document.querySelector('#participants').replaceWith("참가자들 ("+data.room.participants_num+")");
-    const div1 = document.createElement('div');
-    div1.classList.add('user');
-    const nick = document.createElement('span');
-    nick.textContent = data.newuser.nick+" level : "+data.newuser.level;
-    div1.appendChild(nick)
+    document.querySelector('#participants').replaceWith("참가자들 ("+data.userCount+")");
+    let div1 = document.createElement('div');
+    //div1.classList.add('user');
+    let nick = document.createElement('span');
+    div1.textContent=`${data.nick} level : ${data.level}`;
+    nick.setAttribute('data-nick',data.nick);
+    div1.appendChild(nick);
     document.querySelector('#participants-list').appendChild(div1);
 
     const div2 = document.createElement('div');
@@ -142,32 +142,42 @@
     div2.textContent = data.chat;
     div2.appendChild(chat);
     document.querySelector('#chat-list').appendChild(div2);
-  });
+    /*axios.post('/library/{{roomId}}/user', {
+      level:data.level,
+      userCount:data.userCount,
+      chat:`${data.nick}님이 입장하셨습니다`,
+      nick:data.nick
+    });*/
+   });
 
   socket.on('exit', function (data) {
-    document.querySelector('#participants').replaceWith("참가자들 ("+data.room.participants_num+")");
-    const leftuser=document.querySelector(`span[data-nick='${data.leftuser.nick}']`);
-    leftuser.remove();
-    
-    const div3 = document.createElement('div');
+    let div3 = document.createElement('div');
     div3.classList.add('system');
-    const chat = document.createElement('div');
+    let chat = document.createElement('div');
     div3.textContent = data.chat;
-    div3.appendChild(chat);
+    div3.append(chat);
     document.querySelector('#chat-list').appendChild(div3);
+
+    document.querySelector('#participants').replaceWith("참가자들 ("+data.userCount+")");
+    let leftuser=document.querySelector(`span[data-nick='${data.nick}']`);
+    leftuser.remove();
+    //leftuser=document.querySelector(`div[data-nick='${data.nick}']`);
+    //leftuser.remove();
+    let child=document.querySelector(`div[data-nick='${data.nick}']`);
+    child.document.querySelector('#participants-list').remove(child);
+    //child=document.querySelector(`span[data-nick='${data.nick}']`);
+    //child.document.querySelector('.user').removeChild(child);
   });
 
   socket.on('chat', function (data) {
-    const div = document.createElement('div');
+    let div = document.createElement('div');
     if (data.user === '{{user.id}}') {
       div.classList.add('mine');
     } else {
       div.classList.add('other');
     }
-
-    const name = document.createElement('div');
+    let name = document.createElement('div');
     div.textContent = data.User.nick+": "+data.chating;
-
     div.addEventListener("mouseover", function( event ) {
       div.textContent = data.User.nick+": "+data.chating + " " + data.createdAt;
     });

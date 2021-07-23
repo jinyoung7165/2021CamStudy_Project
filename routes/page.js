@@ -6,7 +6,8 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const sequelize = require('sequelize');
-
+const e = require('express');
+const axios = require('axios');
 
 try {
   fs.readdirSync('uploads');
@@ -29,6 +30,9 @@ const upload = multer({
 
 router.use((req,res,next)=>{
     res.locals.user=req.user; //passport.deserializeUser를 통해 req.user에 user정보 저장한 것을 담음
+    //res.locals.roomId = req.user.Room.id ? req.user.Room.id : 0;
+    res.locals.level=req.user?req.user.level:0;
+    res.locals.nick=req.user?req.user.nick:'';
     next();
 });
 
@@ -108,8 +112,9 @@ router.post('/room',isLoggedIn, upload.single('img'), async (req, res, next) => 
   
 // 방 들어가면 library.html 렌더링 방주소랑 사용자아이디 전달 (nick으로 할까 id로 할까?)
 router.get('/library/:id', async(req, res) => {
+    const user=await User.findOne({where:{id:req.user.id}});
     const room=await Room.findOne({where:{id:req.params.id}});
-    await room.addUser(req.user.id);
+    await room.addUser(user.id);
     const io = req.app.get('io');
     if (!room) {
       return res.redirect('/?RoomError=존재하지 않는 방입니다.');
@@ -160,7 +165,7 @@ router.get('/library/:id', async(req, res) => {
     }
   ]
   });
-  const resultusers=await User.findAll({
+  const resultusers=await User.findAll({ // 방에 남아있는 사람들
       include:[{
         model:Room,
         where:{
@@ -171,7 +176,95 @@ router.get('/library/:id', async(req, res) => {
   return res.render('library', { roomId: req.params.id,users:resultusers,room:resultroom,chats})
   });
 
+router.post('/library/user',async(req,res,next)=>{
+  try{//user,roomId,userCount,startTime
+    const leftuser=await User.findOne({//나간 사람
+      where:{id:req.body.user},  
+      include:[{
+          model:Room,
+          where:{
+            id:req.body.roomId,
+          },
+        }]
+    });
+    const room=await Room.findOne({
+      where:{id:req.body.roomId}, 
+      include:[{
+        model:Chat,
+        where:{
+          RoomId:req.body.roomId,
+        },
+      },{
+        model:User,
+      }]
+    });
+    const users=await User.findAll({//접속한 사람들
+      include:[{
+        model:Room,
+        where:{
+          id:req.body.roomId,
+        },
+      }]
+    });
 
+    await Room.update({
+      participants_num: req.body.userCount,
+    }, {
+     where:{id:req.body.roomId},  
+    });
+    
+    const resultroom=await Room.findOne({
+      where:{id:req.body.roomId},
+        include:[{
+          model:User,
+          attributes:['id'],
+       }]
+    }); 
+    const endTime = new Date();
+    let startTime = new Date(Date.parse(req.body.startTime));
+    const access_time = ((endTime.getTime() - startTime.getTime())/1000).toFixed(0); //1000
+    const resulthour=parseInt(leftuser.total_time,10)+parseInt(access_time,10);
+    const resultlevel=((resulthour/3600)*0.5).toFixed(0);
+    if ((resulthour/3600*0.5)-resultlevel>=0.5){
+      resultlevel+=0.5;
+    }
+    await User.update({
+      total_time: resulthour
+    },{
+      where: {id:req.body.user},
+    }); 
+    
+    await User.update({
+      level: resultlevel
+    },{
+      where: {id:req.body.user},
+    }); 
+    resultroom.removeUser(leftuser);
+    if (req.body.userCount == 0) { // 유저가 0명이면 방 삭제
+      if(room.option==0){
+       axios.delete(`http://localhost:8001/library/${req.body.roomId}`)
+        .then(() => {
+          console.log('방 제거 요청 성공');
+        })
+        .catch((error) => {
+          console.error(error.response);
+        });
+      }
+    } 
+    /*else{
+      req.app.get('io').to(req.body.roomId).emit('exit', {
+        user:resultuser,//나간 사람
+        userCount:req.body.userCount,//인간수
+        level:resultlevel,
+        roomId:req.body.roomId
+      });
+    }*/
+  }
+  catch (error) {
+    console.error(error.response);
+  }
+})
+  
 router.delete('/library/:id', async (req, res, next) => {
   try {
     const room = await Room.findOne({
@@ -202,6 +295,24 @@ router.delete('/library/:id', async (req, res, next) => {
   }
 });
 
+/*router.post('/library/:id/user', async(req,res,next) => {
+  const io = req.app.get('io');
+  const roomId=req.params.id;
+  const level=req.body.level;
+  const chat=req.body.chat;
+  const nick=req.body.nick;
+  const userCount=req.body.userCount;
+  console.log(">>>>>>>>!!!!!!!!\nlibrary/id/user"+nick);
+  io.of('/library').to(roomId).emit('join',{
+      chat: `${nick}님이 입장하셨library/id/user습니다`, 
+      userCount,
+      nick,
+      level,
+      roomId
+  });
+  res.send('OK');
+});
+*/
 router.post('/library/:id/chat', async(req,res,next) => {
     try{
       const chat = await Chat.create({
