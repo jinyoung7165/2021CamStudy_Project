@@ -81,13 +81,13 @@
     div.appendChild(button);
     div.appendChild(div);
     div.dataset.id = data.id;
-    document.querySelector('table').appendChild(div); // 화면에 추가
+    document.querySelector('.room').appendChild(div); // 화면에 추가
   });
       
   socket.on('removeRoom', function (data) { // 방 제거 이벤트 시 id가 일치하는 방 제거
-    document.querySelectorAll('tbody tr').forEach(function (tr) {
-    if (tr.dataset.id === data) {
-      tr.parentNode.removeChild(tr);
+    document.querySelectorAll('.room-box').forEach(function (div) {
+    if (div.dataset.id == data.roomId) {
+      div.parentNode.removeChild(div);
     }
   });
 });
@@ -138,7 +138,6 @@
               <button class="twit-like-cancel">좋아요취소</button>
             {% endif %}
             <h2>{{likerNum}}</h2>
-            <div class="twit-content">{{twit.content}}</div>
           </div>
         {% endfor %}
       </div>

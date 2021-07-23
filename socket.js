@@ -15,22 +15,9 @@ module.exports = (server, app, sessionMiddleware) => {
   io.use(wrap(sessionMiddleware));
   io.use(wrap(passport.initialize())); //꼭 써야함
   io.use(wrap(passport.session())); //꼭 써야함
-  
-/*io.use((socket, next) => {
-    cookieParser(process.env.COOKIE_SECRET)(socket.request, socket.request.res, next);
-    sessionMiddleware(socket.request, socket.request.res, next);
-    next();
-  });*/
-
  
   room.on('connection', (socket) => {
     console.log('room 네임스페이스에 접속');
-    socket.on('join', (data) => {
-      socket.to(data.roomId).emit(data);
-    });
-    socket.on('exit', (data) => {
-      socket.to(data.roomId).emit(data);
-    });
     socket.on('disconnect', () => {
       console.log('room 네임스페이스 접속 해제');
     });
@@ -47,22 +34,16 @@ module.exports = (server, app, sessionMiddleware) => {
       .replace(/\?.+/, '');
     socket.join(roomId);
     let currentRoom = library.adapter.rooms[roomId];
-    // console.log("++++++++++++++++++++++++++++");
-    let count=0;
     let userCount = currentRoom ? currentRoom.length : 0;
     socket.to(roomId).emit('join', { 
-        chat: `${req.user.nick}님이 입장하셨습니다아아악socketJoin`,
+        chat: `${req.user.nick}님이 입장하셨습니다.`,
         userCount,
         nick:req.user.nick,
         level:req.user.level,
+        level_show:req.user.level_show,
         roomId
     });
-    socket.on('join', (data) => {
-      socket.to(data.roomId).emit(data);
-    });
-    socket.on('exit', (data) => {
-      socket.to(data.roomId).emit(data);
-    });
+
 
     socket.on('disconnect', () => {//GET이걸 요청할 때 그 페이지를 주겠다. 
       //POST라우터 새로만들어 방금 나간 룸이랑 나간사람 => SOCKET.EMIT 얘 나갔다=>HTML에 보내서 DIV에서 삭제하는 거
@@ -71,20 +52,19 @@ module.exports = (server, app, sessionMiddleware) => {
       let currentRoom = library.adapter.rooms[roomId];
       let userCount = currentRoom ? currentRoom.length : 0;
       axios.post('http://localhost:8001/library/user/',{user:req.user.id,roomId,userCount,startTime});
-      library.to(roomId).emit('exit', {
-        chat: `${req.user.nick}님이 퇴장하셨습니다.`,
-        user:req.user.id,
-        nick:req.user.nick,
-        level:req.user.level,
-        userCount,
-        roomId
-      });
-      console.log("!!!!!!!!!!!!!!exit함nick:"+req.user.nick);
-      /*socket.on('chat', (data) => {
-        socket.to(data.roomId).emit(data);
-      });*/
-      
-      
+      if(userCount==0){
+        //axios.delete('http://localhost:8001/library/',{id:roomId});
+      }
+      else{
+        library.to(roomId).emit('exit', {
+          chat: `${req.user.nick}님이 퇴장하셨습니다.`,
+          user:req.user.id,
+          nick:req.user.nick,
+          level:req.user.level,
+          userCount,
+          roomId
+        });
+      }    
     });
   });
 }

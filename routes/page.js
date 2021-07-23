@@ -30,8 +30,8 @@ const upload = multer({
 
 router.use((req,res,next)=>{
     res.locals.user=req.user; //passport.deserializeUser를 통해 req.user에 user정보 저장한 것을 담음
-    //res.locals.roomId = req.user.Room.id ? req.user.Room.id : 0;
     res.locals.level=req.user?req.user.level:0;
+    res.locals.level_show=req.user?req.user.level_show:0;
     res.locals.nick=req.user?req.user.nick:'';
     next();
 });
@@ -240,79 +240,22 @@ router.post('/library/user',async(req,res,next)=>{
       where: {id:req.body.user},
     }); 
     resultroom.removeUser(leftuser);
-    if (req.body.userCount == 0) { // 유저가 0명이면 방 삭제
-      if(room.option==0){
-       axios.delete(`http://localhost:8001/library/${req.body.roomId}`)
-        .then(() => {
-          console.log('방 제거 요청 성공');
-        })
-        .catch((error) => {
-          console.error(error.response);
-        });
+    const roomId=req.body.roomId;
+    if (req.body.userCount==0){
+      if (resultroom.option==0){
+        await Chat.destroy({ where:{RoomId:roomId} });
+        await Room.destroy({ where: {id: roomId} });
+        setTimeout(() => {
+          req.app.get('io').of('/room').emit('removeRoom', {roomId});
+        }, 100);
       }
-    } 
-    /*else{
-      req.app.get('io').to(req.body.roomId).emit('exit', {
-        user:resultuser,//나간 사람
-        userCount:req.body.userCount,//인간수
-        level:resultlevel,
-        roomId:req.body.roomId
-      });
-    }*/
+    }
   }
   catch (error) {
-    console.error(error.response);
-  }
-})
-  
-router.delete('/library/:id', async (req, res, next) => {
-  try {
-    const room = await Room.findOne({
-      include:[{
-        model:Chat,
-        where:{
-          roomId:req.params.id,
-        },
-        attributes:['id'],
-      },{
-        model:User,
-        where:{
-          roomId:req.params.id,
-        },
-      }]
-    });
-
-    await Chat.destroy({ where:{RoomId:req.params.id} });
-      await Room.destroy({ where: {id: req.params.id} });
-      res.send('ok');
-      setTimeout(() => {
-        req.app.get('io').of('/room').emit('removeRoom', req.params.id);
-      }, 2000);
-    
-  } catch (error) {
     console.error(error);
-    next(error);
   }
 });
 
-/*router.post('/library/:id/user', async(req,res,next) => {
-  const io = req.app.get('io');
-  const roomId=req.params.id;
-  const level=req.body.level;
-  const chat=req.body.chat;
-  const nick=req.body.nick;
-  const userCount=req.body.userCount;
-  console.log(">>>>>>>>!!!!!!!!\nlibrary/id/user"+nick);
-  io.of('/library').to(roomId).emit('join',{
-      chat: `${nick}님이 입장하셨library/id/user습니다`, 
-      userCount,
-      nick,
-      level,
-      roomId
-  });
-  res.send('OK');
-});
-*/
 router.post('/library/:id/chat', async(req,res,next) => {
     try{
       const chat = await Chat.create({
