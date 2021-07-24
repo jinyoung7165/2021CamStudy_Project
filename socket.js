@@ -43,7 +43,8 @@ module.exports = (server, app, sessionMiddleware) => {
         level_show:req.user.level_show,
         roomId
     });
-
+    const userId=req.user.id;
+    //socket.to(roomId).emit('user-connected',userId); //webRTC용
 
     socket.on('disconnect', () => {//GET이걸 요청할 때 그 페이지를 주겠다. 
       //POST라우터 새로만들어 방금 나간 룸이랑 나간사람 => SOCKET.EMIT 얘 나갔다=>HTML에 보내서 DIV에서 삭제하는 거
@@ -64,7 +65,8 @@ module.exports = (server, app, sessionMiddleware) => {
           userCount,
           roomId
         });
-      }    
+      } 
+      library.to(roomId).emit('user-disconnected', userId); //webRTC용
     });
   });
 }
