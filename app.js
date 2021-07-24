@@ -37,7 +37,7 @@ sequelize.sync({force:false})
     });
 
 app.use(morgan('dev'));
-app.use(express.static(path.join(__dirname,'public')));
+app.use('/public',express.static(path.join(__dirname,'public')));
 app.use('/img',express.static(path.join(__dirname,'uploads'))); //upload한 이미지를 제공할 라우터/img를 uploads폴더와 연결
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
