@@ -1,37 +1,52 @@
-const library = io('/library');
+const library = io('/'); //library로 하면 두번뜸ㅠㅠㅠㅠ
 const videoGrid = document.getElementById("video-grid");
-const myPeer = new Peer(undefined, {
-  host :'/',
+let userId,roomId;
+let url= String(document.getElementById('url').textContent);
+roomId=url.split('/')[url.split('/').length - 1].replace(/\?.+/, ''); //HTML 뭐시기인지 확인해야함
+//const myPeer = new Peer({host:'peerjs-server.herokuapp.com', secure:true, port:443});
+// const peerServer = ExpressPeerServer(server, {
+//   debug: true,
+//   port: '8001',
+// });
+/*new Peer(undefined, {
+  host :'localhost',
   port: '8001',
   secure : false,
-  path:'/',
-  /*config: {
+  path:'/',*/
+  /*
+  config: {
     iceServers: [
       { url: "stun:stun.l.google.com:19302" },
       { url: "stun:stun1.l.google.com:19302" },
       { url: "stun:stun2.l.google.com:19302" },
     ],
-  }*/
+  }
+  )
+  */
+let id=document.getElementById('userId').textContent;
+console.log(id);
+const myPeer = new Peer(id,{
+  host: '/',
+  path: '/', 
+  port: '8001', 
 });
 
 const myVideo = document.createElement('video');
 myVideo.muted = true;
 const peers = {};
 
-let userId,roomId;
-let url= String(document.getElementById('url'));
-roomId=url.split('/')[url.split('/').length - 1].replace(/\?.+/, ''); //HTML 뭐시기인지 확인해야함
 
 myPeer.on('open', (id) => {//내 peer열었다. id는 내 고유 peerId (이건 생성됨)
-  library.emit("join-room", id); 
+  alert(id);
+  document.getElementById('peerId').textContent=id;
+  //socketio.emit("join-room", callID, nameData, id); 
 });
 myPeer.on('disconnected',function(){
   /*myPeer.id=lastPeerId;
   myPeer._lastServerId=lastPeerId;*/
-  alert("으아아아아아아");
-  console.log("bddbkddkdkd");
   myPeer.reconnect();
-})
+})  
+
 let streamControl;
 if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices
@@ -65,7 +80,9 @@ if (navigator.mediaDevices.getUserMedia) {
       library.on('user-connected', (peerId) => {//다른 누군가 들어오면
         connectToNewUser(peerId, streamControl); //뉴비와 연결
       });
-      library.on('user-disconnected', (peerId) => {//누가 나가면
+      library.on('user-disconnected', () => {//누가 나가면
+        const peerId=document.getElementById('peerId').textContent;
+        console.log(peerId);
         if (peers[peerId]) peers[peerId].close();
         else peers[peerId].close();
       });//나간 사람의 stream제거,비디오제거

@@ -8,23 +8,7 @@ const dotenv=require('dotenv');
 const passport=require('passport');
 const bodyParser = require('body-parser');
 const http=require('http');
-//const { ExpressPeerServer } = require("peer");
-/*
-const peerServer = ExpressPeerServer(server, {
-  debug: true,
-  path: "/",
-  generateClientId: customGenerationFunction,
-});
-app.use("/mypeer", peerServer);
-*/
-
-/* Peerjs server
-var app = express()
-srv = app.listen(process.env.PORT)
-app.use('/peerjs', require('peer').ExpressPeerServer(srv, {
-	debug: true
-}))
-*/
+const { ExpressPeerServer } = require("peer");
 
 dotenv.config();
 const pageRouter=require('./routes/page');
@@ -93,4 +77,11 @@ const server=app.listen(app.get('port'),()=>{
     console.log(app.get('port'),'번 포트에서 대기 중');
 });
 
+
+const peerServer = ExpressPeerServer(server, {
+    debug: true,
+    path: "/",
+    port: 8001, 
+});
+app.use("/library", peerServer);
 webSocket(server, app, sessionMiddleware);
