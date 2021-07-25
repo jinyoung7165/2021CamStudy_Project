@@ -8,6 +8,23 @@ const dotenv=require('dotenv');
 const passport=require('passport');
 const bodyParser = require('body-parser');
 const http=require('http');
+//const { ExpressPeerServer } = require("peer");
+/*
+const peerServer = ExpressPeerServer(server, {
+  debug: true,
+  path: "/",
+  generateClientId: customGenerationFunction,
+});
+app.use("/mypeer", peerServer);
+*/
+
+/* Peerjs server
+var app = express()
+srv = app.listen(process.env.PORT)
+app.use('/peerjs', require('peer').ExpressPeerServer(srv, {
+	debug: true
+}))
+*/
 
 dotenv.config();
 const pageRouter=require('./routes/page');
@@ -54,6 +71,7 @@ const sessionMiddleware=session({
 app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());  //req.session에 passport정보 저장
+
 
 app.use('/',pageRouter);
 app.use('/auth',authRouter); //경로 앞에 auth가 붙음
