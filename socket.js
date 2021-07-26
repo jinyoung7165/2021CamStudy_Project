@@ -6,7 +6,8 @@ const sequelize = require('sequelize');
 const passport = require("passport");
 
 module.exports = (server, app, sessionMiddleware) => {
-  const io = SocketIO(server, { path: '/socket.io'});
+  //const io = SocketIO(server, { path: '/socket.io/'});
+  const io = SocketIO(server);
   app.set('io', io);  
   const room = io.of('/room'); 
   const library = io.of('/library');
@@ -35,15 +36,25 @@ module.exports = (server, app, sessionMiddleware) => {
     socket.join(roomId);
     let currentRoom = library.adapter.rooms[roomId];
     let userCount = currentRoom ? currentRoom.length : 0;
-    library.to(roomId).emit('join', { 
+    let userId=req.user.id;
+    socket.to(roomId).emit('join', { 
       chat: `${req.user.nick}님이 입장하셨습니다.`,
       userCount,
       nick:req.user.nick,
       level:req.user.level,
       level_show:req.user.level_show,
-      roomId
+      roomId,
+      userId
     })//chatting용
-
+    // socket.to(roomId).emit('join-room',{
+    //   userId,
+    // });
+    socket.on('mypeer',(data)=>{
+      console.log(data);
+      socket.to(roomId).emit('join-room',{
+        data
+       });
+    })
     socket.on('disconnect', () => {//GET이걸 요청할 때 그 페이지를 주겠다. 
       //POST라우터 새로만들어 방금 나간 룸이랑 나간사람 => SOCKET.EMIT 얘 나갔다=>HTML에 보내서 DIV에서 삭제하는 거
       console.log('library 네임스페이스 접속 해제'); 
@@ -61,17 +72,7 @@ module.exports = (server, app, sessionMiddleware) => {
           roomId
         });
       } 
-    });  
-
-    library.on('join-room', (peerId)=>{   
-      console.log("뉴눙>>>>joinroomm와따아아아아아ㅏ아앙\n");
-      library.to(roomId).broadcast.emit('user-connected',peerId);
-      console.log("???>ㅊ>ㅇ>user connected 됬졍");
-      library.on('disconnect', () => {//GET이걸 요청할 때 그 페이지를 주겠다. 
-        console.log("ㅊㅌ,ㄴ충눛disconnected돼따나ㅏ아ㅏㅇ~~");
-        library.to(roomId).emit('user-disconnected', peerId); //webRTC용 userId말고 그냥 id 써서 peer의 id 쓰면 될듯
-        console.log("dasgdgdsgasdssfsf@@@@@@@@user-disconnected");
-      });
-    });
+      library.to(roomId).emit('user-disconnected');
+    }); 
   });
 }
