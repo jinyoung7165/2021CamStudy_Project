@@ -78,10 +78,10 @@ const server=app.listen(app.get('port'),()=>{
 });
 
 
-const peerServer = ExpressPeerServer(server, {
-    debug: true,
-    path: "/",
-    port: 8001, 
-});
-app.use("/library", peerServer);
+// const peerServer = ExpressPeerServer(server, {
+//     debug: true,
+//     path: "/",
+//     port: 8001, 
+// });
+// app.use("/library", peerServer);
 webSocket(server, app, sessionMiddleware);

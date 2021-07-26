@@ -60,7 +60,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io.connect('http://localhost:8001/room', { // 네임스페이스
-    path: '/socket.io'
+    //path: '/socket.io'
   });
   socket.on('newRoom', function (data) { // 새 방 이벤트 시 새 방 생성
     let div = document.createElement('div');
