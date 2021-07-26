@@ -6,7 +6,7 @@ const sequelize = require('sequelize');
 const passport = require("passport");
 
 module.exports = (server, app, sessionMiddleware) => {
-  const io = SocketIO(server, { path: '/socket.io'});
+  const io = SocketIO(server);
   app.set('io', io);  
   const room = io.of('/room'); 
   const library = io.of('/library');
@@ -36,7 +36,8 @@ module.exports = (server, app, sessionMiddleware) => {
     let currentRoom = library.adapter.rooms[roomId];
     let userCount = currentRoom ? currentRoom.length : 0;
     let userId=req.user.id;
-    library.to(roomId).emit('join', { 
+    // 🔥해야할것 !!! 방에 저장된 사람들 아이디 불러오기 해야함!!📌 1->2->3 순 들어오면 3은 나만있고 1은 1 2 3 있음
+    socket.to(roomId).emit('join', {  //broadcast 안됨
       chat: `${req.user.nick}님이 입장하셨습니다.`,
       userCount,
       nick:req.user.nick,
@@ -45,8 +46,9 @@ module.exports = (server, app, sessionMiddleware) => {
       roomId,
       userId
     })//chatting용
+    library.to(roomId).emit('user-connected', userId);
     
-    socket.on('disconnect', () => {//GET이걸 요청할 때 그 페이지를 주겠다. 
+    socket.on('disconnect', () => {
       //POST라우터 새로만들어 방금 나간 룸이랑 나간사람 => SOCKET.EMIT 얘 나갔다=>HTML에 보내서 DIV에서 삭제하는 거
       console.log('library 네임스페이스 접속 해제'); 
       socket.leave(roomId);
@@ -60,10 +62,11 @@ module.exports = (server, app, sessionMiddleware) => {
           nick:req.user.nick,
           level:req.user.level,
           userCount,
-          roomId
+          roomId,
+          userId
         });
       } 
-      library.to(roomId).emit('user-disconnected');
+      socket.to(roomId).emit('user-disconnected',userId);
     }); 
   });
 }
