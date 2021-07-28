@@ -47,7 +47,7 @@ module.exports = (server, app, sessionMiddleware) => {
       userId
     })//chatting용
     library.to(roomId).emit('user-connected', userId);
-    
+
     socket.on('disconnect', () => {
       //POST라우터 새로만들어 방금 나간 룸이랑 나간사람 => SOCKET.EMIT 얘 나갔다=>HTML에 보내서 DIV에서 삭제하는 거
       console.log('library 네임스페이스 접속 해제'); 

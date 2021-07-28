@@ -9,88 +9,101 @@ const myPeer = new Peer(userId);
 const myVideo = document.createElement('video');
 myVideo.muted = true;
 const peers = {};
-//let pastusers=[];
-//let userIds=document.querySelectorAll(".pastId");
-// 자기 전에 들어간 사람은 저장이 안되고, 후에 들어온 사람만 connections에 저장됨
-/*userIds.forEach(function(pastUser) {
-  myPeer.connect(pastUser.dataset.pastid);
-});*/
-//{1:ㅁ 2:ㅠ}
+let streamControl,promise;
+
 myPeer.on('open', (id) => {//내 peer열었다. id는 내 고유 peerId (이건 생성됨)
   console.log('open '+id);
-  
-  
-  //let conn = myPeer.connect(id);
-  //socket.emit('user-connected',id);
-  //socketio.emit("join-room", callID, nameData, id); 
+  promise = navigator.mediaDevices.getUserMedia({//library접속하면 카메라 허락받음
+    video: {
+      frameRate: {
+        min: 10,
+        ideal: 25,
+        max: 35,
+      },
+      width: {
+        min: 480,
+        ideal: 720,
+        max: 1280,
+      },
+      aspectRatio: 1.33333,
+    },
+    audio: false,
+  })
+  promise.then(function(stream) {//브라우저에 나의 stream 추가
+    streamControl = stream;
+    addVideoStream(myVideo, streamControl); // 내 비디오 붙여넣음  
+    //myVideo 
+  })
 });
+
 myPeer.on('disconnected',function(){
-  /*myPeer.id=lastPeerId;
-  myPeer._lastServerId=lastPeerId;*/
   console.log("reconnect!!!!");
   myPeer.reconnect();
 })  
 
-let streamControl;
-if (navigator.mediaDevices.getUserMedia) {
-  navigator.mediaDevices
-    .getUserMedia({//library접속하면 카메라 허락받음
-      video: {
-        frameRate: {
-          min: 10,
-          ideal: 25,
-          max: 35,
-        },
-        width: {
-          min: 480,
-          ideal: 720,
-          max: 1280,
-        },
-        aspectRatio: 1.33333,
-      },
-      audio: false,
-    })
-    .then(function(stream) {//브라우저에 나의 stream 추가
-      streamControl = stream;
-      addVideoStream(myVideo, streamControl); // 내 비디오 붙여넣음
-      myPeer.on('call', (call) =>{//상대에게서 요청이 오면
-        call.answer(streamControl);//상대에게 나의 stream을 보냄
-        /*const video = document.createElement('video');
-        call.on('stream', (userVideoStream) => {//상대에게서 받은stream을 내 화면에 추가
-          addVideoStream(video, userVideoStream);
-        });*/
-      });
-      socket.on('user-connected', (userId) => {//다른 누군가 들어오면
-        //myPeer.connect(userId);
-        console.log('user-connected '+userId);
-        setTimeout(connectToNewUser,3000,userId,streamControl);
-        //connectToNewUser(userId, streamControl); //뉴비와 연결
-      });
-      socket.on('user-disconnected', (userId) => {//누가 나가면
-        if (peers[userId]) peers[userId].close();
-      });//나간 사람의 stream제거,비디오제거
-  })
-  .catch(function (error) {
-    console.log("Something went wrong!");
-  });
-}     
-
-function connectToNewUser(userId, streamControl) {
-  const call = myPeer.call(userId, streamControl);//뉴비에게 통화요청
-  //됨 call.peer 
+myPeer.on('call', (call) =>{//상대에게서 요청이 오면
+  let caller=call;
+  console.log("call: "+caller);
+  call.answer(streamControl);//상대에게 나의 stream을 보냄
   const video = document.createElement('video');
-  // 여기부터 안대용~~~~!
-  call.on('stream', (userVideoStream) => {//뉴비의 stream받아서 화면에 추가
+  // call.on('stream', (userVideoStream) => {//상대에게서 받은stream을 내 화면에 추가
+  //   addVideoStream(video, userVideoStream);
+  // });
+}) 
+
+/*socket.on('user-connected', (peerId) => {//socket.js에서 user-connected를 보내면 다른사람 연결
+  let newpeer=new Peer(peerId);
+  console.log('user-connected '+peerId);
+  newpeer.on('call', (call) => {
+    navigator.mediaDevices.getUserMedia({video: true, audio: true}, (stream) => {
+      call.answer(stream); // Answer the call with an A/V stream.
+      const video = document.createElement('video');
+      call.on('stream', (remoteStream) => {
+        
+        addVideoStream(video, remoteStream);
+        setTimeout(connectToNewUser,3000,peerId,remoteStream);
+    });
+  }, (err) => {
+    console.error('Failed to get local stream', err);
+  });
+});
+})
+*/
+//socket 절대 바꾸지 마라📌
+socket.on('user-connected', (peerId) => {//socket.js에서 user-connected를 보내면 다른사람 연결
+  console.log('user-connected '+peerId);
+  setTimeout(connectToNewUser,3000,peerId,streamControl); //anonymous
+})
+
+
+socket.on('user-disconnected', (peerId) => {//누가 나가면
+  if (peers[peerId]) peers[peerId].close();
+})//나간 사람의 stream제거,비디오제거
+
+function connectToNewUser(peerId, streamControl) { // userId인 사람의 stream을 받아서 연결
+  console.log("============== "+ streamControl.id);
+  // for (i in streamControl){
+  //   console.log(i);
+  // }
+  let call = myPeer.call(peerId, streamControl);  //안됨;;
+  //console.log("call:" + call.peer);
+  let video = document.createElement('video');   // video 생성
+
+  // 안대. 남의 stream 못받음.
+  /*call.on('stream', (userVideoStream) => {         // 뉴비의 stream받아서 화면에 추가
     console.log('streamControl: '+streamControl);
-    addVideoStream(video, userVideoStream);
-  });
-  call.on('close', () => {//연결 불가 통보받으면 뉴비를 화면에서 삭제
+    addVideoStream(video, userVideoStream);        // 내 화면에 생성한 비디오를 추가 이때 video는 남의거()
+  });*/
+  /*call.on('close', () => {//연결 불가 통보받으면 뉴비를 화면에서 삭제
     video.remove();
-  });
+  });*/
   peers[userId] = call;
 }
 
-function addVideoStream(video, streamControl) {//내 화면에 추가
+function addVideoStream(video, streamControl) {  
+  console.log(streamControl);
+  console.log("-----------------");
+  console.log(promise);  
   video.srcObject = streamControl;
   video.addEventListener('loadedmetadata', () => {
     video.play();
