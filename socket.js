@@ -46,7 +46,9 @@ module.exports = (server, app, sessionMiddleware) => {
       roomId,
       userId
     })//chatting용
-    library.to(roomId).emit('user-connected', userId);
+    setTimeout(function(){
+      library.to(roomId).emit('user-connected', userId);
+    },3000);
 
     socket.on('disconnect', () => {
       //POST라우터 새로만들어 방금 나간 룸이랑 나간사람 => SOCKET.EMIT 얘 나갔다=>HTML에 보내서 DIV에서 삭제하는 거
