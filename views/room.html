@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <fieldset>
+    <legend>채팅방 생성</legend>
+    <form action="/room" method="post" enctype="multipart/form-data">
+      <div>
+        <input type="text" name="title" placeholder="방 제목">
+      </div>
+      <div>
+        <textarea type="text" name="description" placeholder="방 소개를 적으세요"></textarea>
+      </div>
+      <div>
+        <input type="number" name="max" placeholder="수용 인원" min="0" value="20">
+      </div>
+      <div>
+        <input type="password" name="password" placeholder="비밀번호(없으면 공개방)">
+      </div>
+      <div id="room-thumbnail">
+        <label for="thumbnail">썸네일</label>
+        <input type="file" id="thumbnail" name="img" required>
+      </div>
+      <div>
+        <input type="radio" name="room_option" value=0 checked="checked">완전 삭제
+        <input type="radio" name="room_option" value=1>유지
+      </div>
+      <div>
+        <button type="submit">생성</button>
+      </div>
+    </form>
+  </fieldset>
+{% endblock %}

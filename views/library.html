@@ -1,0 +1,235 @@
+
+<head>
+  <html lang="en"></html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="../public/main.css">
+  <title>library.html</title>
+  
+</head>
+<style>
+  .modal {
+  display: none;
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* Could be more or less, depending on screen size */
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+#chat-time{
+  display:none;
+}
+#chat-content:hover #chat-time{
+  display:inline;
+}
+
+</style>
+
+<body>
+  <h1>{{title}}</h1>
+
+  <h1 class="mdl">참가자</h1>
+    <!-- 첫 번째 Modal -->
+    <div class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>   
+        <div id="participants-list">      
+        <p id="participants">참가자들 ({{room.participants_num}})</p>
+        {% for user in users %}
+        <div class="user">
+          <span class="nick">
+            {{user.nick}}
+          </span>
+          {% if user.level_show == 0 %}
+            <span class="level"> 
+              level : {{user.level}}
+            </span>
+          {%endif%}
+        </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+ 
+    <h1 class="mdl">채팅</h1>
+    <div class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <fieldset>
+          <legend>채팅 내용</legend>
+          <p>--- 이전 채팅 10개만 불러옵니다. ---</p>
+          <div id="chat-list">
+            {% for chat in chats %}
+              {% if chat.User.id == user.id %}
+                <div class="mine" style="color:{{user.id}}">
+                  <div id="chat-content">
+                    {{chat.User.nick}}: {{chat.chating}}
+                    <div id="chat-time">
+                      {{chat.createdAt}}
+                    </div>
+                  </div>
+                </div>
+              {% elif chat.User == 'system' %}
+                <div class="system">
+                  <div>{{chat.chating}}</div>
+                </div>
+              {% else %}
+                <div class="other" style="color:{{chat.user.id}}">
+                  <div id="chat-content">
+                    {{chat.User.nick}}: {{chat.chating}}
+                    <div id="chat-time">
+                      {{chat.createdAt}}
+                    </div>
+                  </div>
+                  
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </fieldset>
+        <form action="/chat" id="chat-form" method="post" enctype="multipart/form-data">
+          <label for="gif">채팅하기</label>
+          <input type="text" id="chat" name="chat">
+          <button type="submit">전송</button>
+        </form>
+      </div>
+    </div>
+  <a href="/" id="exit-btn">방 나가기</a>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io.connect('http://localhost:8001/library', {
+    path: '/socket.io',
+  });
+
+  socket.on('join', function (data) {
+    document.querySelector('#participants').replaceWith("참가자들 ("+data.room.participants_num+")");
+    const div1 = document.createElement('div');
+    div1.classList.add('user');
+    const nick = document.createElement('span');
+    nick.textContent = data.newuser.nick+" level : "+data.newuser.level;
+    div1.appendChild(nick)
+    document.querySelector('#participants-list').appendChild(div1);
+
+    const div2 = document.createElement('div');
+    div2.classList.add('system');
+    const chat = document.createElement('div');
+    div2.textContent = data.chat;
+    div2.appendChild(chat);
+    document.querySelector('#chat-list').appendChild(div2);
+  });
+
+  socket.on('exit', function (data) {
+    document.querySelector('#participants').replaceWith("참가자들 ("+data.room.participants_num+")");
+    const leftuser=document.querySelector(`span[data-nick='${data.leftuser.nick}']`);
+    leftuser.remove();
+    
+    const div3 = document.createElement('div');
+    div3.classList.add('system');
+    const chat = document.createElement('div');
+    div3.textContent = data.chat;
+    div3.appendChild(chat);
+    document.querySelector('#chat-list').appendChild(div3);
+  });
+
+  socket.on('chat', function (data) {
+    const div = document.createElement('div');
+    if (data.user === '{{user.id}}') {
+      div.classList.add('mine');
+    } else {
+      div.classList.add('other');
+    }
+
+    const name = document.createElement('div');
+    div.textContent = data.User.nick+": "+data.chating;
+
+    div.addEventListener("mouseover", function( event ) {
+      div.textContent = data.User.nick+": "+data.chating + " " + data.createdAt;
+    });
+    div.addEventListener("mouseout", function( event ) {
+      div.textContent = data.User.nick+": "+data.chating;
+    });
+
+    div.appendChild(name);
+    div.style.color = data.UserId;
+    document.querySelector('#chat-list').appendChild(div);
+  });
+
+  document.querySelector('#chat-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (e.target.chat.value) {
+      axios.post('/library/{{roomId}}/chat', {
+        chat: this.chat.value,
+      })
+        .then(() => {
+          e.target.chat.value = '';
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  });
+  </script>
+</body>
+
+<script>
+    /*모달창 관련*/    
+  var modals = document.getElementsByClassName("modal");
+  var mdls = document.getElementsByClassName("mdl");
+  var spanes = document.getElementsByClassName("close");
+  var funcs = [];
+
+  // Modal을 띄우고 닫는 클릭 이벤트를 정의한 함수
+  function Modal(num) {
+    return function() {
+      mdls[num].onclick =  function() {
+          modals[num].style.display = "block";
+          console.log(num);
+      };
+      spanes[num].onclick = function() {
+          modals[num].style.display = "none";
+      };
+    };
+  }
+  for(var i = 0; i < mdls.length; i++) {
+    funcs[i] = Modal(i);
+  }
+  for(var j = 0; j < mdls.length; j++) {
+    funcs[j]();
+  }
+  
+  /* 모달을 닫는 코드 */
+  window.onclick = function(event) {
+    if (event.target.className == "modal") {
+        event.target.style.display = "none";
+    }
+  };
+</script>
+
+
+  
