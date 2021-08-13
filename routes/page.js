@@ -158,7 +158,7 @@ router.post('/room/loadImage',isLoggedIn, upload.single('img'), async (req, res,
     next(error);
   }
 });
-    
+
 // 방 들어가면 library.html 렌더링 방주소랑 사용자 전달
 router.get('/library/:id', async(req, res) => {
     const user=req.user.id;

@@ -34,7 +34,24 @@
     width: 0.9em;
     height:0.9em;
   }
-  
+  input {
+    border-radius: 10px;
+    width: 150px;
+    margin: 3%;
+  }
+  input:focus {
+    animation-name: border-focus;
+    animation-duration: 2s;
+    animation-fill-mode: both;
+  }
+  @keyframes border-focus {
+    from {
+      border-radius: 0;
+    }
+    to {
+      border-radius: 12px;
+    }
+  }
   #edit:focus:not(:focus-visible){
     position: relative;
     margin-top:10%;
@@ -82,9 +99,9 @@
     z-index: 1;
     object-fit: scale-down;
     position: absolute;
-    width: 12%;
-    height: 12%;
-    padding-bottom: 14px;
+    width: 10%;
+    height: 10%;
+    margin-bottom: 5px;
   }
   #percent{
     display: flex;

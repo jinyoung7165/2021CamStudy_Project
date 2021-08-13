@@ -140,14 +140,6 @@ io.on('connect', (socket) => {
         socket.to(roomid).emit('chat', chatting, usernick, moment().format("h:mm a"));
     })
 
-    socket.on('filter-on', (roomid, sid)=> {
-        console.log("mSMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
-        io.to(roomid).emit('filter-on', sid );
-    })
-    socket.on('filter-off', (roomid, sid)=>{
-        console.log("mSMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
-        io.to(roomid).emit('filter-off', sid );
-    })
     socket.on('getCanvas', () => {
         if (roomBoard[socketroom[socket.id]]) //roomBoard[roomid]라는 뜻
             socket.emit('getCanvas', roomBoard[socketroom[socket.id]]);

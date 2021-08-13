@@ -2,7 +2,7 @@ const express=require('express');
 const passport=require('passport');
 const {isLoggedIn,isNotLoggedIn}=require('./middlewares');
 const User=require('../models/user');
-const bcrypt=require('bcrypt');
+const bcrypt=require('bcryptjs');
 const router=express.Router();
 
 //회원가입 라우터 -> 같은 이메일로 가입한 사람이 있는지 조회후 수행

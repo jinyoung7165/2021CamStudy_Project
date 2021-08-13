@@ -2,25 +2,26 @@
 {% set path = null %}
 {% block content %}
   <fieldset>
-    <legend>채팅방 생성</legend>
+    <legend>방 생성</legend>
     <form method="post" enctype="multipart/form-data">
       <div>
-        <input type="text" name="title" placeholder="방 제목">
+        <span class="label">방 제목</span><input class="newroom" type="text" name="title" placeholder="방 제목" required>
       </div>
       <div>
-        <textarea type="text" name="description" placeholder="방 소개를 적으세요"></textarea>
+        <span class="label">방 소개</span><textarea type="text" class="newroom" name="description" placeholder="방 소개를 적으세요"></textarea>
       </div>
       <div>
-        <input type="number" name="max" placeholder="수용 인원" min="0" value="20">
+        <span class="label">최대 인원</span><input type="number" class="newroom" name="max" placeholder="수용 인원" min="0" value="20">
       </div>
       <div>
-        <input type="password" name="password" placeholder="비밀번호(없으면 공개방)">
+        <span class="label">입장 암호</span><input type="password" class="newroom" name="password" placeholder="방 암호">
       </div>
       <div id="room-thumbnail">
-        <label for="thumbnail">썸네일</label>
+        <label class="label">썸네일</label>
+        <label for="thumbnail" class="label">선택</label>
           <input type="hidden" onchange="javascript: form.action='/room';">
         <p>
-          선택<input type="checkbox" id="chooseImg" onchange="chooseImage();">
+          <input type="hidden" id="chooseImg" onchange="chooseImage();">
           <input 
             type="file" 
             id="thumbnail" 
@@ -32,9 +33,9 @@
         </p>
         
       </div>
-      <div>
-        <input type="radio" name="room_option" value=0 checked="checked">완전 삭제
-        <input type="radio" name="room_option" value=1>유지
+      <div><span class="label">모두 퇴장 시</span>
+        <input type="radio" name="room_option" value=0 checked="checked">방 삭제
+        <input type="radio" name="room_option" value=1>방 유지
       </div>
       <div>
         <button type="submit">생성</button>
@@ -46,6 +47,9 @@
       let e = document.getElementById("thumbnail");
       e.style.visibility = "visible";
     }
+    let goCont = document.querySelector(".go-content");
+    goCont.innerHTML=""
+    goCont.style.background="none"
   </script>
 
 {% endblock %}
