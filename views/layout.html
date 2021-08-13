@@ -12,20 +12,35 @@
   <body>
     <header>
       <div class="banner">
-        <div class="logo"><div class="logo-text">숙명사이버대학교</div></div>
+        <div class="logo">
+            <div class="logo-text"><img class="logo-img" src="https://image.flaticon.com/icons/png/128/4004/4004113.png"></img> 숙명사이버대학교</div></div>
         <!-- 버튼으로 할것 -->
-        <div class="banner-blue1">
+        <div class="banner-login">
           {%block login%}
           {%endblock%}
           <!-- 버튼으로 할것 -->
           {%block profile%}
           {%endblock%}
         </div>
-        <div class="banner-blue2"></div>
       </div>
     </header>
-    <div class="background1"></div>
-    <div class="background2"></div>
+    <div class="left-line"></div>
+    <div class="navbar">
+      <div class="nav">
+        <div class="icon">
+        <img class="icon-img" src="https://image.flaticon.com/icons/png/128/1946/1946488.png"></img>
+        </div>
+        <div class="icon">
+        <img class="icon-img" src="https://image.flaticon.com/icons/png/128/819/819590.png"></img>
+        </div>
+        <div class="icon">
+        <img class="icon-img" src="https://image.flaticon.com/icons/png/128/4277/4277132.png"></img>
+        </div>
+        <div class="icon">
+        <img class="icon-img" src="https://image.flaticon.com/icons/png/128/3524/3524752.png"></img>
+        </div>
+      </div>
+    </div>
       <div class="container">
       <!--환영메세지랑 반짝효과부분 추가하는 블럭-->
         {%block rooms%}

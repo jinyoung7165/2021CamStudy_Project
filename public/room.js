@@ -30,28 +30,8 @@ const configuration = { iceServers: [{
         "stun1.l.google.com:19302",
         "stun2.l.google.com:19302",
         "stun3.l.google.com:19302",
-<<<<<<< HEAD
-        ] 
-    }] 
-}
-=======
-        "stun4.l.google.com:19302",
-        "stun01.sipphone.com",
-        "stun.ekiga.net",
-        "stun.fwdnet.net",
-        "stun.ideasip.com",
-        "stun.iptel.org",
-        "stun.rixtelecom.se",
-        "stun.schlund.de",
-        "stunserver.org",
-        "stun.softjoys.com",
-        "stun.voiparound.com",
-        "stun.voipbuster.com",
-        "stun.voipstunt.com",
-        "stun.voxgratia.org",
-        "stun.xten.com",
-        "stun:stun.stunprotocol.org"] }] }
->>>>>>> 9486ec34b2538f59bfefbd25768c9c415fcc53b9
+] }] }
+
 const mediaConstraints = { video: true, audio: false};
 
 let connections = {};

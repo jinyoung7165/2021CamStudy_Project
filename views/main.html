@@ -12,34 +12,23 @@
               </div>
             </div>
           {% endif %}
-          <div class="user-name">{{'안녕하세요! ' + user.nick + '님'}}</div>
+          <div class="banner-login">
+          <a id="logout" href="/auth/logout" class="btn"><button class="logout">Sign Out</button></a>
+          <div class="user-name">
+          <a id="my-profile" href="/profile" class="btn"><i class="fas fa-user-circle"></i></a>
+          {{'안녕하세요, ' + user.nick + '송!'}}
+          </div> </div>  
           <input id="my-id" type="hidden" value="{{user.id}}">
-          <a id="my-profile" href="/profile" class="btn">내 프로필</a>
-          <a id="logout" href="/auth/logout" class="btn">로그아웃</a>
           <div display="hidden" class="usernick" data-usernick={{user.nick}}></div>
 
         {% else %}
          
          <form id="login-form" action="/auth/login" method="post">
-              <div class="login-group">
-                  <label for="email">이메일</label>
-                  <input id="email" type="email" name="email" required autofocus>
-              </div>
-              <div class="login-group">
-                  <label for="password">비밀번호</label>
-                  <input id="password" type="password" name="password" required>
-              </div>
-              <a id="join" href="/join" >회원가입</a>
-              <button id="login" type="submit">로그인</button>
-              <a id="kakao" href="/auth/kakao">카카오톡</a> -->
               <form id="login-google" action="/auth/mail" method="post">
                 <input type="hidden" name="scope" value="https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo#email https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/tasks https://www-opensocial.googleusercontent.com/api/people https://www.googleapis.com/auth/plus.login" />
-                <button class="google__btn" id="google" href="/auth/google">
-                  <svg viewBox="0 -3 20 19" role="presentation" aria-hidden="true" focusable="false" style="height: 20px; width: 18px; display: inline-block;"><g fill="none" fill-rule="evenodd"><path d="M9 3.48c1.69 0 2.83.73 3.48 1.34l2.54-2.48C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.96 4.96l2.91 2.26C4.6 5.05 6.62 3.48 9 3.48z" fill="#EA4335"></path><path d="M17.64 9.2c0-.74-.06-1.28-.19-1.84H9v3.34h4.96c-.1.83-.64 2.08-1.84 2.92l2.84 2.2c1.7-1.57 2.68-3.88 2.68-6.62z" fill="#4285F4"></path><path d="M3.88 10.78A5.54 5.54 0 0 1 3.58 9c0-.62.11-1.22.29-1.78L.96 4.96A9.008 9.008 0 0 0 0 9c0 1.45.35 2.82.96 4.04l2.92-2.26z" fill="#FBBC05"></path><path d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.84-2.2c-.76.53-1.78.9-3.12.9-2.38 0-4.4-1.57-5.12-3.74L.97 13.04C2.45 15.98 5.48 18 9 18z" fill="#34A853"></path><path d="M0 0h18v18H0V0z"></path></g></svg> 
-                  Sign In
-                </button>
+               
+               <button class="google__btn"><a id="google" style="color:#1B3C77;text-decoration: none" href="/auth/google"><img id="google-img" src="https://image.flaticon.com/icons/png/128/281/281764.png"> Sign In</a></button>
               </form>
-          </form>
         {% endif %}
   </div>
   <script>
@@ -85,11 +74,13 @@
       </div>
     </div>
     {%if user %}
-        <form class="rome-code-form" action="javascript:goRoomFunction()" method="post" enctype="multipart/form-data">
+      <div class="room-btn-container">
+        <form class="room-code-form" action="javascript:goRoomFunction()" method="post" enctype="multipart/form-data">
             <input type="text" id="room-code-input" placeholder="방 코드를 입력하세요." >
             <button class="enter-btn" type="submit">방코드 입장</button>
         </form> 
         <button class="createroom-butt" onclick="location.href='/room'">+</button>
+      </div>
     {%endif%}
       <span class="slide-butt slide-left">&#60;</span>
       <span class="slide-butt slide-right">&#62;</span>
@@ -140,22 +131,22 @@
 {% block content %}
     <!-- 랭커는 10명으로 제한 // 1,2,3등 class : rank1, rank2, rank3 -->
     <div class="ranking-block"> 
-      <div class="ranking-container">
+      <div class="ranking-title">Ranking</div>
         {%set i=0%}
+        <div class="ranking-left">
         {%for ranker in rankers%}
           {% if 3>i %}
-            <div class="ranker3 rank{{i+1}}"><img class="ranker-img" src="/img/rank{{i+1}}.png"><div class="rank-user" style="font-weight:bold;font-size:1em;"> {{ranker.nick}}</div><span class="rank-level"><b>Lv. </b>{{ranker.level}}</span></div>
+            <div class="rank rank{{i+1}}">{{i+1}}위 :&nbsp;{{ranker.nick}} &nbsp;&nbsp;&nbsp; Lv.&nbsp;{{ranker.level}}</div>
+            <hr style="border-top: 2px dashed black; border-bottom: none; margin: 0 2%;">
             {%set i=i+1%}
           {% else %}
-            <div class="rank">
-            <span class="ranker"><b>{{i+1}}위 :</b> {{ranker.nick}}</span>
-            <span class="ranker-level"><b>Lv.</b> {{ranker.level}}</span>
-            </div>
+            <div class="rank">{{i+1}}위 :&nbsp;{{ranker.nick}} &nbsp;&nbsp;&nbsp; Lv.&nbsp;{{ranker.level}}</div>
             <hr style="border-top: 2px dashed black; border-bottom: none; margin: 0 2%;">
+            {%if i==4%}</div><div class="ranking-right"> {%endif%}
             {%set i=i+1%}
           {% endif %}
         {%endfor%}
-      </div>
+        </div>
     </div>
 
     <a name="content-target"></a>
@@ -164,24 +155,28 @@
         <div class="promise-title">오늘의 다짐</div>
         <div class="promise-info">?</div>
         <p class="arrow_box">오늘의 목표나 캠스터디할 시간을 적어 참여자를 모으세요!</p>
+        <div class="slideBtnContainer">
+          <span class="promise-slide-btn pslide-left">&#60;</span>
+          <span class="promise-slide-btn pslide-right">&#62;</span>
+        </div>
       </div>
       <div class="promise-container">
-        <hr style="border-top: 2px dashed white; border-bottom: none; margin: 1% 1%;"/>
         {% if user %}
-          <form id="promise-form" action="/post" method="post" enctype="multipart/form-data">
+          <!-- <form id="promise-form" action="/post" method="post" enctype="multipart/form-data">
             <div class="promise-input">
               <input type="text" id="promise-input" name="content" maxlength="100">
             </div>
             <button id="promise-btn" type="submit"><b>다짐</b>🔥</button>
-          </form> 
+          </form>  -->
         {% endif %}
 
-        <div class="p-container">
+        <div class="p-slides">
           {% for posting in twits %}
             <div class="promise">
               <input type="hidden" value="{{posting.User.id}}" class="promise-user-id">
               <input type="hidden" value="{{posting.id}}" class="promise-id">
-              <div class="promise-top">
+              <div class="promise-content">{{posting.msg}}</div> 
+              <div class="promise-bottom">
                 <input type="hidden" value="{{posting.User.id}}" class="promise-user-id">
                 <input type="hidden" value="{{posting.id}}" class="promise-id">
                 {% if posting.User.level_show == 0 %}
@@ -207,15 +202,57 @@
                 {%if user and posting.User.id==user.id%}
                 <button class="p-butt promise-delete" value="{{posting.id}}">🗑</button>
                 {%endif%}
-                </div>
-                <div class="promise-content">{{posting.msg}}</div> 
+              </div>
             </div>
           {% endfor %}
         </div>
       </div>
     </div>
 
+<script>
+  var pslides=document.querySelector('.p-slides');
+  var promise=document.querySelectorAll('.promise');
+  var pcurrentIndex=0;
+  var pslideCount=promise.length;
+  let PleftBtn=document.querySelector('.pslide-left');
+  let PrightBtn=document.querySelector('.pslide-right');
+  let pslidewidth=220; // maybe document.querySelector('.room-box').style.width 로 가져오면 될듯;
+  let pslideMargin=40;
 
+  slides.style.width = (pslidewidth+pslideMargin) * (pslideCount+1) - pslideMargin + 'px';
+
+  function moveSlide(num){
+      pslides.style.left= -num * 260 + 'px';
+      pcurrentIndex=num;
+  }
+  PleftBtn.addEventListener('click', function(){
+      if(pcurrentIndex > 0){
+          moveSlide(pcurrentIndex-1);
+      }
+      else{
+          moveSlide(pslideCount-4);
+      }
+  });
+  PrightBtn.addEventListener('click', function(){
+      if(pcurrentIndex < pslideCount - 4){
+          moveSlide(pcurrentIndex+1);
+      }
+      else{
+          moveSlide(0);
+      }
+  });
+
+  pColor=["#E39293","#EEC9A4","#C2D0D2","#98BAB7","#6E848C"]
+  function boxColor(){
+    let i;
+    for(i=0;i<promise.length;i++){
+    promise[i].style.boxShadow="-7px 0px 0px" + pColor[i]
+    }
+  }
+
+  window.addEventListener("load", boxColor());
+
+</script>
     
  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
  <script>
