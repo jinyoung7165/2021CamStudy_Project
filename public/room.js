@@ -8,10 +8,13 @@ const chatField = document.querySelector('.chat-input');
 const videoContainer = document.querySelector('#vcont');
 const overlayContainer = document.querySelector('#overlay');
 const videoButt = document.querySelector('.novideo');
+const copycodeButt = document.querySelector('.copycode');
 const cutCall = document.querySelector('.cutcall');
 const screenShareButt = document.querySelector('.screenshare');
 const myId = document.querySelector('#my-id').value;
-let filterButt=document.querySelector('.filter');
+const filterButt=document.querySelector('.filter');
+const closeButt=document.querySelector('.chat-close-butt');
+const boardButt=document.querySelector('.board-icon');
 
 let videoAllowed = 1;
 let videoInfo = {};
@@ -23,10 +26,13 @@ myvideooff.style.visibility = 'hidden';
 
 const configuration = { iceServers: [{ 
     urls:[
-        "stun:stun.l.google.com:19302",
-        "stun:stun.l.google.com:19302",
-        "stun:stun.l.google.com:19302",
-        "stun:stun.stunprotocol.org"] }] }
+        "stun.l.google.com:19302",
+        "stun1.l.google.com:19302",
+        "stun2.l.google.com:19302",
+        "stun3.l.google.com:19302",
+        ] 
+    }] 
+}
 const mediaConstraints = { video: true, audio: false};
 
 let connections = {};
@@ -35,32 +41,21 @@ let videoTrackSent = {};
 
 let mystream, myscreenshare;
 
-document.querySelector('.roomcode').innerHTML = `${roomid}`
+document.querySelector('.roomcode').textContent = `${roomid}`
 socket.emit("join", roomid, usernick);
 
 function CopyClassText() {
-    var textToCopy = document.querySelector('.roomcode');
-    var currentRange;
-    if (document.getSelection().rangeCount > 0) {
-        currentRange = document.getSelection().getRangeAt(0);
-        window.getSelection().removeRange(currentRange);
-    }
-    else {
-        currentRange = false;
-    }
-    var CopyRange = document.createRange();
-    CopyRange.selectNode(textToCopy);
-    window.getSelection().addRange(CopyRange);
-    document.execCommand("copy");
+    const textArea = document.createElement('textarea'); 
+    document.body.appendChild(textArea); 
+    textArea.value = `${roomid}`;
+    console.log(textArea.value);
+    textArea.select(); document.execCommand('copy');
+    document.body.removeChild(textArea);
 
-    window.getSelection().removeRange(CopyRange);
-    if (currentRange) {
-        window.getSelection().addRange(currentRange);
-    }
-    document.querySelector(".copycode-button").textContent = "Copied!"
+    document.querySelector(".tooltiptext").textContent = "복사됨"
     setTimeout(()=>{
-        document.querySelector(".copycode-button").textContent = "Copy Code";
-    }, 5000);
+        document.querySelector(".tooltiptext").textContent = "방 코드 복사";
+    }, 1000);
 }
 
 let participant_num;
@@ -196,8 +191,16 @@ function handleVideoAnswer(answer, sid) {
     connections[sid].setRemoteDescription(ans);
 }
 
+// 방 코드 복사 관련
+copycodeButt.addEventListener('click',()=>{
+    CopyClassText();
+})
+
+
 // 화면공유 버튼 관련
 screenShareButt.addEventListener('click', () => {
+    screenShareButt.style.backgroundColor = "#393e46";  
+    screenShareButt.style.color = "white";
     screenShareToggle();
 });
 let screenshareEnabled = false;
@@ -215,6 +218,8 @@ function screenShareToggle() {
         }
     } else {
         screenMediaPromise = navigator.mediaDevices.getUserMedia({ video: true });
+        screenShareButt.style.backgroundColor = "#d8d8d8";  
+        screenShareButt.style.color = "#393e46";
     }
     screenMediaPromise
         .then((myscreenshare) => {
@@ -459,7 +464,7 @@ videoButt.addEventListener('click', () => {
         }
         videoButt.innerHTML = `<i class="fas fa-video"></i>`;
         videoAllowed = 1;
-        videoButt.style.backgroundColor = "#4ECCA3";
+        videoButt.style.backgroundColor = "#0067A3";
         if (mystream) {
             mystream.getTracks().forEach(track => {
                 if (track.kind === 'video')
@@ -498,8 +503,9 @@ socket.on('action', (msg, sid) => {//남이 무엇을 했다~~는 걸 받음
 
 filterButt.addEventListener('click', () => {
     if (filterornot==0) {//1일 때 blur할 것이다
-        filterButt.innerHTML = `<p class="fas filter-slash">✨</p>`;
-        filterButt.style.backgroundColor = "#b12c2c";     
+        filterButt.innerHTML = `<i class="fas fa-filter"></i>`;
+        filterButt.style.backgroundColor = "#393e46";  
+        filterButt.style.color = "white";
         console.log("켰다!!!!!~~~``");
         console.log("mysocketid"+socket.id);
         myvideo.style.filter="blur(20px)";
@@ -509,14 +515,28 @@ filterButt.addEventListener('click', () => {
         filterornot=1;
     }
     else {//필터 끌 거다
-        filterButt.innerHTML = `<p class="fas filter">✨</p>`;
-        filterButt.style.backgroundColor = "#4ECCA3"; 
+        filterButt.innerHTML = `<i class="fas fa-filter"></i>`;
+        filterButt.style.backgroundColor = "#d8d8d8"; 
+        filterButt.style.color = "#393e46";
         myvideo.style.filter="blur(0px)";
         myvideo.setAttribute('filter','blur(0px)');
         console.log("껐당!!!!!~~~``");
         socket.emit('action', 'filteroff');
         filterornot=0;   
     }
+})
+
+boardButt.addEventListener('click',()=>{
+    boardButt.style.backgroundColor = "#393e46";  
+    boardButt.style.color = "white";
+})
+
+closeButt.addEventListener('click',()=>{
+    console.log("click!!!!!!!!!!!!!!!");
+    let containerRight = document.getElementById('cont-right');
+    let containerLeft = document.getElementById('cont-left');
+    containerRight.style.display = "none";
+    containerLeft.style.width="100vw";
 })
 
 socket.on('filter-on', (sid) => { 

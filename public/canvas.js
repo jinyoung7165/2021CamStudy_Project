@@ -121,7 +121,9 @@ socket.on('draw', (newX, newY, prevX, prevY, color, size) => {
 })
 
 whiteboardButt.addEventListener('click', () => {
-    if (boardVisisble) {
+    if (boardVisisble) { //보드가 보이는 상태면
+        whiteboardButt.style.backgroundColor = "#d8d8d8";  
+        whiteboardButt.style.color = "#393e46";
         whiteboardCont.style.visibility = 'hidden';
         boardVisisble = false;
     }

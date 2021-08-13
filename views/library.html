@@ -15,15 +15,11 @@
     <script defer src="/public/room.js"></script>
     <script defer src="/public/canvas.js"></script>
     <script src="/public/error.js"></script>
-    <!-- <div class="header">
-        <h1 class="logo">숙명사이버대학교</h1> 
-        <a href="/profile" class="room-head-profile">my page</a>
-    </div> -->
 </head>
 
 <body>
     <div class="container-room">
-        <div class="container-left">
+        <div class="container-left" id="cont-left">
             <div class="box-video"> <!--이름 바꾸기-->
                 <div class="video-cont-single" id="vcont">
                     <div class="video-box">
@@ -56,30 +52,31 @@
                         <div class="novideo" id="util">
                             <i class="fas fa-video"></i>
                         </div>
+                        <div class="copycode tooltip" id="util">
+                            <div class="roomcode"></div>
+                            <i class="fas fa-external-link-alt"></i>
+                            <span class="tooltiptext">방 코드 복사</span>
+                        </div>
                         <div class="filter tooltip" id="util">
-                            <p class="fas">✨</p> <!--아이콘 바꿔야함-->
+                            <i class="fas fa-filter"></i>
                             <span class="tooltiptext">필터</span>
                         </div>
                         <div class="screenshare tooltip" id="util">
                             <i class="fas fa-desktop"></i>
-                            <span class="tooltiptext">Share Screen</span>
+                            <span class="tooltiptext">화면 공유</span>
                         </div>
                         <div class="board-icon tooltip" id="util">
                             <i class="fas fa-chalkboard"></i>
-                            <span class="tooltiptext">Whiteboard</span>
+                            <span class="tooltiptext">화이트 보드</span>
                         </div>
-                        <div class="attendies tooltip" id="util" onclick="showAttendies();">
-                            <p class="fas">👥</p> <!--아이콘 바꿔야함-->
+                        <div class="attendies tooltip" id="util-attendies" onclick="showAttendies();">
+                            <i class="fas fa-users"></i>
                             <span class="tooltiptext">참가자</span>
                         </div>
                         <div class="cutcall tooltip" id="util">
                             <i class="fas fa-phone-slash"></i>
-                            <span class="tooltiptext">Leave Call</span>
+                            <span class="tooltiptext">방 나가기</span>
                         </div>
-                    </div>
-                    <div class="copycode-cont">
-                        <div class="roomcode"></div>
-                        <button class="copycode-button" onclick="CopyClassText()">Copy Code</button>
                     </div>
                 </div>
             </div>
@@ -103,17 +100,21 @@
             </div>
         </div>
 
-        <div class="container-right">
-            <div class="chat-close-butt">&times;</div>
+        <div class="container-right" id="cont-right">
             <div class="chat-box">
+                <div class="chat-close-butt">&times;</div>
                 <div class="chat-head-cont">
                         <!--눈송이 넣기-->
                 </div>
-                <hr/>
+                <!-- <hr/> -->
                 <div class="chat-cont"></div> <!--채팅내용-->
                 <div class="send-cont">
-                    <div class="ci-cont"><input type="text" class="chat-input" placeholder="Type chat here.."></div>
-                    <div class="ci-send"><button class="chat-send">Send</button></div>
+                    <div class="send-chat">
+                        <textarea class="chat-input" placeholder="Type chat here.."></textarea>
+                    </div>
+                    <div class="send-btn">
+                        <button class="chat-send">Send</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -121,12 +122,29 @@
 </body>
 <script>
     var modal = document.getElementById('attendies-modal');
-    var span = document.getElementsByClassName("close")[0];   
+    var btn = document.getElementById('util-attendies');
+    var span = document.getElementsByClassName("close")[0]; 
+    let attendiesVisible=false;
+
     function showAttendies(){
-        modal.style.display="block";
+        if (attendiesVisible){
+            attendiesVisible=false;
+            modal.style.display = "none";
+            btn.style.backgroundColor = "#d8d8d8";  
+            btn.style.color = "#393e46";
+        } else {
+            attendiesVisible=true;
+            btn.style.backgroundColor = "#393e46";  
+            btn.style.color = "white";
+            modal.style.display = "block";
+        }
+        
     }
     function popupClose(){
+        attendiesVisible=false;
         modal.style.display = "none";
+        btn.style.backgroundColor = "#d8d8d8";  
+        btn.style.color = "#393e46";
     }
     window.onclick = function(event) {
         if (event.target == modal) {
@@ -137,7 +155,7 @@
     var chatClose = document.querySelector('.chat-close-butt');
     chatClose.addEventListener('click',function(event){
        let chatContainer=document.querySelector('.container-right');
-       chatContainer.style.
+       //chatContainer.style.
     }); 
 </script>
 </html>

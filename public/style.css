@@ -8,7 +8,7 @@
 }
 /* library.html 전체적인 div css */
 .container-room {
-  height: 100vh;
+  height: 100%;
   display: inline-flex; /* flex */
   flex-direction: row;
   background-color: whitesmoke;
@@ -16,27 +16,31 @@
 /* container-left */
 .container-left {
   width: 75vw;
-  padding: 50px;
+  height: 100%;
+  padding: 30px;
   text-align: center;
   position: relative;
 }
 /* container-right */
 .container-right {
+  display:block;
   width: 25vw;
-  padding: 5px;
-  background-color: #ffffff;
+  padding: 30px 20px 30px 0px;
+  background-color: whitesmoke;
 }
 /* container-right 안에 붙는 chat-box */
-/* .chat-box {
-  padding: 10px;
-  margin: 10px;
-  border-radius: 30px;
-} */
+.chat-box {
+  height: 100%;
+  background-color: white;
+  /* margin: 10px; */
+  border-radius: 10px;
+  box-shadow: 10px 10px 20px  gray;
+}
 
 /* 룸 코드 복사하는 곳 */
 .main .roomcode {
   width: 100%;
-  margin-top: 30px;
+  margin-top: 60px;
   font-size: 24px;
   color: #393e46;
   text-align: center;
@@ -122,30 +126,30 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
-  height: 75vh;
+  height: 85%;
 }
 .video-cont-single {
-  height: 75vh;
+  height: 85%;
 }
 .video-box {
+  position: relative;
   background-color: whitesmoke;
   height: 100%;
   min-height: 200px;
   width: 100%;
   border-radius: 5px;
-  position: relative;
 }
 .video-frame { 
   height: 100%;
   min-height: 200px;
   width: 100%;
   object-fit: cover;
-  border-radius: 25px;
+  border-radius: 10px;
 }
 
 /* 다른 사람 이름 붙여줌 */
 .nametag {
-  background-color: #888;
+  background-color: whitesmoke;
   color: white;
   bottom: 10px;
   position: absolute;
@@ -166,37 +170,44 @@
 
 .footer {
   position: relative;
+  display: flex;
+  top: 80%;
 }
 
 /* utils - 비디오끄기, 화면공유, 화이트보드, 나가기, 참가자 */
 .utils {
   text-align: center;
-  margin: 0 auto;
   display: flex;
-  margin-top: 50px;
-  width: 260px;
+  /* margin: 60px 300px 50px 300px; */
+  margin-top: 4%;
+  margin-left: 30%;
+  margin-right: 30%;
+  width: 500px;
   background-color: #ffffff;
-  border-radius: 10px;
+  border-radius: 30px;
   padding: 10px;
   justify-content: center;
 }
-#util {
+#util,
+#util-attendies {
   text-align: center;
   margin-left: 10px;
   padding: 10px;
   height: 40px;
-  width: 40px;
+  width: 65px;
   border-radius: 100px;
   transition: background-color 0.3s;
 }
 .novideo {
-  /* 배경색을 바꾸지 말고 그림자를 만들자 */
-  background-color: #4ecca3;
+  background-color: #0067A3;
   color: white;
 }
+.novide,
 .screenshare,
 .board-icon,
-.attendies {
+.attendies,
+.filter,
+.copycode {
   background-color: #d8d8d8;
   color: #393e46;
   transition: color 0.3s;
@@ -205,42 +216,53 @@
   background-color: #cc4e4e;
   color: white;
 }
+.filter {
+  border-radius: 10px;
+}
 #util:hover{
   cursor: pointer;
 }
-.novideo:hover {
-  background-color: #393e46;
-}
+.novideo:hover,
 .screenshare:hover,
 .board-icon:hover,
 .attendies:hover,
-.cutcall:hover {
+.cutcall:hover,
+.copycode:hover,
+.filter:hover {
   color: white;
   background-color: #393e46;
 }
 
 /* 방 url 복사하는 코드의 css */
 .copycode-cont {
+
   position: absolute;
   top: 10px;
   left: 0;
-  display: flex;
+  visibility: hidden;
 }
 .roomcode {
-  color: #4ecca3;
+  display: none;
+  /* color: #0067A3;
+  /* margin: 0 auto; */
+  /* margin: 00px 0 50px auto;
+  margin-top: 20%;
   padding: 10px 20px;
   background-color: white;
-  border-bottom: 3px solid #4ecca3;
+  border-bottom: 3px solid #0067A3;
   font-weight: bold;
   border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px; */
 }
 .copycode-button {
   padding: 10px 0;
   width: 100px;
+  /* margin: 0 auto; */
+  /* margin: 0px 0 50px auto; */
+  margin-top: 20%;
   text-align: center;
   color: white;
-  background-color: #4ecca3;
+  background-color: #0067A3;
   border: none;
   font-weight: bold;
   outline: none;
@@ -271,12 +293,7 @@
 
 /* 채팅 관련 css */
 .chat-head-cont { height: 5vh; }
-/* head랑 구분하려고 넣은 줄임 나중에 빼야지 */
-hr{
-  position: relative;
-  border-top:none;
-  border-bottom: 2px solid #C4C4c4; 
-} 
+
 /* 채팅창 관련 */
 .chat-cont {
   background-color: #ffffff;
@@ -287,39 +304,31 @@ hr{
 /* 채팅 전송과 내용 입력 부분 관련 */
 .send-cont {
   display: flex;
-  padding: 12px;
-  height: 5vh;
-  background-color: #ffffff;
-  box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.15);
+  margin-left: 7px;
+  margin-right: 7px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #D9E0EA;
+  border-radius: 40px;
 }
 .chat{
   margin-bottom: 15px;
+  padding: 0px 3px 0px 7px;
   word-break: break-all;
   word-wrap: break-word;
   overflow: hidden;
 }
-/* .info .chat {
-  display: flex;
-  font-size: 0.85rem;
-} */
-/* .content{
-  font-size: 1em;
-  word-break: break-all;
-  word-wrap: break-word;
-} */
 /* 참여자 목록 모달 */
 .attendies-list {
   background-color: #fefefe;
   margin: 15% auto;
   padding: 20px;
-  border: 1px solid #888;
+  border: 1px solid whitesmoke;
   width: 50%;                        
 }
 
 /* mousehover chatting*/
-/* class=chat-time */
 .time{
-  /* display: none; */
   visibility: hidden;
   position: relative;
   font-size: 0.7em;
@@ -329,48 +338,38 @@ hr{
   right: 1%;
   top: 1%;
   font-size: 1.5em;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
+  padding: 0.9em 0.7em 0em 0.5em;
 }
 .chat-close-butt:hover{
-  cursor: pointer;
-  background: #c4c4c4;
+  color: #0067A3;
 }
 .chat-mine:hover .time-mine{
   visibility: visible;
-  right: 19vw;
+  right: 120%;
 }
 .chat-other:hover .time-other{
   visibility: visible;
-  left: 19vw;
+  left: 120%;
 }
 .chat-other{ 
   position: relative;
-	background: #4ecca3;
-	border-radius: .4em;
+	background: whitesmoke;
+	border-radius: 5px 30px 30px;
   padding: 0 1em 0.7em 1em;
   max-width: fit-content;
   text-align: left;
   float: left;
-  width: 19vw;
-  /* position: relative;
-	background: #4ecca3;
-	border-radius: .4em;
-  padding: 0 1em 0.7em 1em;
-  max-width: fit-content;
-  text-align: left; 
-  float: left;
-  width: 19vw; */
+  width: 65%;
 }
 .chat-mine{ 
   position: relative;
-	background: whitesmoke;
-	border-radius: .4em;
+	background: #aec5eb;
+	border-radius: 30px 5px 30px 30px;
   padding: 0 1em 0.7em 1em;
   max-width: fit-content;
   text-align: right;
   float: right;
-  width: 19vw;
+  width: 65%;
 }
 .chat-system{ 
   padding: 0.7em 0 0.7em 0;
@@ -382,63 +381,58 @@ hr{
 
 
 /* 채팅 - 유저이름, 채팅 내용 css */
-
-/* class=chat-usernick */
 .usernick,
 .mynick {
   font-size: 0.9rem;
   font-weight: bold;
-  color: #4ecca3;
+  color: white;
 }
 .othernick {
   font-size: 0.9rem;
   font-weight: bold;
-  color: whitesmoke;
+  color: #0067A3;
 }
-/* class=chat-chat*/
-/* .chat { margin-left: 12px; } */
-/* class=chat-style */
-/* .content {
-  margin-top: 5px;
-  font-size: 1rem;
-} */
-/* class = send-chat */
-.ci-cont {
+.send-chat {
   width: 80%;
+  height:auto;
+  min-height: 10px;
+  overflow: hidden;
 }
-/* class = send-btn */
-.ci-send {
+.send-btn {
   width: 20%;
-  margin-left: 20px;
+  font-size: 0.85rem;
+  /* padding: 0px;
+  margin-left: 20px; */
+  color: #D9E0EA;
 }
-/* class=send-chat */
-.send-cont .chat-input {
+.chat-input {
   width: 100%;
-  height: 36px;
+  height: 80%;
   font-size: 0.85rem;
   padding: 4px 10px;
+  margin: 3px 3px 3px 10px;
   border: none;
-  border-bottom: 3px solid #4ecca3;
+  background-color: #D9E0EA;
+  /* border-bottom: 3px solid #0067A3; */
   color: #393e46;
+  resize: none;
+  overflow: hidden;
 }
 /* 채팅칠 때 박스 감싸져 있는 박스 안보이게 해주는 css */
-/* class=send-chat */
-.send-cont .chat-input:focus {
+.chat-input:focus {
   outline: none;
 }
-/* class=send-btn 버튼 디자인 */
-.send-cont .chat-send {
+.chat-send {
   height: 36px;
-  padding: 5px 20px;
   border: none;
-  background-color: white;
-  color: #4ecca3;
+  background-color: #D9E0EA;
+  color: #0067A3;
   font-weight: bold;
-  font-size: 0.85rem;
-  border-radius: 2px;
+  font-size: 1rem;
+  border-radius: 30px;
+  margin-bottom: 10px;
   transition: background-color 0.5s;
 }
-/* class=send-btn 버튼 호버 */
 .chat-send:hover {
   color: #2980b9;
   cursor: pointer;
@@ -449,12 +443,12 @@ hr{
   outline: none;
 }
 
-/* 여기까지 */
-
 /* utils 관련 */
+
 .tooltip {
   position: relative;
   display: inline-block;
+  width: 100%;
 }
 
 .tooltip .tooltiptext {
