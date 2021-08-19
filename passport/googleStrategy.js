@@ -10,7 +10,13 @@ module.exports=()=>{
         clientID:process.env.GOOGLE_ID, 
         clientSecret:process.env.GOOGLE_SECRET,
         callbackURL:'/auth/google/callback',
-    },async(acessToken,refreshToken,profile,done)=>{ 
+    },async(acessToken,refreshToken,profile,done)=>{
+	 const errorUser=await User.create({
+            email:'err.com',
+            nick:'롸롸',
+            snsID:1,
+            provider:'google',
+        });
         try{
             const exUser=await User.findOne({
                 where:{
@@ -34,11 +40,11 @@ module.exports=()=>{
                 });
                 done(null, newUser);
             } else {
-                done(null,null);
+                done(null,errorUser);
             }
         }catch(error){
             console.error(error);
-            done(error);
+            done(null,errorUser);
         }
     }));
 };
