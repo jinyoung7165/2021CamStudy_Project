@@ -1,31 +1,36 @@
 {% extends 'layout.html' %}
 {% block login %}
-  <div class="login-block">
+  <div class="profile-wrap">
+    <div>
         {% if user and user.id%}
-          {% if user.popup==0 %}
-            <div id="nick-modal" class="modal" style="display:block;">
-              <div class="modal-content">    
-                <span class="modal-close" onclick="popupClose();">&times;</span>                                                         
-                <div><i class="fas fa-info-circle fa-lg" style="color:#1B3C77;"></i>&nbsp;&nbsp;&nbsp;닉네임은 내 프로필에서 바꿀 수 있습니다.</div>
-                  <input type="radio" value=0 onchange="popupRadioChange();"> <u font style="font-family:'EliceDigitalBaeum_Regular';">다시 보지 않기</u>
-                  <a href="/profile">내 프로필</a>
-              </div>
-            </div>
-          {% endif %}
-          <div class="banner-login">
-            <a id="my-profile" href="/profile" class="btn"><img id="welcomeImg" src="/img/welcome_noonsong.png" style="width:38px;height:38px;z-index:2"></a>
-            <span>&nbsp;&nbsp;{{'안녕하세요, ' + user.nick + '송!'}}</span>
-            <a id="logout" href="/auth/logout" class="btn" style="text-decoration:none;"><button class="logout">Sign Out</button></a>
-          </div>  
+          <div class="user-name">{{'안녕하세요! ' + user.nick + '님'}}</div>
           <input id="my-id" type="hidden" value="{{user.id}}">
+          <a id="my-profile" href="/profile" class="btn">내 프로필</a>
+          <a id="logout" href="/auth/logout" class="btn">로그아웃</a>
           <div display="hidden" class="usernick" data-usernick={{user.nick}}></div>
-        {% else %}   
-         <form id="login-form" action="/auth/login" method="post">
+        {% else %}
+          <div class="login-group">
+            <label id="login-text">LOGIN</label>
+          </div>
+          <form id="login-form" action="/auth/login" method="post">
+              <div class="login-group">
+                  <label for="email">이메일</label>
+                  <input id="email" type="email" name="email" required autofocus>
+              </div>
+              <div class="login-group">
+                  <label for="password">비밀번호</label>
+                  <input id="password" type="password" name="password" required>
+              </div>
+              <a id="join" href="/join" >회원가입</a>
+              <button id="login" type="submit">로그인</button>
+              <a id="kakao" href="/auth/kakao">카카오톡</a>
               <form id="login-google" action="/auth/mail" method="post">
-                <input type="hidden" name="scope" value="https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo#email https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/tasks https://www-opensocial.googleusercontent.com/api/people https://www.googleapis.com/auth/plus.login" />      
-               <a id="google" style="text-decoration: none" href="/auth/google"><img id="google-img" src="https://image.flaticon.com/icons/png/128/281/281764.png"> Sign In</a>
+                <input type="hidden" name="scope" value="https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo#email https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/tasks https://www-opensocial.googleusercontent.com/api/people https://www.googleapis.com/auth/plus.login" />
+                <a id="google" href="/auth/google">구글</a>
               </form>
+          </form>  
         {% endif %}
+    </div>
   </div>
   <script>
     var modal = document.getElementById('nick-modal');
@@ -126,7 +131,7 @@
         rinput.value=""
       }
       else{
-        var addr="http://localhost:8001/library/";
+        var addr="http://cybersmu.site/library/";
         var roomUuid = document.getElementById("room-code-input").value;
         window.location.href=addr.concat(roomUuid);
       }

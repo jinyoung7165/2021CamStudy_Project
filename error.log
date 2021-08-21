@@ -1,2 +1,6 @@
 {"message":"GET /abcs 라우터가 없습니다","level":"error"}
 {"message":"GET /absc 라우터가 없습니다","level":"error"}
+{"message":"GET /google6beb94b7964d01dc.html 라우터가 없습니다","level":"error"}
+{"message":"GET /google153d0c6e9dae2c92.html 라우터가 없습니다","level":"error"}
+{"message":"GET /favicon.ico 라우터가 없습니다","level":"error"}
+{"message":"GET /manager/html 라우터가 없습니다","level":"error"}
