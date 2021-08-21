@@ -4,19 +4,12 @@ const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const { default: axios } = require('axios');
 const nodemailer = require('nodemailer');
 let flag = false;
-
 module.exports=()=>{
     passport.use(new GoogleStrategy({
         clientID:process.env.GOOGLE_ID, 
         clientSecret:process.env.GOOGLE_SECRET,
         callbackURL:'/auth/google/callback',
-    },async(acessToken,refreshToken,profile,done)=>{
-	 const errorUser=await User.create({
-            email:'err.com',
-            nick:'롸롸',
-            snsID:1,
-            provider:'google',
-        });
+    },async(acessToken,refreshToken,profile,done)=>{ 
         try{
             const exUser=await User.findOne({
                 where:{
@@ -24,11 +17,9 @@ module.exports=()=>{
                     provider:'google'
                 },
             });
-
             let email = profile.email;
             let splitMail = email.split('@');
             let splitdot = splitMail[1].split('.');
-
             if (splitdot[0] == 'sookmyung' && exUser){//이미 회원가입한 유저
                 done(null,exUser);
             } else if (splitdot[0] == 'sookmyung' && !exUser){
@@ -40,11 +31,11 @@ module.exports=()=>{
                 });
                 done(null, newUser);
             } else {
-                done(null,errorUser);
+                done(null,null);
             }
         }catch(error){
             console.error(error);
-            done(null,errorUser);
+            done(error);
         }
     }));
 };

@@ -4,3 +4,7 @@
 {"message":"GET /google153d0c6e9dae2c92.html 라우터가 없습니다","level":"error"}
 {"message":"GET /favicon.ico 라우터가 없습니다","level":"error"}
 {"message":"GET /manager/html 라우터가 없습니다","level":"error"}
+{"message":"GET /favicon.ico 라우터가 없습니다","level":"error"}
+{"message":"GET /favicon.ico 라우터가 없습니다","level":"error"}
+{"message":"GET /favicon.ico 라우터가 없습니다","level":"error"}
+{"message":"GET /google/callback?code=4/0AX4XfWgejaFOVH37e5OXOTJHrt8hdKZ2_uL3fr05XtBwQxWjWlPhjaYrZPVI4ol8nevSSw&scope=email%20profile%20https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile%20openid&authuser=1&hd=sookmyung.ac.kr&prompt=consent 라우터가 없습니다","level":"error"}
