@@ -1,9 +1,7 @@
 const User=require('../models/user');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
-const { default: axios } = require('axios');
-const nodemailer = require('nodemailer');
-let flag = false;
+
 module.exports=()=>{
     passport.use(new GoogleStrategy({
         clientID:process.env.GOOGLE_ID, 

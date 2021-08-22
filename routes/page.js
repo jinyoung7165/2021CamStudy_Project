@@ -204,7 +204,6 @@ router.get('/library/:id', async(req, res) => {
 });
 
 router.delete('/library/:id', async(req, res) => {
-  console.log('여기야 page.js');
   const user=req.user.id;
   const uuid=req.params.id;
   const room=await Room.findOne({where:{uuid}});

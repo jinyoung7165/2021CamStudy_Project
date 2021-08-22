@@ -15,7 +15,6 @@ router.get('/logout',isLoggedIn,(req,res)=>{
 //assport.authenticate('google', {scope: 'https://www.googleapis.com/auth/plus.login'});
 router.get('/google',passport.authenticate('google', { scope: ["email", "profile"]})); //GET /auth/kakao 로 접근하면 카카오로그인. 카카오로그인 창으로 리다이렉트
 router.get('/google/callback',passport.authenticate('google',{ //로그인 후 성공 여부를 GET /auth/kakao/callback으로 받음.카카오로그인 전략 다시 수행
-    successRedirect:'/',
     failureRedirect:`/?loginError=sookmyung 이메일로 시도하세요.`, //로그인 실패 시 이동할 페이지
 }),(req,res)=>{
     res.redirect('/'); //로그인 성공 시 이동할 페이지
