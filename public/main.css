@@ -167,7 +167,7 @@ html {height: 100%;}
 .login-block{ 
   width: 60%;
   margin-left: 50%;
-  margin-top: 3%;
+  margin-top: 1%;
   margin-bottom: 3%;
   padding-top: 3%;
   padding-bottom: 3%;
@@ -197,6 +197,10 @@ html {height: 100%;}
   margin-right: 20px;
 }
 #google:hover{cursor:pointer;color:white; background-color: #1B3C77;box-shadow: 2px 2px 1px #c2c2c2, 0 -80px 0 0 rgba(0,0,0,0.025) inset;}
+#welcomeImg{
+  width:38px;
+  height:38px;
+}
 .banner-login>span{ 
   flex-grow: 0.5;
   margin-top: 2%;
@@ -344,6 +348,14 @@ input[type="text"]:focus{
 input[type="text"]:focus::placeholder{
   color:white;
 }
+@media screen and (max-width:900px) {
+  /* 모바일 */
+  
+}
+@media screen and (max-width:1200px) {
+  /* 타블렛 */
+
+}
 /* =================== rooms block을 위한곳 =================== */
 .rooms-block{
   position: absolute;
@@ -424,6 +436,14 @@ input[type="text"]:focus::placeholder{
   color: rgb(108, 108, 108);
   word-break:break-all;
 }
+#room-thumbnail{ 
+  position: absolute;
+  display: block;
+  object-fit: scale-down;
+  top: 130px;
+  width: 190px;
+} 
+#room-thumbnail img{ width:190px; height:140px;}
 .roomParticipant{
   position: absolute;
   font-size: 1em;
@@ -433,32 +453,6 @@ input[type="text"]:focus::placeholder{
   font-size: 0.8em;
   text-shadow: 2px 2px 2px rgb(108, 110, 114);
 }
-.slide-left:hover{cursor: pointer;transform: scale(1,1.2); top:190px}
-.slide-right:hover{cursor: pointer;transform: scale(1,1.2); top:190px}
-
-.slide-butt{
-  position:absolute;
-  text-align: center;
-  background: none;
-  padding: 5px;
-  top: 220px;
-  transform: translateY(-50%);
-}
-
-/* .fa-chevron-circle-left,
-.fa-chevron-circle-right{
-  position: relative;
-  margin: 20px;
-} */
-.slide-left{ left: 0%; }
-.slide-right{ right: 0%; }
-#room-thumbnail{ 
-  position: absolute;
-  display: block;
-  object-fit: scale-down;
-  top: 130px;
-  width: 190px;
-} 
 .room-enter-btn{
   position: absolute;
   background: #9ab1c6;
@@ -480,6 +474,24 @@ input[type="text"]:focus::placeholder{
   background:white;
   color: #9ab1c6;
 }
+.slide-left:hover{cursor: pointer;transform: scale(1,1.2); top:190px}
+.slide-right:hover{cursor: pointer;transform: scale(1,1.2); top:190px}
+.slide-butt{
+  position:absolute;
+  text-align: center;
+  background: none;
+  padding: 5px;
+  top: 220px;
+  transform: translateY(-50%);
+}
+
+/* .fa-chevron-circle-left,
+.fa-chevron-circle-right{
+  position: relative;
+  margin: 20px;
+} */
+.slide-left{ left: 0%; }
+.slide-right{ right: 1%; }
 .plus-butt{
   position: relative;
   width: 100px;
@@ -513,11 +525,11 @@ input[type="text"]:focus::placeholder{
   right: 0%;
   transform: translateX(-50%);
   border:none;
-  font-size: 40px;
   background: whitesmoke;
   box-shadow: -10px -10px 30px 0px #ffffff, 3px 3px 20px 0px #a8a8a87e ;
   text-shadow: 2px -2px rgba(0,0,0,0.5);
  }
+ .createroom-butt img{width: 35px; height: 35px;}
  .createroom-butt:hover{
    box-shadow: -10px -10px 10px 0px #c2c2c270, 10px 10px 10px 0px #aeaec020 ;
  }
@@ -822,16 +834,6 @@ input[type="text"]:focus::placeholder{
   font-size: 15px;
   font-family: 'Pretendard-Regular';
 }
-.promise-info:hover .tooltiptext {
-  visibility: visible;
-  opacity: 0.8;
-  width: 400px;
-  left:-140px;
-  bottom:30px;
-  right:300px;
-  font-size: 15px;
-  font-family: 'Pretendard-Regular';
-}
 
 /* =================== promise를 위한 곳 =================== */ 
 .promise-block {
@@ -1052,6 +1054,16 @@ right: 5px;
 .promise-like-num{ position:absolute; left: 165px; font-size: 0.7em; padding: 2%;}
 .promise-delete{ position:absolute; left: 178px;font-size: 0.8em; padding: 2%;}
 
+.promise-info:hover .tooltiptext {
+  visibility: visible;
+  opacity: 0.8;
+  width: 400px;
+  left:-140px;
+  bottom:30px;
+  right:300px;
+  font-size: 15px;
+  font-family: 'Pretendard-Regular';
+}
 .error-message { color: red; font-weight: bold; }
 
 /************newroom.html******************************/

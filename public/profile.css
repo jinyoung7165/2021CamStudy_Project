@@ -14,14 +14,14 @@
   margin-top:1%;
   margin-bottom:10%;
   margin-left:3%;
-  font-size:1.3em;
   text-align: left;
+  font-size:120%;
 }
 .lower-profile{
   width: 90%;
   margin:3%;
   margin-top:5%;
-  font-size:1.2em;
+  font-size:120%;
 }
 /*수정 form부분*/
 #profile-form{
@@ -79,7 +79,7 @@
   background-color:white;
   border: none;
   box-shadow: 2px 2px 1px #b1b1b195;
-  font-size: 1em;
+  font-size: 100%;
   text-decoration: none;
   user-select: none;
   letter-spacing: 1px;
@@ -161,9 +161,11 @@
 }
 .post-like{
   text-align: right;
-  font-size: 0.6em;
-  font-family: 'EliceDigitalBaeum_Regular';
+  font-size: 13px;
   padding: 2%;
+}
+.post-like>span{
+  font-family: 'Pretendard-Regular';
 }
 .post-like>button{
   padding-bottom: 2px;
@@ -192,7 +194,7 @@
   width: 100%;
 }
 #next-level{
-  border: 3px solid #c2c2c2;;
+  border: 3px solid #c2c2c2;
   border-radius: 8px;
   box-shadow: 5px 5px 2px #c2c2c2;
   margin-top: 3%;
@@ -227,6 +229,6 @@
 }
 
 #level-text{
-  font-size: 1.2em;
+  font-size: 125%;
   margin: 5%;
 }

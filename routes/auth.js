@@ -2,7 +2,7 @@ const express=require('express');
 const passport=require('passport');
 const {isLoggedIn,isNotLoggedIn}=require('./middlewares');
 const User=require('../models/user');
-const bcrypt=require('bcryptjs');
+const bcrypt=require('bcrypt');
 const router=express.Router();
 
 // 로그아웃 라우터 -> req.user객체, req.session객체 내용 제거
