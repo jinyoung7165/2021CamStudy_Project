@@ -13,14 +13,14 @@
             </div>
           {% endif %}
           <div class="banner-login">
-            <a id="my-profile" href="/profile" class="btn"><img id="welcomeImg" src="/img/welcome_noonsong.png" style="width:38px;height:38px;z-index:2"></a>
+            <a id="my-profile" href="/profile" class="btn"><img id="welcomeImg" src="/img/welcome_noonsong.png" style="z-index:2"></a>
             <span>&nbsp;&nbsp;{{'안녕하세요, ' + user.nick + '송!'}}</span>
             <a id="logout" href="/auth/logout" class="btn" style="text-decoration:none;"><button class="logout">Sign Out</button></a>
           </div>  
           <input id="my-id" type="hidden" value="{{user.id}}">
           <div display="hidden" class="usernick" data-usernick={{user.nick}}></div>
         {% else %}   
-         <form id="login-form" action="/auth/login" method="post">
+         <form id="login-form" action="/auth/login" method="post" style="margin-top:2%">
               <form id="login-google" action="/auth/mail" method="post">
                 <input type="hidden" name="scope" value="https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo#email https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/tasks https://www-opensocial.googleusercontent.com/api/people https://www.googleapis.com/auth/plus.login" />      
                <a id="google" style="text-decoration: none" href="/auth/google"><img id="google-img" src="https://image.flaticon.com/icons/png/128/281/281764.png"> Sign In</a>
@@ -58,7 +58,7 @@
               </span>
               <span class="roomTitle">{{room.title}}</span>
               <div class="roomDescription">{%if room.description==''%}<br>{%else%}{{room.description}}{%endif%}</div> 
-              <div id="room-thumbnail"><img src="/img/{{room.img}}" style="width:190px; height:140px;"></div>
+              <div id="room-thumbnail"><img src="/img/{{room.img}}"></div>
               <div class="roomParticipant">{{room.participants_num}}/{{room.max}}</div>
               {% if user %}
                 {%if room.participants_num==0 and room.owner==user.id%}
@@ -78,7 +78,7 @@
             <input type="text" id="room-code-input" placeholder="방 코드를 입력하세요" maxlength="16" >
             <button class="enter-btn" type="submit">방 입장</button>
         </form> 
-        <button class="createroom-butt" onclick="location.href='/room'"><div><div class="add tooltiptext">방 생성</div><img src="/img/add.png" style="width:35px; height:35px;"/></div></button>
+        <button class="createroom-butt" onclick="location.href='/room'"><div class="add tooltiptext">방 생성</div><img src="/img/add.png"/></button>
       </div>
     {%endif%}
     <span class="slide-butt slide-left"><img src="/img/back.png" width="50px" height="50px"></span>
@@ -92,13 +92,13 @@
     var slideCount=slide.length;
     let leftSlide=document.querySelector('.slide-left');
     let rightSlide=document.querySelector('.slide-right');
-    let slidewidth=220; 
+    let slidewidth=slide[0].offsetWidth; 
     let slideMargin=80;
    
     slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
    
     function moveSlide(num){
-        slides.style.left= -num * 300 + 'px';
+        slides.style.left= -num * (slidewidth+slideMargin) + 'px';
         currentIndex=num;
     }
 
@@ -127,7 +127,7 @@
         rinput.value=""
       }
       else{
-        var addr="https://www.cybersmu.site/library/";
+        var addr="http://localhost:8001/library/";
         var roomUuid = document.getElementById("room-code-input").value;
         window.location.href=addr.concat(roomUuid);
       }

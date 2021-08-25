@@ -4,8 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production PORT=80 pm2 start server.js -i 0",
-    "dev": "nodemon server.js"
+    "start": "nodemon server"
   },
   "keywords": [],
   "author": "",
@@ -13,7 +12,7 @@
   "dependencies": {
     "alert": "^5.0.10",
     "axios": "^0.21.1",
-    "bcryptjs": "^2.4.3",
+    "bcrypt": "^5.0.1",
     "connect-redis": "^6.0.0",
     "cookie-parser": "^1.4.5",
     "cross-env": "^7.0.3",

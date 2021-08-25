@@ -1,0 +1,314 @@
+@media screen and (max-width:899.9px) {
+    /* 폰 */
+    .left-line{
+      width:8px;
+    }
+    .banner{
+      height: 15%;
+    }
+    .logo-text{
+      font-size: 20px;
+      padding: 2%;
+    }
+    .login-block{ 
+      width: 100%;
+      margin-left:20%;
+      margin-top:2%;
+    }
+    .banner-login>span{ 
+        font-size:10px;
+        font-family: 'EliceDigitalBaeum_Regular';
+      }
+    #google{
+        padding:8px;
+        padding-left:25px;
+        padding-right:50px;
+    }
+    #welcomeImg{
+        width:28px;
+        height:28px;
+    }
+    .navbar{
+        width: 3%;
+        top:18%;
+        left:15px;
+    }
+    .icon{
+      margin:3%;
+      margin-left:0%;
+      margin-bottom: 100%;
+    }
+    .icon-img{
+      width:13px;
+      height:13px;
+    }
+    .icon:hover{
+      margin:3%;
+      margin-left:1%;
+      padding-bottom:50%;
+      margin-bottom:100%;
+      width: 15px;
+      height: 15px;
+    }
+    .icon:hover .tooltiptext{
+       display: none;
+    }
+    /***********layout끝************/
+    
+
+
+
+    /**********profile*************/
+    .upper-profile *{
+        font-size: 15px;
+    }
+    .lower-profile *{
+        padding-top:20px;
+        font-size: 15px;
+    }
+    #profile-img{
+        position: absolute;
+        width: 10%;
+      }
+    #profile-img>img{
+        position: absolute;
+        margin-right: 20px;
+        width: 10px;
+        height:10px;
+    }
+    .my-post{
+        height: 300px;
+      }
+    .post-like>span{
+        font-size:10px;
+    }
+    /**********profile끝*************/
+  }
+  @media screen and (max-width:1200px) and (min-width:900px){
+  /* 타블렛 */
+  .left-line{
+    width:20px;
+  }
+  .banner{
+    height: 12%;
+  }
+  .logo-text{
+    font-size: 30px;
+    padding: 3%;
+  }
+  .login-block{ 
+    margin-left:30%;
+    margin-top:2%;
+  }
+  .icon{
+    margin-left:0%;
+  }
+  .icon-img{
+    width:20px;
+    height:20px;
+  }
+  .icon:hover{
+    margin-left:0%;
+    width: 30px;
+    height: 28px;
+  }
+
+/******************room*********************/
+  .rooms-block{
+    top: 50px;
+    height: 470px;
+  }
+  .room-container{
+    position:absolute;
+    width: 740px;
+    height: 310px;
+  }
+  .room-box{ 
+    width: 185px;
+    height: 300px;
+    box-shadow: 8px 8px 4px #c2c2c2;
+  }
+  .room-box:not(:last-child){ margin-right: 80px; } /* box 당 간격 */
+  .room-delete{
+    color:rgb(59, 59, 61);
+    position: relative;
+    margin-top: 270px;
+    margin-left: 10px;
+  }
+  .roomLock{
+    top: 15px;
+    left: 10px;
+    font-size: 0.9em;
+  }
+  .roomTitle{
+    top: 14px;
+    left: 35px;
+    width:140px;
+    font-size: 1em;
+  }
+  .roomDescription{
+    top: 45px;
+    left: 10px;
+    font-size: 0.8em;
+    height: 50px;
+    width: 165px;
+  }
+  #room-thumbnail{ top: 120px; width: 160px;} 
+  #room-thumbnail img{ height:120px; width: 160px;}
+  .roomParticipant{ top: 220px; left: 7px; font-size: 0.7em;}
+  .room-enter-btn{
+    width: 60px;
+    height: 35px;
+    top: 220px;
+    font-size: 0.9em;
+  }
+  .slide-butt{ padding: 0px; top: 180px;}
+  .slide-butt img{width: 30px; height: 30px;}
+  .slide-left:hover{cursor: pointer;transform: scale(1,1.2); top:165px}
+  .slide-right:hover{cursor: pointer;transform: scale(1,1.2); top:165px}
+  .slide-left{ left: -2%; }
+  .slide-right{ right: 0%; }
+  .room-btn-container{
+    top: 400px;
+    height: 40px;
+    width: 740px;
+  }
+  .createroom-butt:hover .tooltiptext {
+    visibility: visible;
+    width: 100px;
+    left:20px;
+    bottom:55px;
+    right:300px;
+    font-size: 13px;
+  }
+  .createroom-butt{
+    position: absolute;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    box-shadow: -7px -7px 20px 0px #ffffff, 2px 2px 10px 0px #a8a8a87e ;
+   }
+   .createroom-butt:hover{
+     box-shadow: -7px -7px 10px 0px #c2c2c270, 7px 7px 10px 0px #aeaec020 ;
+   }
+  .room-code-form{ width: 530px; height: 40px;}
+  .createroom-butt img{width: 25px; height: 25px;}
+
+
+/******************ranking*********************/
+  .ranking-block{
+    position: absolute;
+    top: 550px;
+    height: 300px;
+  }
+  .ranking-title{
+    font-size: 1.7em;
+    margin-left: 20px;
+  }
+  .ranking-left{top: 60px;}
+  .ranking-right{top: 60px;}
+  .ranking-right .rank{
+    padding: 4px 0px 0px 0px;
+  }
+  .ranker img{ width: 24px; height: 24px;}
+  .rank img{ width: 18px; height: 18px;}
+  .rank{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+  }
+  .ranker{
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 15px;
+  }
+  .ranking-info{ margin-left:10%;}
+  .ranking-info:hover .tooltiptext {
+    width: 260px;
+    left:-70px;
+    font-size: 13px;
+  }
+ 
+/******************promise********************/
+
+.promise-block {
+  top: 870px;
+  width: 90%;
+  height: 280px;
+}
+.promise-title-container{
+  padding: 5px 30px 5px 30px;
+  margin-top: 10px;
+}
+.promise-title{
+  font-size: 1.7em;
+  margin-left: 0px;
+}
+.promise-info{
+  font-size: 0.4em;
+  margin-left: 6%;
+  text-align: center;
+  width: 1.9em;
+  height: 1.6em;
+}
+#write-modal{
+  width: 320px;
+  height: 110px;
+  right: 20px;
+  top: -70px;
+}
+.modal-overlay{
+  top: -1200px;
+  height: 120vh;
+}
+#promise-form {
+  top: 13px;
+  width: 92%;
+  left: 4%;
+}
+.modal_bar{height: 25px;}
+.contents{ height: 95px; top: 25px;}
+.modal_buttons { top: 9px; right: 3px;}
+#promise-input {
+  width: 80%; 
+  height: 35px;
+  margin: 10px 7px;
+}
+.promise-slide-btn{
+  position: absolute;
+  top: 150px;
+  padding: 2px 7px 2px 7px;
+  cursor: pointer;
+}
+.pslide-left{left: -3%;}
+.pslide-right{right: -3%;}
+.promise-container{
+  width: 720px; 
+  height: 130px;
+}
+.promise { width: 210px; height: 110px; }
+.promise-content{
+  height: 70px;
+  font-size: 0.9em;
+}
+.promise-bottom{ top: 85px;}
+.author{ width:90px;}
+.author-level{ left: 95px; }
+.promise-like{ left: 135px;}
+.promise-like-cancel{ left: 135px;}
+.promise-like-num{ left: 155px;}
+.promise-delete{ left: 170px;}
+.promise-info:hover .tooltiptext {
+  visibility: visible;
+  width: 355px;
+  left:-120px;
+  bottom:35px;
+  right:300px;
+  font-size: 13px;
+}
+/**********profile*************/
+#update-profile{
+    font-size:16px;
+}
+/**********profile끝*************/
+}

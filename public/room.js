@@ -10,7 +10,6 @@ const overlayContainer = document.querySelector('#overlay');
 const videoButt = document.querySelector('.novideo');
 const copycodeButt = document.querySelector('.copycode');
 const cutCall = document.querySelector('.cutcall');
-//const screenShareButt = document.querySelector('.screenshare');
 const myId = document.querySelector('#my-id').value;
 const filterButt=document.querySelector('.filter');
 const closeButt=document.querySelector('.chat-close-butt');
@@ -41,6 +40,16 @@ let cName = {};
 let videoTrackSent = {};
 
 let mystream, myscreenshare;
+
+// let openChatButt = document.getElementById('open-chat-btn');
+// window.addEventListener('resize',()=>{
+//     if (window.innerWidth <= 1200){
+//         openChatButt.innerHTML = `<i class="fas fa-comments fa-2x"></i>`;
+//         // openChatButt.style.color
+//     } else {
+//         openChatButt.innerHTML = `<i class="fas fa-angle-double-left fa-lg"></i>`;
+//     }
+// },true);
 
 document.querySelector('.roomcode').textContent = `${roomid}`
 socket.emit("join", roomid, usernick);
@@ -219,68 +228,8 @@ window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
-}
-// 채팅창 닫기 관련
-var chatClose = document.querySelector('.chat-close-butt');
-chatClose.addEventListener('click',function(event){
-   let chatContainer=document.querySelector('.container-right');
-}); 
+} 
 
-// 화면공유 버튼 관련
-/*
-screenShareButt.addEventListener('click', () => {
-    screenShareButt.style.backgroundColor = "#393e46";  
-    screenShareButt.style.color = "white";
-    screenShareToggle();
-});
-let screenshareEnabled = false;
-function screenShareToggle() {
-    let screenMediaPromise;
-    if (!screenshareEnabled) {
-        if (navigator.getDisplayMedia) {
-            screenMediaPromise = navigator.getDisplayMedia({ video: true });
-        } else if (navigator.mediaDevices.getDisplayMedia) {
-            screenMediaPromise = navigator.mediaDevices.getDisplayMedia({ video: true });
-        } else {
-            screenMediaPromise = navigator.mediaDevices.getUserMedia({
-                video: { mediaSource: "screen" },
-            });
-        }
-    } else {
-        screenMediaPromise = navigator.mediaDevices.getUserMedia({ video: true });
-        screenShareButt.style.backgroundColor = "#d8d8d8";  
-        screenShareButt.style.color = "#393e46";
-    }
-    screenMediaPromise
-        .then((myscreenshare) => {
-            screenshareEnabled = !screenshareEnabled;
-            for (let key in connections) {
-                const sender = connections[key]
-                    .getSenders()
-                    .find((s) => (s.track ? s.track.kind === "video" : false));
-                sender.replaceTrack(myscreenshare.getVideoTracks()[0]);
-            }
-            myscreenshare.getVideoTracks()[0].enabled = true;
-            const newStream = new MediaStream([
-                myscreenshare.getVideoTracks()[0], 
-            ]);
-            myvideo.srcObject = newStream;
-            myvideo.muted = true;
-            mystream = newStream;
-            screenShareButt.innerHTML = (screenshareEnabled 
-                ? `<i class="fas fa-desktop"></i><span class="tooltiptext">Stop Share Screen</span>`
-                : `<i class="fas fa-desktop"></i><span class="tooltiptext">Share Screen</span>`
-            );
-            myscreenshare.getVideoTracks()[0].onended = function() {
-                if (screenshareEnabled) screenShareToggle();
-            };
-        })
-        .catch((e) => {
-            screenShareButt.style.backgroundColor = "#d8d8d8";  
-            screenShareButt.style.color = "#393e46";
-        });
-}
-*/
 socket.on('video-offer', handleVideoOffer);
 socket.on('newIcecandidate', handleNewIceCandidate);
 socket.on('video-answer', handleVideoAnswer);
@@ -394,6 +343,7 @@ socket.on('enterRoom',(usernick,level_show,level)=>{
     nick.style.paddingLeft="5px";
     nick.style.fontSize="12pt";
     nick.style.fontWeight="bold";
+
     if(level>0 && level<10){
         img.setAttribute('src','/img/level1_noonsong.png');
     }
@@ -409,6 +359,7 @@ socket.on('enterRoom',(usernick,level_show,level)=>{
     else{
         img.setAttribute('src','/img/level1_noonsong.png');
     }
+
     if(level_show==0){
         nick.innerHTML+=`
         <strong>
@@ -423,6 +374,7 @@ socket.on('enterRoom',(usernick,level_show,level)=>{
         </strong>
         `;
     }
+
     div1.appendChild(img);
     div1.appendChild(nick);
     document.querySelector('.attendies-list').appendChild(div1); 
@@ -447,11 +399,11 @@ socket.on('removePeer', sid => {
 
 sendButton.addEventListener('click', () => {
     const chatting = chatField.value;
-    chatting.replaceAll(/\r/g,''); 
+    chatting.replaceAll(/\r/g,""); 
     
     const space1=''; const space2=' ';
-    if (chatting!=space1 && chatting!=space2 && chatting!='\n'){
-        chatField.value = '';
+    if (/*chatting!=space1 && chatting!=space2 &&*/ chatting!='\n'){
+        chatField.value = "";
         const mytime=moment().format("h:mm a");
         chatRoom.scrollTop = chatRoom.scrollHeight;
         chatRoom.innerHTML += 
@@ -603,19 +555,20 @@ boardButt.addEventListener('click',()=>{
     boardButt.style.color = "white";
 })
 
-const openChatButt = document.getElementById('open-chat');
+const openChat = document.getElementById('open-chat');
 const containerRight = document.getElementById('cont-right');
 const containerLeft = document.getElementById('cont-left');
 closeButt.addEventListener('click',()=>{
     containerRight.style.display = "none";
     containerLeft.style.width="100vw";
-    openChatButt.style.display="block";
+    openChat.style.display="flex";
 })
 
-openChatButt.addEventListener('click',()=>{
+openChat.addEventListener('click',()=>{
+    console.log('open');
     containerRight.style.display="block";
     containerLeft.style.width="75vw";
-    openChatButt.style.display="none";
+    openChat.style.display="none";
 })
 
 socket.on('filter-on', (sid) => { 
