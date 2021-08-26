@@ -4,12 +4,12 @@
   margin:0;
   left:6%;
   width: 94%;
-  height: 600px;
+  height: 630px;
   background:rgb(250, 250, 250);
 }
 .upper-profile{
   width: 90%;
-  height: 20%;
+  height: 25%;
   display: flex;
   margin-top:1%;
   margin-bottom:10%;
@@ -47,7 +47,7 @@
   margin-top:3%;
   margin-bottom: 3%;
   margin-left: 4.5%;
-  margin-right:18px;
+  margin-right:15px;
   border: 0px;
   width: 0.9em;
   height:0.9em;
@@ -55,8 +55,10 @@
 #edit-nick {
   border:2px solid rgb(175, 175, 175);
   border-radius: 7px;
-  width: 150px;
   text-align: center;
+  width:200px;
+  height:30px;
+  font-size:1em;
 }
 #edit-nick:focus {
   text-align: center;
@@ -102,13 +104,15 @@
 }
 #profile-tag{
   padding-left:10%;
+  font-weight: bold;
 }
-#profile-img>img{
+#levelsong{
   object-fit: scale-down;/*옆에 꽉 차게 하고 싶음 지워라*/
-  position: relative;
+  position: absolute;
   margin-right: 20px;
-  width: 100%;
-  height:100%;
+  top:38%;
+  width: 90%;
+  height:90%;
   filter: drop-shadow(5px 5px 5px rgb(185, 185, 185));
 }
 /*나의 다짐 부분*/
@@ -189,11 +193,12 @@
   padding-left: 5%;
 }
 .w3-light-grey{
-  display: inline-box;
+  display: inline-block;
   height: 30px;
   width: 100%;
 }
 #next-level{
+  background-color: white;
   border: 3px solid #c2c2c2;
   border-radius: 8px;
   box-shadow: 5px 5px 2px #c2c2c2;

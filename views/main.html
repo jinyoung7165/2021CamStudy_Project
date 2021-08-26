@@ -94,29 +94,56 @@
     let rightSlide=document.querySelector('.slide-right');
     let slidewidth=slide[0].offsetWidth; 
     let slideMargin=80;
-   
     slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
-   
+
+    if (window.matchMedia("screen and (min-width: 1200px)").matches) {
+      //1200px 이상
+      slidewidth=slide[0].offsetWidth; 
+      slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
+    }
+    else if (window.matchMedia("screen and (min-width: 900px) and (max-width: 1199px)").matches) {
+      //1200px 미만 900px 이상
+      slidewidth=slide[0].offsetWidth; 
+      slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
+      }
+    else { // 그 이하 우리는 600px 까지만 지원 
+      slidewidth=slide[0].offsetWidth; 
+      slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
+    }
+
     function moveSlide(num){
         slides.style.left= -num * (slidewidth+slideMargin) + 'px';
         currentIndex=num;
     }
 
     leftSlide.addEventListener('click', function(){
-        if(currentIndex > 0){
-            moveSlide(currentIndex-1);
-        }
-        else{
-            moveSlide(slideCount-3);
-        }
+      if (window.matchMedia("screen and (min-width: 900px)").matches) {
+        slidewidth=slide[0].offsetWidth; 
+        slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
+        if(currentIndex > 0){ moveSlide(currentIndex-1);}
+        else{ moveSlide(slideCount-3);}
+      }
+      else{
+        slidewidth=slide[0].offsetWidth; 
+        slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
+        if(currentIndex > 0){ moveSlide(currentIndex-1);}
+        else{ moveSlide(slideCount-2);}
+      }        
     });
+     
     rightSlide.addEventListener('click', function(){
-        if(currentIndex < slideCount - 3){
-            moveSlide(currentIndex+1);
-        }
-        else{
-            moveSlide(0);
-        }
+      if (window.matchMedia("screen and (min-width: 900px)").matches) {
+        slidewidth=slide[0].offsetWidth; 
+        slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
+        if(currentIndex < slideCount - 3){ moveSlide(currentIndex+1);}
+        else{ moveSlide(0);}
+      }
+      else{
+        slidewidth=slide[0].offsetWidth; 
+        slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
+        if(currentIndex < slideCount - 2){ moveSlide(currentIndex+1);}
+        else{ moveSlide(0);}
+      }
     });
     
     function goRoomFunction(){
@@ -238,32 +265,71 @@
   var pslideCount=promise.length;
   let PleftBtn=document.querySelector('.pslide-left');
   let PrightBtn=document.querySelector('.pslide-right');
-  let pslidewidth=220; // maybe document.querySelector('.room-box').style.width 로 가져오면 될듯;
+  let pslidewidth=promise[0].offsetWidth; 
   let pslideMargin=40;
 
-  pslides.style.width = (pslidewidth+pslideMargin) * (pslideCount+1) - pslideMargin + 'px';
+  pslides.style.width = (pslidewidth+pslideMargin) * (pslideCount) - pslideMargin + 'px'; //pslideCount+1??
+
+  if (window.matchMedia("screen and (min-width: 1200px)").matches) {
+        pslidewidth=promise[0].offsetWidth; 
+        pslides.style.width = (pslidewidth+pslideMargin) * (pslideCount) - pslideMargin + 'px';     
+  }
+  else if (window.matchMedia("screen and (min-width: 900px)").matches) {
+    pslidewidth=promise[0].offsetWidth; 
+    pslides.style.width = (pslidewidth+pslideMargin) * (pslideCount) - pslideMargin + 'px';
+  }
+  else {  
+    pslidewidth=promise[0].offsetWidth; 
+    pslides.style.width = (pslidewidth+pslideMargin) * (pslideCount) - pslideMargin + 'px';
+  }
 
   function pmoveSlide(num){
-      pslides.style.left= -num * 260 + 'px';
-      pcurrentIndex=num;
+    pslides.style.left= -num * (pslidewidth+pslideMargin) + 'px';
+    pcurrentIndex=num;
   }
+  
   PleftBtn.addEventListener('click', function(){
-      if(pcurrentIndex > 0){
-          pmoveSlide(pcurrentIndex-1);
-      }
-      else{
-          pmoveSlide(pslideCount-4);
-      }
+    if (window.matchMedia("screen and (min-width: 1200px)").matches) {
+        pslidewidth=promise[0].offsetWidth; 
+        pslides.style.width = (pslidewidth+pslideMargin) * (pslideCount) - pslideMargin + 'px';
+        if( pcurrentIndex > 0){ pmoveSlide(pcurrentIndex-1); }
+        else{ pmoveSlide(pslideCount-4); }            
+    }
+    else if (window.matchMedia("screen and (min-width: 900px)").matches) {
+      pslidewidth=promise[0].offsetWidth; 
+      pslides.style.width = (pslidewidth+pslideMargin) * (pslideCount) - pslideMargin + 'px';
+      if( pcurrentIndex > 0){ pmoveSlide(pcurrentIndex-1); }
+      else{ pmoveSlide(pslideCount-3); } 
+    }
+    else {  
+      pslidewidth=promise[0].offsetWidth; 
+      pslides.style.width = (pslidewidth+pslideMargin) * (pslideCount) - pslideMargin + 'px';
+      if( pcurrentIndex > 0){ pmoveSlide(pcurrentIndex-1); }
+      else{ pmoveSlide(pslideCount-2); } 
+    }
   });
   PrightBtn.addEventListener('click', function(){
-      if(pcurrentIndex < pslideCount - 4){
-          pmoveSlide(pcurrentIndex+1);
-      }
-      else{
-          pmoveSlide(0);
-      }
+    if (window.matchMedia("screen and (min-width: 1200px)").matches) {
+        pslidewidth=promise[0].offsetWidth; 
+        pslides.style.width = (pslidewidth+pslideMargin) * (pslideCount) - pslideMargin + 'px';
+        if(pcurrentIndex < pslideCount - 4){ pmoveSlide(pcurrentIndex+1); }
+        else{ pmoveSlide(0); }
+        
+    }
+    else if (window.matchMedia("screen and (min-width: 900px)").matches) {
+      pslidewidth=promise[0].offsetWidth; 
+      pslides.style.width = (pslidewidth+pslideMargin) * (pslideCount) - pslideMargin + 'px';
+      if(pcurrentIndex < pslideCount - 3){ pmoveSlide(pcurrentIndex+1); }
+      else{ pmoveSlide(0); }
+    }
+    else {  
+      pslidewidth=promise[0].offsetWidth; 
+      pslides.style.width = (pslidewidth+pslideMargin) * (pslideCount) - pslideMargin + 'px';
+      if(pcurrentIndex < pslideCount - 2){ pmoveSlide(pcurrentIndex+1); }
+      else{ pmoveSlide(0); }
+    }
   });
-
+ 
   pColor=["#E39293","#EEC9A4","#C2D0D2","#98BAB7","#6E848C"]
   function boxColor(){
     let i;

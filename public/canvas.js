@@ -1,11 +1,11 @@
 const whiteboardButt = document.querySelector('.board-icon')
-
-//whiteboard js start
 const whiteboardCont = document.querySelector('.whiteboard-cont');
 const canvas = document.querySelector("#whiteboard");
 const ctx = canvas.getContext('2d');
+const colorContainer = document.querySelector('.colors-cont');
 
 let boardVisible = false;
+let boardClick = false;
 
 whiteboardCont.style.visibility = 'hidden';
 
@@ -16,6 +16,8 @@ let color = "black";
 let drawsize = 3;
 let colorRemote = "black";
 let drawsizeRemote = 3;
+
+
 
 function fitToContainer(canvas) {
     canvas.style.width = '100%';
@@ -55,7 +57,6 @@ function reportWindowSize() {
 }
 
 window.onresize = reportWindowSize;
-//
 
 function clearBoard() {
     if (window.confirm('화이트보드를 정말 지우시겠습니까?')) {
@@ -122,6 +123,7 @@ socket.on('draw', (newX, newY, prevX, prevY, color, size) => {
 
 const video = document.getElementById('vcont');
 whiteboardButt.addEventListener('click', () => {
+    boardClick = true;
     if (boardVisible) { //보드가 보이는 상태면
         video.style.filter = 'blur(0px)';
         whiteboardButt.style.backgroundColor = "#d8d8d8";  
@@ -134,4 +136,22 @@ whiteboardButt.addEventListener('click', () => {
         whiteboardCont.style.visibility = 'visible';
         boardVisible = true;
     }
-})
+
+    if (boardClick && window.innerHeight < 570){
+        colorContainer.style.width="70px";
+        colorContainer.style.gridTemplateColumns="35px 35px";
+    } else {
+        colorContainer.style.width="32px";
+        colorContainer.style.gridTemplateColumns="35px";
+    }
+});
+
+window.addEventListener('resize',()=>{
+    if (boardClick && window.innerHeight < 570){
+        colorContainer.style.width="70px";
+        colorContainer.style.gridTemplateColumns="35px 35px";
+    } else {
+        colorContainer.style.width="32px";
+        colorContainer.style.gridTemplateColumns="35px";
+    }
+});
