@@ -42,6 +42,7 @@ html {height: 100%;}
   font-weight: 400;
   font-style: normal;
 }
+
 /*******************************************layout 내용********************************************/
 .left-line{
   background-color:#C9D9E9;
@@ -1075,8 +1076,7 @@ textarea{border-radius: 10px;text-align: center;}
   font-weight: bold;
   font-size: 1.1em;
 }
-/* ============================================================== */
-#join { float: right; } /* 나중에 없앨것들 */
+
 
 
 /***********************************/

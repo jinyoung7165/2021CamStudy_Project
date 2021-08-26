@@ -41,16 +41,6 @@ let videoTrackSent = {};
 
 let mystream, myscreenshare;
 
-// let openChatButt = document.getElementById('open-chat-btn');
-// window.addEventListener('resize',()=>{
-//     if (window.innerWidth <= 1200){
-//         openChatButt.innerHTML = `<i class="fas fa-comments fa-2x"></i>`;
-//         // openChatButt.style.color
-//     } else {
-//         openChatButt.innerHTML = `<i class="fas fa-angle-double-left fa-lg"></i>`;
-//     }
-// },true);
-
 document.querySelector('.roomcode').textContent = `${roomid}`
 socket.emit("join", roomid, usernick);
 
@@ -77,8 +67,6 @@ socket.on('userCount', count => {
     }
     participant_num = count ;
 })
-
-// error.js로 옮김
 
 function startCall() {
     navigator.mediaDevices.getUserMedia(mediaConstraints)
@@ -138,7 +126,7 @@ function handleVideoOffer(offer, sid, cname, vidinf) {
             vidCont.appendChild(videoOff);
 
             videoContainer.appendChild(vidCont);
-             videoResize(); /////////////////////////////////////////
+             videoResize();
         }
     };
 
@@ -154,7 +142,6 @@ function handleVideoOffer(offer, sid, cname, vidinf) {
                 return connections[sid].setLocalDescription(offer);
             })
             .then(function () {
-                // videoResize(); ////////////////////////////////////////
                 socket.emit('video-offer', connections[sid].localDescription, sid);
             })
             .catch(reportError);
@@ -215,7 +202,6 @@ attendiesButt.addEventListener('click',()=>{
         attendiesVisible=true;
         utilAttendiesButt.style.backgroundColor = "#393e46";  
         utilAttendiesButt.style.color = "white";
-        
     }
 })
 attendiesCloseButt.addEventListener('click',()=>{
@@ -379,6 +365,7 @@ socket.on('enterRoom',(usernick,level_show,level)=>{
     div1.appendChild(nick);
     document.querySelector('.attendies-list').appendChild(div1); 
 });
+
 socket.on('exitRoom',(usernick)=>{
     //참가자 나감
     document.querySelector('#attendies').textContent=`참가자들 (${participant_num})`;
@@ -558,17 +545,43 @@ boardButt.addEventListener('click',()=>{
 const openChat = document.getElementById('open-chat');
 const containerRight = document.getElementById('cont-right');
 const containerLeft = document.getElementById('cont-left');
+const utils = document.getElementById('utils');
 closeButt.addEventListener('click',()=>{
     containerRight.style.display = "none";
     containerLeft.style.width="100vw";
     openChat.style.display="flex";
+    
+    if (window.innerWidth >= 1500){
+        utils.style.marginLeft="36%";
+    } else if (window.innerWidth >= 1400 && window.innerWidth < 1500){
+        utils.style.marginLeft="33%";
+    } else if (window.innerWidth >= 1300 && window.innerWidth < 1400){
+        utils.style.marginLeft="30%";
+    } else if (window.innerWidth >=1200 && window.innerWidth < 1300){
+        utils.style.marginLeft="27%";
+    } else if (window.innerWidth > 900 && window.innerWidth < 1200){
+        utils.style.marginLeft="0%";
+    } else if (window.innerWidth >= 600 && window.innerWidth <= 900){
+        utils.style.marginLeft="0%";
+    } else if (window.innerWidth < 600){
+        utils.style.marginLeft="0%";
+    }
 })
 
 openChat.addEventListener('click',()=>{
-    console.log('open');
     containerRight.style.display="block";
     containerLeft.style.width="75vw";
     openChat.style.display="none";
+
+    if (window.innerWidth >= 1200){
+        utils.style.marginLeft="25%";
+    } else if (window.innerWidth >= 900 && window.innerWidth < 1200){
+        utils.style.marginLeft="27%";
+    } else if (window.innerWidth >= 600 && window.innerWidth < 900){
+        utils.style.marginLeft="20%";
+    } else if (window.innerWidth < 600){
+        utils.style.marginLeft="4%";
+    }
 })
 
 socket.on('filter-on', (sid) => { 

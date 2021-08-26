@@ -55,26 +55,163 @@
     }
     /***********layout끝************/
     
+    /******************room*********************/
+    .rooms-block{ top: 30px; height: 330px; }
+    .room-container{ width: 500px; height: 230px; left: 52%;}
+    .room-box{ width: 200px; height: 220px; box-shadow: 5px 5px 4px #c2c2c2; }
+    .room-box:not(:last-child){ margin-right: 80px; } /* box 당 간격 */
+    .room-delete{
+      margin-top: 198px;
+      margin-left: 10px;
+      font-size: 0.9em;
+    }
+    .roomLock{ top: 13px; left: 12px; font-size: 0.8em;}
+    .roomTitle{ top: 10px; left: 35px; width:150px; font-size: 0.9em; }
+    .roomDescription{
+      top: 40px;
+      left: 15px;
+      font-size: 0.7em;
+      height: 40px;
+      width: 170px;
+    }
+    #room-thumbnail{ top: 90px; width: 170px;} 
+    #room-thumbnail img{ height:100px; width: 170px;}
+    .roomParticipant{ top: 170px; left: 8px; font-size: 0.7em;}
+    .room-enter-btn{ width: 60px; height: 30px; top: 175px; font-size: 0.8em;}
+    .slide-butt{ padding: 0px; top: 130px;}
+    .slide-butt img{width: 25px; height: 25px;}
+    .slide-left:hover{cursor: pointer;transform: scale(1,1.2); top:117px}
+    .slide-right:hover{cursor: pointer;transform: scale(1,1.2); top:117px}
+    .slide-left{ left: -1%; }
+    .slide-right{ right: -1%; }
+    .room-btn-container{ top: 280px; height: 30px; width: 500px; }
+    /* .createroom-butt:hover .tooltiptext {
+      width: 100px;
+      left:20px;
+      bottom:55px;
+      right:300px;
+      font-size: 1px;
+    } */
+    .createroom-butt{
+      width: 35px;
+      height: 35px;
+      box-shadow: -8px -8px 20px 0px #ffffff, 2px 2px 8px 0px #a8a8a87e ;
+     }
+    .room-code-form{ width: 380px; height: 35px; font-size: 0.9em;}
+    .createroom-butt img{width: 25px; height: 25px;}
+  
+  /******************ranking*********************/
+    .ranking-block{ top: 380px; height: 250px; }
+    .ranking-title{ font-size: 1.5em; margin-left: 15px; }
+    .ranking-left{top: 50px; width: 40%; left: 9%;}
+    .ranking-right{top: 50px; width: 40%; right: 9%;}
+    .ranking-right .rank{ padding: 2px 0px 0px 0px; }
+    .ranker img{ width: 23px; height: 23px; margin-bottom: 3px;}
+    .rank img{ width: 14px; height: 14px; margin-bottom: 3px;}
+    .rank{
+      font-size: 0.8em;
+      margin-top: 9px;
+      margin-bottom: 9px;
+      margin-left: 15px;
+    }
+    .ranker{
+      font-size: 0.8em;
+      margin-top: 8px;
+      margin-bottom: 5px;
+      margin-left: 15px;
+    }
+    .ranking-info{ margin-left:10%;}
+  
 
-
-
+  /******************promise*********************/
+    .promise-block { top: 680px; height: 250px;}
+    .promise-title-container{ padding: 5px 30px 5px 15px; margin-top: 0px;}
+    .promise-title{ font-size: 1.5em; }
+    .promise-info{
+      font-size: 0.4em;
+      margin-left: 6%;
+      text-align: center;
+      width: 1.9em;
+      height: 1.8em;
+    }
+    #write{width: 75px; height: 30px; font-size: 1em; padding: 5px 6px 5px 12px; margin-top: 5px;}
+    #write-modal{
+      width: 300px;
+      height: 90px;
+      right: 10px;
+      top: -30px;
+    }
+    .modal-overlay{
+      top: -1200px;
+      height: 120vh;
+    }
+    #promise-form { top: 4px; width: 93%; left: 2%;}
+    .modal_bar{height: 20px;}
+    .contents{ height: 70px; top: 20px;}
+    .modal_buttons { top: 7px; right: 2px;}
+    #promise-input { font-size: 0.9em; width: 80%; height: 30px; margin: 10px 10px; }
+    #promise-btn{font-size: 0.9em; height: 30px; margin-top: 11px;}
+    .promise-slide-btn{
+      position: absolute;
+      top: 140px;
+      padding: 2px 7px 2px 7px;
+    }
+    .promise-slide-btn>i{
+      font-size: 1.5em;
+    }
+    .pslide-left{left: -2%;}
+    .pslide-right{right: -2.5%;}
+    .promise-container{
+      top: 90px;
+      width: 500px; 
+      height: 120px;
+      left: 51%;
+    }
+    .promise { width: 220px; height: 100px; }
+    .promise-content{
+      height: 60px;
+      font-size: 0.8em;
+    }
+    .promise-bottom{ top: 75px;}
+    .author{ width:100px;}
+    .author-level{ left: 106px; }
+    .promise-like{ left: 142px;}
+    .promise-like-cancel{ left: 142px;}
+    .promise-like-num{ left: 162px;}
+    .promise-delete{ left: 178px;}
+    .promise-info:hover .tooltiptext {
+      visibility: visible;
+      width: 320px;
+      left:-103px;
+      bottom:35px;
+      font-size: 13px;
+    }
     /**********profile*************/
     .upper-profile *{
         font-size: 15px;
     }
     .lower-profile *{
-        padding-top:20px;
+        /* margin-top: 20px; */
         font-size: 15px;
+        top: 50%;
+    }   
+    #update-profile>div{
+      font-size: 13px;
+      font-family: 'Pretendard-Regular';
     }
-    #profile-img{
-        position: absolute;
-        width: 10%;
-      }
-    #profile-img>img{
-        position: absolute;
-        margin-right: 20px;
-        width: 10px;
-        height:10px;
+    #profile-img #levelsong{
+      top:25%;
+    }
+    .profile-level>span{
+      font-family: 'Pretendard-Regular';
+      font-size: 13px;
+    }
+    .profile-level>input{
+      margin-left: 3%;
+      margin-right:10px;
+    }
+    #percent{
+      padding:0%;
     }
     .my-post{
         height: 300px;
@@ -82,7 +219,22 @@
     .post-like>span{
         font-size:10px;
     }
-    /**********profile끝*************/
+  
+    /**************newroom*****************/
+    .make_room_out>span{
+      font-size: 16px;
+    }
+    .make_room_out .label{
+      margin-right: 5%;
+    }
+    .label-thumbButt{
+      left:15%;
+      width:60%;
+      bottom: 5%;
+      font-size: 15px;
+      top: 60%;
+      padding: 10px 5px 10px 5px;
+    }
   }
   @media screen and (max-width:1200px) and (min-width:900px){
   /* 타블렛 */
@@ -128,7 +280,6 @@
     height: 300px;
     box-shadow: 8px 8px 4px #c2c2c2;
   }
-  .room-box:not(:last-child){ margin-right: 80px; } /* box 당 간격 */
   .room-delete{
     color:rgb(59, 59, 61);
     position: relative;
@@ -205,32 +356,27 @@
     font-size: 1.7em;
     margin-left: 20px;
   }
-  .ranking-left{top: 60px;}
-  .ranking-right{top: 60px;}
-  .ranking-right .rank{
-    padding: 4px 0px 0px 0px;
-  }
-  .ranker img{ width: 24px; height: 24px;}
-  .rank img{ width: 18px; height: 18px;}
+  .ranking-left{top: 60px; width: 39%; left: 8%;}
+  .ranking-right{top: 60px; width: 39%; right: 8%;}
+  .ranking-right .rank{ padding: 3px 0px 0px 0px; }
+  .ranker img{ width: 24px; height: 24px; margin-bottom: 1px;}
+  .rank img{ width: 16px; height: 16px; margin-bottom: 2px;}
   .rank{
-    margin-top: 10px;
-    margin-bottom: 10px;
+    font-size: 0.9em;
+    margin-top: 8px;
+    margin-bottom: 6.5px;
     margin-left: 15px;
   }
   .ranker{
+    font-size: 0.9em;
     margin-top: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     margin-left: 15px;
   }
   .ranking-info{ margin-left:10%;}
-  .ranking-info:hover .tooltiptext {
-    width: 260px;
-    left:-70px;
-    font-size: 13px;
-  }
+  
  
 /******************promise********************/
-
 .promise-block {
   top: 870px;
   width: 90%;
@@ -309,6 +455,9 @@
 /**********profile*************/
 #update-profile{
     font-size:16px;
+}
+div #level-text{
+  font-size: 100%;
 }
 /**********profile끝*************/
 }

@@ -2,7 +2,7 @@
 {% block login %}
   <div class="login-block">
     <div class="banner-login">
-            <a id="my-profile" href="/profile" class="btn"><img id="welcomeImg" src="/img/welcome_noonsong.png" style="width:38px;height:38px;z-index:2"></a>
+            <a id="my-profile" href="/profile" class="btn"><img id="welcomeImg" src="/img/welcome_noonsong.png" style="z-index:2"></a>
             <span>{{'안녕하세요, ' + user.nick + '송!'}}</span>
             <a id="logout" href="/auth/logout" class="btn" style="text-decoration:none;"><button class="logout">Sign Out</button></a>
     </div>  
@@ -14,20 +14,19 @@
     <div id="profile-img">
         <p id="profile-tag">✨ 프로필</p>
         {% if user.level>=0 and user.level< 10 %}
-            <img src="/img/level1_noonsong.png">       
+            <img id="levelsong" src="/img/level1_noonsong.png">       
         {% elif user.level>=10 and user.level < 30 %}
-            <img src="/img/level2_noonsong.png">
+            <img id="levelsong" src="/img/level2_noonsong.png">
         {% elif user.level >= 30 and user.level < 9999 %}
-            <img src="/img/level3_noonsong.png">
+            <img id="levelsong" src="/img/level3_noonsong.png">
         {% elif user.level >= 9999 %}
-            <img src="/img/master_noonsong.png">
+            <img id="levelsong" src="/img/master_noonsong.png">
         {%endif%}
     </div>
     <div id="profile-form"> 
         <form id="update-profile" action="/user/fix" method="post">   
-            <div>name :<input type="text" id="edit-nick" name="nick" value="{{user.nick}}" maxlength='15' style="width:200px;height:30px;font-size:1em"></div>
-            <div class="profile-level">level : {{user.level}}</div>
-            <div class="profile-level">
+            <div>name :<input type="text" id="edit-nick" name="nick" value="{{user.nick}}" maxlength='15'></div>
+            <div class="profile-level"><span>level : {{user.level}}</span>
                 {% if user.level_show == 0 %} 
                 <input type="radio" name="chk" value=0 checked="checked">공개 
                 <input type="radio" name="chk" value=1>비공개
@@ -127,8 +126,9 @@
     promiseA.setAttribute('href','http://localhost:8001/#promise');
     let profileA=document.getElementById('profileA');
     profileA.setAttribute('href','#');
-    let container2=document.querySelector('.container2');
     let navbar=document.querySelector('.navbar');
     navbar.style.height='500px';
+    let leftline=document.querySelector('.left-line');
+    leftline.style.height='800px';
 </script>
 {%endblock%}
