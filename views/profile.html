@@ -74,7 +74,9 @@
                 {% set total_time = total_time*10/6 %}
                 {% set M=total_time//100%}
                 {%set percent=M/60*100%}
-            <div class="w3-light-grey w3-round-xlarge"><img id="noonsong" src="/img/bar1_noonsong.png" style="left:{{percent-7}}%;">
+            {%if percent<=5%}<div class="w3-light-grey w3-round-xlarge"><img id="noonsong" src="/img/bar1_noonsong.png" style="left:{{percent}}%;">
+            {%else%}<div class="w3-light-grey w3-round-xlarge"><img id="noonsong" src="/img/bar1_noonsong.png" style="left:{{percent-7}}%;">
+            {%endif%}
             <div class="w3-container w3-padding-large  w3-indigo w3-round-xlarge" style="width:{{percent}}%"></div></div>
             <div id="percent"><div id="left-percent">0%</div><div id="right-percent">100%</div></div>
             <div id="level-text">
