@@ -26,7 +26,7 @@ module.exports = class Room extends Sequelize.Model {
       img: {
         type: Sequelize.STRING(100),
         allowNull: false,
-        defaultValue: 'zoom.jpg',
+        defaultValue: 'zoom.png',
       },
       max: { 
         type: Sequelize.INTEGER,
