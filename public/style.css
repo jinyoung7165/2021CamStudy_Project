@@ -37,7 +37,6 @@ body{
   display: flex;
   position: absolute;
   width: 100%;
-  /* height: 50px; */
   padding: 0px 20px 10px 20px;
 }
 /*********************** 1200px 이상 ***********************/
@@ -72,6 +71,21 @@ body{
     bottom: 22%;
     left: 95%;
   }
+  .attendies-list {
+    top: 45px;
+    left: 50px;
+    width: 300px;
+    height: 400px; 
+  }
+  .attendies-title{ font-size: 18pt; }
+  #attendies-user,
+  #attendies-nick{
+    font-size: 12pt;
+  }
+  .user>img{
+    width:35px;
+    height:35px;
+  }
 }
 /*********************** 900px - 1200px ***********************/
 @media screen and (max-width:1200px) and (min-width:900px){
@@ -105,7 +119,21 @@ body{
     position: absolute;
     bottom: 30%;
     left: 92%;
-     
+  }
+  .attendies-list {
+    top: 45px;
+    left: 50px;
+    width: 300px;
+    height: 400px; 
+  }
+  .attendies-title{ font-size: 18pt; }
+  #attendies-user,
+  #attendies-nick{
+    font-size: 12pt;
+  }
+  .user>img{
+    width:35px;
+    height:35px;
   }
 }
 /*********************** 900px 이하 ***********************/
@@ -140,6 +168,21 @@ body{
     justify-content: flex-end;
     margin-left: 20%;
   }
+  .attendies-list {
+    top: 25px;
+    left: 25px;
+    width: 200px;
+    height: 250px;
+  }
+  .attendies-title{ font-size: 13pt; }
+  #attendies-user,
+  #attendies-nick{
+    font-size: 9pt;
+  }
+  .user>img{
+    width:20px;
+    height:20px;
+  }
 }
 /*********************** 600px 이하 ***********************/
 @media screen and (max-width:599px) {
@@ -171,6 +214,16 @@ body{
     display: flex;
     justify-content: flex-end;
     margin-left: 3%;
+  }
+  .attendies-list {
+    top: 25px;
+    left: 25px;
+    width: 200px;
+    height: 220px; 
+  }
+  .user>img{
+    width:20px;
+    height:20px;
   }
 }
 
@@ -291,10 +344,6 @@ body{
 .attendies-list {
   position: fixed; 
   z-index: 1;
-  top: 45px;
-  left: 50%;
-  width: 18%;
-  height: 40%; 
   overflow: auto; 
   background-color: white;
   box-shadow: 5px 5px 10px gray;
@@ -313,21 +362,16 @@ body{
 .attendies-cont{
   padding: 20px 20px 0px 20px;
 }
-.attendies-title{
-  font-size: 18pt;
-}
 .user>img{
   position: relative;
   margin-bottom: -4%;
-  width:35px;
-  height:35px;
 }
 #attendies-user,
 #attendies-nick{
   padding-top: 11px;
   padding-left: 5px;
-  font-size: 12pt;
 }
+
 .tooltip {
   position: relative;
   display: inline-block;
