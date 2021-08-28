@@ -720,13 +720,6 @@ input[type="text"]:focus::placeholder{
   box-shadow: 2px 2px 1px #c2c2c2;
   font-size: 1em;
 }
-.label label:hover{
-  border:1px solid white;
-  box-shadow: 2px 2px 5px 0px #8d8d8d inset
-}
-.label:active{
-  transform: scale(1,0.97);
-}
 .make_room_out input {
   margin-left: 10%;
 }
