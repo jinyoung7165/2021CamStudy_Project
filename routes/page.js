@@ -141,9 +141,9 @@ router.post('/room/loadImage',isLoggedIn, upload.single('img'), async (req, res,
       description: req.body.description,
       password: req.body.password,
       img: req.file.filename,
-      //img: req.params.img || req.file.filename,
       option:req.body.room_option,
       participants_num:1,
+      owner:req.user.id,
     });
     const io = req.app.get('io'); //io 객체 가져오기
     io.emit('newRoom', newRoom); // 모든 클라이언트에 데이터를 보내는 메서드
