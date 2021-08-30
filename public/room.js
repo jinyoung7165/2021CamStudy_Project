@@ -27,22 +27,12 @@ let myvideooff = document.querySelector("#myvideooff");
 myvideooff.style.visibility = 'hidden';
 
 const configuration = { iceServers: [{ 
-    "urls": [
-        "stun:1.2.3.4:3478"
-      ]
-    },
-    {
-      "urls": [
-        "turn:1.2.3.4:3478?transport=udp",
-        "turn:1.2.3.4:3478?transport=tcp"
-      ],
-    /*urls:[
+    urls:[
         "stun:stun.l.google.com:19302",
         "stun:stun.l.google.com:19302",
         "stun:stun.l.google.com:19302",
         "stun:stun.stunprotocol.org"
-        ] */
-    }] }
+        ] }] }
 const mediaConstraints = { video: true, audio: false};
 
 let connections = {};
