@@ -3,7 +3,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>숙명사이버대학교</title>
     <meta name="description" content="">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/public/style.css">
     <link rel="stylesheet" href="/public/main.css">
@@ -17,15 +19,14 @@
     <script defer src="/public/canvas.js"></script>
     <script src="/public/error.js"></script>
 
-    <script type="text/javaScript" >
-        $(document).ready(function(){
+    <script type="text/javascript">
+        $(function(){
             $("#attendies-list").draggable();
         });
     </script>
 </head>
 
 <body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <div class="container-room">
         <div class="container-left" id="cont-left">
             <div class="box-video"> <!--이름 바꾸기-->
@@ -155,7 +156,6 @@
     </div>
 </body>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     var modal = document.getElementById('attendies-modal');
     var utilAttendiesButt = document.getElementById('util-attendies');
