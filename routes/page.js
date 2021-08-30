@@ -120,9 +120,7 @@ router.post('/room',isLoggedIn, upload.single('img'), async (req, res, next) => 
       io.emit('newRoom', newRoom); // 모든 클라이언트에 데이터를 보내는 메서드
       await newRoom.addUser(req.user.id);
       if(req.body.password){       //방 만들면서 자신의 쿠키도 갱신
-        let pw = req.body.password
-        res.cookie('pw',pw)
-        res.redirect(`/library/${makeuuid}`);
+        res.redirect(`/library/${makeuuid}?password=${req.body.password}`);
       }
       else{res.redirect(`/library/${makeuuid}`);}
     } catch (error) {
