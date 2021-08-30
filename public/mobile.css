@@ -235,6 +235,14 @@
       top: 60%;
       padding: 10px 5px 10px 5px;
     }
+    .make-room-thumbnail-img {
+      position: absolute;
+      width: 80%;
+      left: 10%;
+      top: 5%;
+      height: 60%;
+      object-fit: scale-down;
+  }
   }
   @media screen and (max-width:1200px) and (min-width:900px){
   /* 타블렛 */
