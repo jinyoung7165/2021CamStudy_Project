@@ -327,7 +327,11 @@ socket.on('enterRoom',(usernick,level_show,level)=>{
     let nick = document.createElement('span');
     img.style.marginLeft="20px";
     nick.style.paddingLeft="5px";
-    nick.style.fontSize="12pt";
+    if (window.innerWidth<900){
+        nick.style.fontSize="9pt";
+    } else {
+        nick.style.fontSize="12pt";
+    }
     nick.style.fontWeight="bold";
 
     if(level>0 && level<10){
