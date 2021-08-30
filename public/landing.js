@@ -2,15 +2,16 @@ const socket = io();
 let roomid;
 
 function addBtnEvent(e) { // 방 입장 클릭 시
-    if (e.target.dataset.password == 'true') {
-      const password = prompt('비밀번호를 입력하세요'); // 비번 입력할때마다 자기 브라우저의 쿠키 갱신 (=> 삭제할필요없음)
-      var willCookie="";
-      willCookie+="pw="+password
-      document.cookie=willCookie;
-    } else {
-      location.href = '/library/' + e.target.dataset.id;
-    }
-    roomid = e.target.dataset.id;
+  if (e.target.dataset.password == 'true') {
+    const password = prompt('비밀번호를 입력하세요'); // 비번 입력할때마다 자기 브라우저의 쿠키 갱신 (=> 삭제할필요없음)
+    var willCookie="";
+    willCookie+="pw="+password
+    document.cookie=willCookie;
+    location.href = '/library/' + e.target.dataset.id;
+  } else {
+    location.href = '/library/' + e.target.dataset.id;
+  }
+  roomid = e.target.dataset.id;
 }
 function addDeleteEvent(e) { // 방 입장 클릭 시
   roomid = e.target.dataset.id;
