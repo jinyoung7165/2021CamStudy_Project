@@ -15,36 +15,22 @@ module.exports=()=>{
                     provider:'google'
                 },
             });
-            // let email = profile.email;
-            // let splitMail = email.split('@');
-            // let splitdot = splitMail[1].split('.');
-            // if (splitdot[0] == 'sookmyung' && exUser){//이미 회원가입한 유저
-            //     done(null,exUser);
-            // } else if (splitdot[0] == 'sookmyung' && !exUser){
-            //     const newUser=await User.create({ 
-            //         email:profile.email,
-            //         nick:profile.family_name+profile.given_name,
-            //         snsID:profile.id,
-            //         provider:'google',
-            //     });
-            //     done(null, newUser);
-            // } else {
-            //     done(null,null);
-            // }
-            
-            //////////////////////////////////////////
-            const newUser=await User.create({ 
-                email:profile.email,
-                nick:profile.family_name+profile.given_name,
-                snsID:profile.id,
-                provider:'google',
-            });
-            if (newUser){
+            let email = profile.email;
+            let splitMail = email.split('@');
+            let splitdot = splitMail[1].split('.');
+            if (splitdot[0] == 'sookmyung' && splitdot[0] == 'gmail' && exUser){//이미 회원가입한 유저
+                done(null,exUser);
+            } else if (splitdot[0] == 'sookmyung' && splitdot[0] == 'gmail' && !exUser){
+                const newUser=await User.create({ 
+                    email:profile.email,
+                    nick:profile.family_name+profile.given_name,
+                    snsID:profile.id,
+                    provider:'google',
+                });
                 done(null, newUser);
             } else {
-                done(null, null);
+                done(null,null);
             }
-            ///////////////////////////////////////
         }catch(error){
             console.error(error);
             done(error);
