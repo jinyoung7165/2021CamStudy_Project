@@ -166,10 +166,11 @@ router.get('/library/:id', async(req, res) => {
     const user=req.user.id;
     const uuid=req.params.id;
     const room=await Room.findOne({where:{uuid}});
+    const roompw= crypto.createHash('sha512').update(room.password).digest('base64');
     if (!room) {
       return res.redirect('/?RoomError=존재하지 않는 방입니다.');
     }
-    else if (req.query.password&&room.password && room.password !== req.query.password) {
+    else if (req.query.password&& room.password && roompw !== req.query.password) {
       return res.redirect('/?PwError=비밀번호가 틀렸습니다.');
     }
     else if (room.participants_num+1 > room.max) {
