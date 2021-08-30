@@ -4,11 +4,7 @@ let roomid;
 function addBtnEvent(e) { // 방 입장 클릭 시
   if (e.target.dataset.password == 'true') {
     const password = prompt('비밀번호를 입력하세요');
-    var hash=CryptoJS.SHA512(password);
-    var encoded=CryptoJS.enc.Base64.stringify(hash);
-    console.log(hash);
-    console.log(encoded);
-    location.href = '/library/' + e.target.dataset.id + '?password=' + encoded;
+    location.href = '/library/' + e.target.dataset.id + '?password=' + password;
   } else {
     location.href = '/library/' + e.target.dataset.id;
   }

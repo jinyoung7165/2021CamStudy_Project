@@ -6,7 +6,6 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const sanitizeHtml = require('sanitize-html');
-const crypto = require('crypto');
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -120,10 +119,8 @@ router.post('/room',isLoggedIn, upload.single('img'), async (req, res, next) => 
       const io = req.app.get('io'); //io 객체 가져오기
       io.emit('newRoom', newRoom); // 모든 클라이언트에 데이터를 보내는 메서드
       await newRoom.addUser(req.user.id);
-      if(req.body.password){       //방 만들면서 자신의 쿠키도 갱신
-        const newPassword = crypto.createHash('sha512').update(req.body.password).digest('base64');
-        console.log(newPassword)
-        res.redirect(`/library/${makeuuid}?password=${newPassword}`);
+      if(req.body.password){       
+        res.redirect(`/library/${makeuuid}?password=${req.body.password}`);
       }
       else{res.redirect(`/library/${makeuuid}`);}
     } catch (error) {
@@ -150,9 +147,7 @@ router.post('/room/loadImage',isLoggedIn, upload.single('img'), async (req, res,
     io.emit('newRoom', newRoom); // 모든 클라이언트에 데이터를 보내는 메서드
     await newRoom.addUser(req.user.id);
     if(req.body.password){
-      const newPassword = crypto.createHash('sha512').update(req.body.password).digest('base64');
-      console.log(">>>>>>>>>>>>>>>>>!!!!!!!!!!!!"+newPassword);
-      res.redirect(`/library/${makeuuid}?password=${newPassword}`);
+      res.redirect(`/library/${makeuuid}?password=${req.body.password}`);
     }
     else{res.redirect(`/library/${makeuuid}`);}
   } catch (error) {
@@ -166,11 +161,11 @@ router.get('/library/:id', async(req, res) => {
     const user=req.user.id;
     const uuid=req.params.id;
     const room=await Room.findOne({where:{uuid}});
-    const roompw= crypto.createHash('sha512').update(room.password).digest('base64');
+    
     if (!room) {
       return res.redirect('/?RoomError=존재하지 않는 방입니다.');
     }
-    else if (req.query.password&& room.password && roompw !== req.query.password) {
+    else if (req.query.password&& room.password &&  room.passwor!== req.query.password) {
       return res.redirect('/?PwError=비밀번호가 틀렸습니다.');
     }
     else if (room.participants_num+1 > room.max) {
