@@ -342,7 +342,7 @@ body{
 }
 /* 참여자 목록 모달 */
 .attendies-list {
-  position: fixed; 
+  position: absolute; 
   z-index: 1;
   overflow: auto; 
   background-color: white;

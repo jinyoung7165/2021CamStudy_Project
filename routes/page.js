@@ -149,9 +149,7 @@ router.post('/room/loadImage',isLoggedIn, upload.single('img'), async (req, res,
     io.emit('newRoom', newRoom); // 모든 클라이언트에 데이터를 보내는 메서드
     await newRoom.addUser(req.user.id);
     if(req.body.password){
-      let pw = req.body.password
-      res.cookie('pw',pw)
-      res.redirect(`/library/${makeuuid}`);
+      res.redirect(`/library/${makeuuid}?password=${req.body.password}`);
     }
     else{res.redirect(`/library/${makeuuid}`);}
   } catch (error) {
@@ -165,11 +163,11 @@ router.get('/library/:id', async(req, res) => {
     const user=req.user.id;
     const uuid=req.params.id;
     const room=await Room.findOne({where:{uuid}});
-    const passwd=req.cookies.pw;
+
     if (!room) {
       return res.redirect('/?RoomError=존재하지 않는 방입니다.');
     }
-    else if (passwd&& room.password && room.password !== passwd) {
+    else if (passwd&& room.password && room.password !== passwd) { //req.query.password&&room.password && room.password !== req.query.password
       return res.redirect('/?PwError=비밀번호가 틀렸습니다.');
     }
     else if (room.participants_num+1 > room.max) {
