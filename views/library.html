@@ -16,12 +16,10 @@
     <script defer src="/public/canvas.js"></script>
     <script src="/public/error.js"></script>
 
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <script>
-        $(function () { 
-            $('.attendies-list').draggable(); 
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javaScript" >
+        $(document).ready(function(){
+            $("#attendies-list").draggable();
         });
     </script>
 </head>
@@ -58,7 +56,7 @@
         </div>
 
         <div id="attendies-modal" class="modal" style="display:none;">
-            <div class="attendies-list" draggable="true">
+            <div class="attendies-list" id="attendies-list" draggable="true">
                 <span class="attendies-close-butt" id="attendies_close">&times;</span>
                 <div class="attendies-cont">
                     <div class="attendies-title" id="attendies">참가자들 ({{room.participants_num}})</div>
