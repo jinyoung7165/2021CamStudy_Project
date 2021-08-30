@@ -165,7 +165,7 @@ router.get('/library/:id', async(req, res) => {
     const user=req.user.id;
     const uuid=req.params.id;
     const room=await Room.findOne({where:{uuid}});
-    const passwd=req.cookies.pw
+    const passwd=req.cookies.pw;
     if (!room) {
       return res.redirect('/?RoomError=존재하지 않는 방입니다.');
     }
