@@ -6,7 +6,8 @@
   box-sizing: border-box;
   font-family: 'EliceDigitalBaeum_Bold';
 }
-body{
+body,
+footer{
   background-color: whitesmoke;
 }
 /*********************** 전체적인 틀 ***********************/
@@ -16,7 +17,6 @@ body{
   height: 90%;
   width: 100%;
   flex-direction: row;
-  background-color: whitesmoke;
   overflow: hidden;
 }
 .container-left {
@@ -31,7 +31,6 @@ body{
   width: 430px;
   height: 100%;
   right: 5px;
-  background-color: whitesmoke;
 }
 .footer {
   display: flex;
@@ -46,10 +45,10 @@ body{
     height: 93%;
   }
   .container-left {
-    padding: 30px 20px 2% 30px;
+    padding: 20px 20px 2% 20px;
   }
   .container-right {
-    padding: 30px 10px 2% 20px;
+    padding: 20px 10px 2% 20px;
   }
   .footer {
     top: 90%;
@@ -577,6 +576,7 @@ body{
 .content{
   font-size: 0.85rem;
   text-align: left;
+  margin-top: 4px;
 }
 .chat-close-butt{
   cursor: pointer;

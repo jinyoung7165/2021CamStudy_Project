@@ -12,7 +12,7 @@
   height: 25%;
   display: flex;
   margin-top:1%;
-  margin-bottom:10%;
+  margin-bottom:7%;
   margin-left:3%;
   text-align: left;
   font-size:120%;
@@ -20,7 +20,7 @@
 .lower-profile{
   width: 90%;
   margin:3%;
-  margin-top:5%;
+  margin-top:2%;
   font-size:120%;
 }
 /*수정 form부분*/
@@ -75,23 +75,27 @@
   }
 }
 #edit{
+  background-color: white;
+  width: 100px;
+  font-weight: 700;
+  border-radius: 6px;
+  border: 2px solid rgb(83, 105, 177);
+  text-align: center;
   position: relative;
-  margin-left: 70%;
-  -webkit-font-smoothing: antialiased;
-  background-color:white;
-  border: none;
+  margin-left: 67%;
   box-shadow: 2px 2px 1px #b1b1b195;
   font-size: 100%;
   text-decoration: none;
   user-select: none;
   letter-spacing: 1px;
-  color: #aacdee;
-  padding: 6px 10px 6px 10px;
-  border-radius: 3px;
+  padding: 3px 5px 3px 5px;
+  color:#1B3C77;
 }
 #edit:hover{
-  background-color:#aacdee;
-  color:white;
+  cursor: pointer;
+  color:white; 
+  background-color: rgb(83, 105, 177);
+  box-shadow: 2px 2px 1px #c2c2c2, 0 -80px 0 0 rgba(0,0,0,0.025) inset;
 }
 #edit:active {
     transform: scale(1,0.95);
@@ -103,14 +107,17 @@
   width: 20%;
 }
 #profile-tag{
+  font-family:"Pretendard-Regular";
+  font-size: 16pt;
   padding-left:10%;
   font-weight: bold;
+  margin-bottom: 5px;
 }
 #levelsong{
   object-fit: scale-down;/*옆에 꽉 차게 하고 싶음 지워라*/
   position: absolute;
   margin-right: 20px;
-  top:38%;
+  top:42%;
   width: 90%;
   height:90%;
   filter: drop-shadow(5px 5px 5px rgb(185, 185, 185));
@@ -121,7 +128,9 @@
   width: 50%;
 }
 #my-posts>p{
-  font-weight: bolder;
+  font-family:"Pretendard-Regular";
+  font-size: 16pt;
+  font-weight: bold;
   text-align: left;
   padding-left: 5px;
 }
@@ -188,6 +197,8 @@
   width: 55%;
 }
 .level-container>p{
+  font-family: 'Pretendard-Regular';
+  font-size: 16pt;
   font-weight: bolder;
   text-align: left;
   padding-left: 5%;

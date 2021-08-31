@@ -59,7 +59,7 @@
     .rooms-block{ top: 30px; height: 330px; }
     .room-container{ width: 500px; height: 230px; left: 52%;}
     .room-box{ width: 200px; height: 220px; box-shadow: 5px 5px 4px #c2c2c2; }
-    .room-box:not(:last-child){ margin-right: 80px; } /* box 당 간격 */
+    .room-box:not(:last-child){ margin-right: 40px; } /* box 당 간격 */
     .room-delete{
       margin-top: 198px;
       margin-left: 10px;

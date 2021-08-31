@@ -1,4 +1,4 @@
-* { box-sizing: border-box; font-family: 'EliceDigitalBaeum_Bold';}
+* { box-sizing: border-box; font-family: 'Pretendard-Light';}
 html {height: 100%;}
 /*
 @media screen and (min-width: 800px) {
@@ -7,33 +7,15 @@ html {height: 100%;}
 @media screen and (min-width: 800px) { .promise-block { width: 500px; } }
 */
 @font-face {
-  font-family: 'EliceDigitalBaeum_Bold';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/EliceDigitalBaeum_Bold.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'EliceDigitalBaeum_Regular';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/EliceDigitalBaeum_Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'twaysky';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twaysky.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Cafe24Dangdanghae';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.2/Cafe24Dangdanghae.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
   font-family: 'BMDOHYEON';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
   font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Pretendard-Light';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Light.woff') format('woff');
+  font-weight: 300;
   font-style: normal;
 }
 @font-face {
@@ -42,9 +24,11 @@ html {height: 100%;}
   font-weight: 400;
   font-style: normal;
 }
-
+body{
+  background: rgb(251, 251, 251);
+}
 /*******************************************layout 내용********************************************/
-.left-line{
+/* .left-line{
   background-color:#C9D9E9;
   width: 30px;
   height: 1500px;
@@ -52,12 +36,13 @@ html {height: 100%;}
   left:0;
   right: 90%;
   position: absolute;
-}
+} */
 .banner{
   display: flex;
   width: 100%;
   height: 15%;
   position: relative;
+  background:rgb(251, 251, 251);
 }
 .banner .logo{
   flex-grow: 1;
@@ -66,8 +51,9 @@ html {height: 100%;}
   margin-left:4%;
 }
 .logo-img{
-  width: 30px;
-  height:30px;
+  width: 40px;
+  height:40px;
+  margin-bottom: 3px;
 }
 .logo-text{
   margin-top: 3%;
@@ -86,39 +72,6 @@ html {height: 100%;}
   font-weight: bold;
   display: flex;
 }
-
-.navbar{
-  width: 5%;
-  height:1350px;
-  top:15%;
-  left:30px;
-  right: 90%;
-  position: absolute;
-  z-index: 2;
-}
-.nav{
-  position: fixed;
-}
-
-.icon{
-  margin:6%;
-  position: relative;
-  right:2px;
-  margin-left:40%;
-  padding-bottom:100%;
-  margin-bottom:200%;
-  width: 40px;
-  height: 40px;
-}
-
-.icon-img{
-  left:0px;
-  margin: 10%;
-  width: 30px;
-  height: 30px;
-  position:absolute;
-}
-
 .tooltiptext {
   visibility: hidden;
   width: 120px;
@@ -146,23 +99,6 @@ html {height: 100%;}
   border-width: 5px;
   border-style: solid;
   border-color: #808080 transparent transparent transparent;
-}
-
-.icon:hover .tooltiptext {
-  visibility: visible;
-  opacity: 0.8;
-}
-
-.icon:hover{
-  border-radius: 5px;
-  background-color:#C9D9E9;
-  margin:6%;
-  position: relative;
-  margin-left:40%;
-  padding-bottom:100%;
-  margin-bottom:200%;
-  width: 40px;
-  height: 40px;
 }
 /* login block */
 .login-block{ 
@@ -203,8 +139,9 @@ html {height: 100%;}
   height:38px;
 }
 .banner-login>span{ 
-  flex-grow: 0.5;
+  flex-grow: 1;
   margin-top: 2%;
+  width:150px;
 }
 .logout{
   flex-grow: 0.5;
@@ -218,9 +155,32 @@ html {height: 100%;}
   cursor: pointer;
   box-shadow: 2px 2px 1px #c2c2c2;
   color:#1B3C77;
-  margin-bottom: 3px;
+  margin: 0px 100px 3px 5px;
 }
 .logout:hover{
+  cursor:pointer;
+  color:white; 
+  background-color: rgb(83, 105, 177);
+  box-shadow: 2px 2px 1px #c2c2c2, 0 -80px 0 0 rgba(0,0,0,0.025) inset;
+}
+#my-profile-btn{
+  text-decoration:none;
+  text-align: center;
+  flex-grow: 0.5;
+  background-color: white;
+  width: 100px;
+  height: 30px;
+  font-size: 1em;
+  font-weight: 700;
+  border-radius: 6px;
+  border: 2px solid rgb(83, 105, 177);
+  cursor: pointer;
+  box-shadow: 2px 2px 1px #c2c2c2;
+  color:#1B3C77;
+  margin: 0 3px 3px 3px;
+  padding: 3px 6px 1px 6px;
+}
+#my-profile-btn:hover{
   cursor:pointer;
   color:white; 
   background-color: rgb(83, 105, 177);
@@ -254,7 +214,6 @@ html {height: 100%;}
   float: right;
   font-size: 28px;
   font-weight: bold;
-  /* margin-right: 8px; */
 }
 .modal-content input{
   position: absolute;
@@ -269,14 +228,14 @@ html {height: 100%;}
   right: 10%;
   width: 16%;
   height:30px;
-  padding-top: 4px;
+  padding-top: 6px;
   cursor: pointer;
   border: 1px solid lightgray;
   border-radius: 4px;
   font-size: 0.8em;
   box-shadow: 2px 2px 1px #c2c2c2;
   text-decoration:none;
-  font-family:'EliceDigitalBaeum_Regular';
+  font-family:'Pretendard-Light';
 }
 .modal-content>a:hover{
   cursor:pointer;
@@ -295,10 +254,11 @@ html {height: 100%;}
 }
 .modal-content u{
   position: absolute;
-  bottom: 11px;
+  bottom: 9px;
   text-decoration: none;
   left: 20%;
   font-size: 0.9em;
+  font-family:'Pretendard-Light';
 }
 
 .modal-close:hover,
@@ -319,10 +279,10 @@ button{cursor:pointer;}
 .container { 
   position: absolute;
   margin:0;
-  left:6%;
-  width: 94%;
+  left:0%;
+  width: 100%;
   height: 1350px;
-  background:rgb(250, 250, 250);
+  background:rgb(251, 251, 251);
 }
 input{
   margin: 1% 1% 2% 1%;
@@ -367,30 +327,44 @@ input[type="text"]:focus::placeholder{
   transform: translateX(-50%);
 }
 .room-container{
+  z-index: 0;
   position:absolute;
-  width: 840px;
-  height: 360px;
+  width: 1090px;
+  height: 400px;
   top: 5%;
   left: 50%;
   transform: translateX(-50%);
   overflow: hidden; 
 }
 .room-slides{
+  z-index: 1;
   display: flex;
   position: absolute;
   left: 0; 
-  top: 0;
+  top: 20px;
   transition: left 0.5s ease-out;
 }
-.room-box{ 
-  width: 220px;
-  height: 350px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 10px 10px 4px #c2c2c2;
+.room-enter{
+  position: absolute;
+  z-index: 10;
+  width: 200px;
+  height: 300px;
 }
-.room-box:not(:last-child){ margin-right: 80px; } /* box 당 간격 */
+.room-box{ 
+  z-index: 2;
+  width: 200px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.927);
+  border-radius: 2px;
+  box-shadow: 1px 1px 5px #c2c2c2;
+}
+.room-box:hover{ 
+  cursor: pointer;
+  transform: translate(0px, -2px);;
+}
+.room-box:not(:last-child){ margin-right: 20px; } /* box 당 간격 */
 .room-box-container{
+  z-index: 3;
   position: relative;
   top: 0px;
   left: 0px;
@@ -398,10 +372,11 @@ input[type="text"]:focus::placeholder{
   height: 100%;
 }
 .room-delete{
-  color:rgb(59, 59, 61);
+  z-index: 20;
+  color:rgb(89, 89, 91);
   position: relative;
-  margin-top: 320px;
-  margin-left: 15px;
+  margin-top: 278px;
+  margin-left: 168px;
 }
 .room-delete:hover{
   cursor:pointer;
@@ -410,89 +385,68 @@ input[type="text"]:focus::placeholder{
   color:#a5a5a5;
 }
 .roomLock{
+  z-index: 4;
   position: absolute;
   top: 20px;
   left: 10px;
-  font-size: 1em;
+  font-size: 0.9em;
 }
 .roomTitle{
+  z-index: 4;
+  font-family: 'Pretendard-Regular';
   display: inline-block;
   position: absolute;
   top: 20px;
   left: 40px;
-  width:160px;
-  font-size: 1.1em;
+  width:150px;
+  font-size: 1em;
   overflow:hidden; 
   text-overflow:ellipsis;
   white-space:nowrap;
 }
 .roomDescription{
+  z-index: 4;
   position: absolute;
-  top: 70px;
-  left: 15px;
-  font-size: 0.9em;
+  top: 55px;
+  left: 10px;
+  font-size: 0.8em;
   height:50px;
-  width: 200px;
+  width: 180px;
   margin: auto;
   color: rgb(108, 108, 108);
   word-break:break-all;
 }
 #room-thumbnail{ 
+  z-index: 4;
   position: absolute;
   display: block;
   object-fit: scale-down;
-  top: 130px;
-  width: 190px;
+  top: 115px;
+  left: 10px;
+  width: 180px;
 } 
-#room-thumbnail img{ width:190px; height:140px;}
+#room-thumbnail img{ width:180px; height:160px;}
 .roomParticipant{
   position: absolute;
   font-size: 1em;
-  top: 245px;
-  left: 10px;
-  color: white;
-  font-size: 0.8em;
-  text-shadow: 2px 2px 2px rgb(108, 110, 114);
+  top: 277px;
+  left: 15px;
+  color: rgb(72, 72, 72);
+  font-size: 0.9em;
 }
-.room-enter-btn{
-  position: absolute;
-  background: #9ab1c6;
-  color: white;
-  width: 70px;
-  height: 40px;
-  top: 255px;
-  right: 0%;
-  /* box-shadow: spread #1B3C77; */
-  border: none;
-  border-radius: 4px 0px 0px 4px;
-  box-shadow: 5px 5px 10px 0px #aeaec07e , 0px 3px 10px 0px #ffffff;
-  font-size: 1em;
-  font-family:'EliceDigitalBaeum_Bold';
-}
-.room-enter-btn:hover{
-  transition-property: background-color, color;
-  transition-duration: 0.5s;
-  background:white;
-  color: #9ab1c6;
-}
-.slide-left:hover{cursor: pointer;transform: scale(1,1.2); top:190px}
-.slide-right:hover{cursor: pointer;transform: scale(1,1.2); top:190px}
+.slide-butt img{width: 35px; height: 35px;}
+.slide-left:hover{cursor: pointer;transform: scale(1,1.2); top:168px}
+.slide-right:hover{cursor: pointer;transform: scale(1,1.2); top:168px}
 .slide-butt{
   position:absolute;
   text-align: center;
   background: none;
   padding: 5px;
-  top: 220px;
+  top: 190px;
   transform: translateY(-50%);
 }
-
-/* .fa-chevron-circle-left,
-.fa-chevron-circle-right{
-  position: relative;
-  margin: 20px;
-} */
-.slide-left{ left: 0%; }
-.slide-right{ right: 1%; }
+.slide-left{ left: -20px; }
+.slide-right{ right: -15px; }
 .plus-butt{
   position: relative;
   width: 100px;
@@ -512,9 +466,9 @@ input[type="text"]:focus::placeholder{
 }
 .room-btn-container{
   position: absolute;
-  top: 420px;
+  top: 400px;
   height: 50px;
-  width: 840px;
+  width: 900px;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -526,13 +480,13 @@ input[type="text"]:focus::placeholder{
   right: 0%;
   transform: translateX(-50%);
   border:none;
-  background: whitesmoke;
+  background: white;
   box-shadow: -10px -10px 30px 0px #ffffff, 3px 3px 20px 0px #a8a8a87e ;
-  text-shadow: 2px -2px rgba(0,0,0,0.5);
+  /* text-shadow: 2px -2px rgba(0,0,0,0.5); */
  }
  .createroom-butt img{width: 35px; height: 35px;}
  .createroom-butt:hover{
-   box-shadow: -10px -10px 10px 0px #c2c2c270, 10px 10px 10px 0px #aeaec020 ;
+   box-shadow: -3px -3px 3px 0px #c2c2c270, 3px 3px 3px 0px #aeaec020 ;
  }
  .createroom-butt:hover .tooltiptext {
   visibility: visible;
@@ -550,25 +504,27 @@ input[type="text"]:focus::placeholder{
 #room-code-input{
   position: absolute;
   left: 0%;
-  width: 65%;
+  width: 80%;
   height: 100%;
   margin: 0px;
   padding: 0px;
   border: none;
-  border-radius: 25px 0% 0% 25px ;
+  border-radius: 15px 0% 0% 15px ;
   font-family:'EliceDigitalBaeum_Bold';
   box-shadow: 5px 5px 10px 0px #aeaec07e , 0px 3px 10px 0px #ffffff;
 }
 .enter-btn{
-  border-radius: 0px 25px 25px 0px;
+  border-radius: 0px 15px 15px 0px;
   position: absolute;
-  width: 35%;
+  width: 20%;
   right: 0%;
   top: 0%;
   height: 100%;
   font-size: 1em;
-  background-color: #1B3C77;
   color:white;
+  background-color:#1B3C77;
+  border: none;
+  font-weight: bold;
   font-family:'EliceDigitalBaeum_Bold';
   box-shadow: 5px 5px 10px 0px #aeaec07e , 0px 3px 10px 0px #ffffff;
 }
@@ -576,7 +532,7 @@ input[type="text"]:focus::placeholder{
   transition-property: color, box-shadow;
   transition-duration: 0.5s;
   color: white;
-  box-shadow: 5px 5px 10px 0px #282829a8 inset
+  box-shadow: 1px 1px 10px 0px #747477a8 inset,5px 5px 10px 0px #aeaec07e , 0px 3px 10px 0px #ffffff;
 }
 .make_room{
   margin: 2%;
@@ -586,7 +542,7 @@ input[type="text"]:focus::placeholder{
 .make_room>h3{
   font-size: 24pt;
   color: #1B3C77;
-  font-family: 'EliceDigitalBaeum_Bold';
+  font-family: 'Pretendard-Regular';
   margin: 0 0 2% 0;
 }
 
@@ -646,7 +602,7 @@ input[type="text"]:focus::placeholder{
   border-radius: 0px;
   font-size: 16pt;
   margin-top: 2%;
-  font-family: 'EliceDigitalBaeum_Regular';
+  font-family: 'Pretendard-Light';
   background-color: rgb(250, 250, 250);
 }
 .newroom:focus{
@@ -978,8 +934,8 @@ right: 5px;
   padding: 2px 7px 2px 7px;
   cursor: pointer;
 }
-.pslide-left{left: -5%;}
-.pslide-right{right: -4%;}
+.pslide-left{left: 2%;}
+.pslide-right{right: 2%;}
 
 .promise-container{
   position:absolute;
@@ -1075,6 +1031,7 @@ textarea{border-radius: 10px;text-align: center;}
 /***********************************/
 #write {
   position: absolute;
+  top: 7px;
   -webkit-font-smoothing: antialiased;
   background-color:#C9D9E9;
   border: none;
@@ -1088,12 +1045,12 @@ textarea{border-radius: 10px;text-align: center;}
   user-select: none;
   letter-spacing: 1px;
   color: white;
-  padding: 7px 10px 7px 20px;
+  padding: 10px 10px 7px 20px;
   transition: all 0.1s ease-out;
   border-radius: 5px;
 }
 #write:hover{
-  transform: scale(1.15);
+  transform: scale(1.1);
 }
 #write:active {
     transform: scale(0.95);

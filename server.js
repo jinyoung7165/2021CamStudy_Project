@@ -187,7 +187,8 @@ io.on('connect', (socket) => {
         let req=socket.request;
         socket.leave(roomid);
         let userCount=rooms[roomid] ? rooms[roomid].length:0;
-        axios.post('https://www.cybersmu.site/library/user/',{user:req.user.id,roomId:roomid,userCount,startTime});
+        //axios.post('https://www.cybersmu.site/library/user/',{user:req.user.id,roomId:roomid,userCount,startTime});
+        axios.post('http://localhost:8001/library/user/',{user:req.user.id,roomId:roomid,userCount,startTime});
         io.to(roomid).emit('exitRoom',req.user.nick);  
     });
 })

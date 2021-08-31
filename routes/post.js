@@ -15,7 +15,6 @@ router.post('/',isLoggedIn,upload2.none(),async(req,res,next)=>{
             msg:content,
             UserId:req.user.id,
         });   
-        // location.href='http://localhost:8001/#promise';
         res.redirect('/');
     }catch(error){
         console.error(error);
