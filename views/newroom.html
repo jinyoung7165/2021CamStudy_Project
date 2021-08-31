@@ -15,7 +15,7 @@
     <h3>방 생성하기</h3>
     <form method="post" class="make_room_content" enctype="multipart/form-data">
       <div class="make_room_title">
-        <span class="label">방 제목<font style="color:red">*</font></span>
+        <span class="label">방 제목&nbsp;<font style="color:red">*</font></span>
         <br>
         <input class="newroom" type="text" name="title" maxlength="15" placeholder="방 제목" required>
       </div>
@@ -88,8 +88,10 @@
     homeA.setAttribute('href','/');
     let ranking=document.getElementById('rankingA');
     rankingA.setAttribute('href','https://www.cybersmu.site/#ranking');
+    //rankingA.setAttribute('href','http://localhost:8001/#ranking');
     let promiseA=document.getElementById('promiseA');
     promiseA.setAttribute('href','https://www.cybersmu.site/#promise');
+    //promiseA.setAttribute('href','http://localhost:8001/#promise');
     let profileA=document.getElementById('profileA');
     profileA.setAttribute('href','/profile');
     let container2=document.querySelector('.container2');

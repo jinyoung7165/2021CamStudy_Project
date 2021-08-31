@@ -7,7 +7,7 @@
               <div class="modal-content">    
                 <span class="modal-close" onclick="popupClose();">&times;</span>                                                         
                 <div><i class="fas fa-info-circle fa-lg" style="color:#1B3C77;"></i>&nbsp;&nbsp;&nbsp;닉네임은 내 프로필에서 바꿀 수 있습니다.</div>
-                  <input type="radio" value=0 onchange="popupRadioChange();"> <u font style="font-family:'EliceDigitalBaeum_Regular';">다시 보지 않기</u>
+                  <input type="radio" value=0 onchange="popupRadioChange();"> <u>다시 보지 않기</u>
                   <a href="/profile">내 프로필</a>
               </div>
             </div>
@@ -15,6 +15,7 @@
           <div class="banner-login">
             <a id="my-profile" href="/profile" class="btn"><img id="welcomeImg" src="/img/welcome_noonsong.png" style="z-index:2"></a>
             <span>&nbsp;&nbsp;{{'안녕하세요, ' + user.nick + '송!'}}</span>
+            <a id="my-profile-btn" href="/profile" class="btn">My Profile</a>
             <a id="logout" href="/auth/logout" class="btn" style="text-decoration:none;"><button class="logout">Sign Out</button></a>
           </div>  
           <input id="my-id" type="hidden" value="{{user.id}}">
@@ -47,7 +48,7 @@
       <!-- 1방 = 1room-box slide가 옆으로 움직이면서 컨테이너부분에서 보이는것-->
       <div class="room-slides"> 
         {%for room in rooms%}
-          <div class="room-box" data-id="{{room.uuid}}">
+          <div class="room-box">
             <div class="room-box-container">
               <span class="roomLock">
                 {% if room.password %}
@@ -61,11 +62,10 @@
               <div id="room-thumbnail"><img src="/img/{{room.img}}"></div>
               <div class="roomParticipant">{{room.participants_num}}/{{room.max}}</div>
               {% if user %}
+                <div class="room-enter" data-password="{{'true' if room.password else 'false'}}" data-id="{{room.uuid}}"></div>
                 {%if room.participants_num==0 and room.owner==user.id%}
                   <i class="fas fa-trash-alt room-delete" data-id="{{room.uuid}}"></i>
-                {%endif%}
-                  <button  data-password="{{'true' if room.password else 'false'}}"
-                  data-id="{{room.uuid}}" class="room-enter-btn">입&nbsp;&nbsp;장</button>
+                {%endif%}   
               {% endif %}
             </div>
           </div>
@@ -76,13 +76,13 @@
       <div class="room-btn-container">
         <form class="room-code-form" action="javascript:goRoomFunction()" method="post" enctype="multipart/form-data" >
             <input type="text" id="room-code-input" placeholder="방 코드를 입력하세요" maxlength="16" >
-            <button class="enter-btn" type="submit">방 입장</button>
+            <button class="enter-btn" type="submit">입장</button>
         </form> 
         <button class="createroom-butt" onclick="location.href='/room'"><div class="add tooltiptext">방 생성</div><img src="/img/add.png"/></button>
       </div>
     {%endif%}
-    <span class="slide-butt slide-left"><img src="/img/back.png" width="50px" height="50px"></span>
-    <span class="slide-butt slide-right"><img src="/img/next.png" width="50px" height="50px"></span>
+    <span class="slide-butt slide-left"><img src="/img/back.png" ></span>
+    <span class="slide-butt slide-right"><img src="/img/next.png"></span>
   </div>
 
   <script>
@@ -93,7 +93,7 @@
     let leftSlide=document.querySelector('.slide-left');
     let rightSlide=document.querySelector('.slide-right');
     let slidewidth=slide[0].offsetWidth; 
-    let slideMargin=80;
+    let slideMargin=40;
     slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
 
     if (window.matchMedia("screen and (min-width: 1200px)").matches) {
@@ -117,31 +117,43 @@
     }
 
     leftSlide.addEventListener('click', function(){
-      if (window.matchMedia("screen and (min-width: 900px)").matches) {
+      if (window.matchMedia("screen and (min-width: 1200px)").matches) {
         slidewidth=slide[0].offsetWidth; 
         slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
         if(currentIndex > 0){ moveSlide(currentIndex-1);}
-        else{ moveSlide(slideCount-3);}
+        else{ moveSlide(slideCount-5);}
+      }
+      else if (window.matchMedia("screen and (min-width: 900px) and (max-width: 1199px)").matches) {
+        slidewidth=slide[0].offsetWidth; 
+        slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
+        if(currentIndex > 0){ moveSlide(currentIndex-1);}
+        else{ moveSlide(slideCount-4);}
       }
       else{
         slidewidth=slide[0].offsetWidth; 
         slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
         if(currentIndex > 0){ moveSlide(currentIndex-1);}
-        else{ moveSlide(slideCount-2);}
+        else{ moveSlide(slideCount-3);}
       }        
     });
      
     rightSlide.addEventListener('click', function(){
-      if (window.matchMedia("screen and (min-width: 900px)").matches) {
+      if (window.matchMedia("screen and (min-width: 1200px)").matches) {
         slidewidth=slide[0].offsetWidth; 
         slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
-        if(currentIndex < slideCount - 3){ moveSlide(currentIndex+1);}
+        if(currentIndex < slideCount - 5){ moveSlide(currentIndex+1);}
+        else{ moveSlide(0);}
+      }
+      else if (window.matchMedia("screen and (min-width: 900px) and (max-width: 1199px)").matches) {
+        slidewidth=slide[0].offsetWidth; 
+        slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
+        if(currentIndex < slideCount - 4){ moveSlide(currentIndex+1);}
         else{ moveSlide(0);}
       }
       else{
         slidewidth=slide[0].offsetWidth; 
         slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
-        if(currentIndex < slideCount - 2){ moveSlide(currentIndex+1);}
+        if(currentIndex < slideCount - 3){ moveSlide(currentIndex+1);}
         else{ moveSlide(0);}
       }
     });
@@ -155,6 +167,7 @@
       }
       else{
         var addr="https://www.cybersmu.site/library/";
+        //var addr="http://localhost:8001";
         var roomUuid = document.getElementById("room-code-input").value;
         window.location.href=addr.concat(roomUuid);
       }
@@ -165,18 +178,18 @@
 {% block content %}
     <!-- 랭커는 10명으로 제한 // 1,2,3등 class : rank1, rank2, rank3 -->
     <div class="ranking-block" id="ranking"> 
-      <div class="ranking-title">Ranking <div class="ranking-info">?<div class="tooltiptext">Lv를 공개한 유저에 한해 산출한 랭킹입니다.</div></div>
+      <div class="ranking-title" style="font-family: 'Pretendard-Regular';">Ranking <div class="ranking-info">?<div class="tooltiptext">Lv를 공개한 유저에 한해 산출한 랭킹입니다.</div></div>
     </div>
         {%set i=0%}
         <div class="ranking-left">
         {%for ranker in rankers%}
           {% if 3>i %}
-            <div class="ranker"><img src="/img/rank{{i+1}}.png"/>위&nbsp;: &nbsp;{{ranker.nick}} &nbsp;&nbsp;&nbsp; Lv.&nbsp;{{ranker.level}}</div>
-            <hr style="border-top: 2px dashed black; border-bottom: none; margin: 0 2%;">
+            <div class="ranker"><img src="/img/rank{{i+1}}.png"/>&nbsp;&nbsp;&nbsp;&nbsp;{{ranker.nick}} &nbsp;&nbsp;&nbsp; Lv.&nbsp;{{ranker.level}}</div>
+            <hr style="border-top: 1px solid lightgray; border-bottom: none; margin: 0 2%; ">
             {%set i=i+1%}
           {% else %}
-            <div class="rank"><img src="/img/rank{{i+1}}.png"/>위 :&nbsp;{{ranker.nick}} &nbsp;&nbsp;&nbsp; Lv.&nbsp;{{ranker.level}}</div>
-            <hr style="border-top: 2px dashed black; border-bottom: none; margin: 0 2%;">
+            <div class="rank"><img src="/img/rank{{i+1}}.png"/>&nbsp;&nbsp;&nbsp;&nbsp;{{ranker.nick}} &nbsp;&nbsp;&nbsp; Lv.&nbsp;{{ranker.level}}</div>
+            <hr style="border-top: 1px solid lightgray; border-bottom: none; margin: 0 2%; ">
             {%if i==4%}</div><div class="ranking-right"> {%endif%}
             {%set i=i+1%}
           {% endif %}
@@ -185,7 +198,7 @@
     </div>
     <div class="promise-block" id="promise">
       <div class="promise-title-container">
-        <div class="promise-title">오늘의 다짐
+        <div class="promise-title" style="font-family: 'Pretendard-Regular';">오늘의 다짐
           <div class="promise-info">?
             <div class="tooltiptext">오늘의 목표나 스터디할 시간을 적어 참여자를 모으세요!</div>
           </div>
