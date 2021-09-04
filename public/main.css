@@ -97,6 +97,10 @@ body{
 .createroom-butt .tooltiptext::after { left: 50%; }
 
 /* login block */
+#login-form{
+  margin-right: 100px;
+  margin-top: 25px;
+}
 #google{
   position:relative;
   background-color: white;
