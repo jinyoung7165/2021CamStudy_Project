@@ -1,24 +1,32 @@
-@media screen and (max-width:899.9px) {
-    /* 폰 */
-    .left-line{
-      width:8px;
-    }
+@media screen and (max-width:400px) and (max-height:900px){/*폰 세로모드*/
+  html {
+    transform: rotate(-90deg);
+    transform-origin: top left;
+    position: absolute;
+    top: 90%;
+    left: 10%;
+    width:100%;
+  }
+}
+@media screen and (max-width:899.9px){
+    /* 폰 */ 
     .banner{
-      height: 15%;
+      height: 20%;
     }
+    .logo-img {width: 30px; height: 30px;}
     .logo-text{
-      font-size: 20px;
+      margin-top:16px;
+      white-space:nowrap;
+      font-size: 17px;
       padding: 2%;
     }
     .login-block{ 
       width: 100%;
-      margin-left:20%;
-      margin-top:2%;
+      margin-top:3%;
     }
-    .banner-login>span{ 
-        font-size:10px;
-        font-family: 'EliceDigitalBaeum_Regular';
-      }
+    .banner-login{
+      font-size: 10px;
+    }
     #google{
         padding:8px;
         padding-left:25px;
@@ -53,45 +61,44 @@
     .icon:hover .tooltiptext{
        display: none;
     }
+    .logout{
+      padding: 2px 15px 2px 15px;
+    }
+    #my-profile-btn{
+      padding: 2px 10px 2px 10px;
+    }
     /***********layout끝************/
     
     /******************room*********************/
-    .rooms-block{ top: 30px; height: 330px; }
-    .room-container{ width: 500px; height: 230px; left: 52%;}
-    .room-box{ width: 200px; height: 220px; box-shadow: 5px 5px 4px #c2c2c2; }
-    .room-box:not(:last-child){ margin-right: 40px; } /* box 당 간격 */
+    .rooms-block{  height: 330px; }
+    .room-container{ width: 550px; height: 250px; left: 51%;}
+    .room-box{ width: 165px; height: 220px; box-shadow: 5px 5px 4px #c2c2c2; }
+    .room-enter{width: 165px; height: 220px;}
     .room-delete{
-      margin-top: 198px;
-      margin-left: 10px;
-      font-size: 0.9em;
+      margin-top: 202px;
+      margin-left: 138px;
+      font-size: 0.85em;
     }
     .roomLock{ top: 13px; left: 12px; font-size: 0.8em;}
-    .roomTitle{ top: 10px; left: 35px; width:150px; font-size: 0.9em; }
+    .roomTitle{ top: 10px; left: 35px; width:125px; font-size: 0.9em; }
     .roomDescription{
       top: 40px;
       left: 15px;
       font-size: 0.7em;
       height: 40px;
-      width: 170px;
+      width: 135px;
     }
-    #room-thumbnail{ top: 90px; width: 170px;} 
-    #room-thumbnail img{ height:100px; width: 170px;}
-    .roomParticipant{ top: 170px; left: 8px; font-size: 0.7em;}
+    #room-thumbnail{ left:15px; top: 85px; width: 135px;} 
+    #room-thumbnail img{ height:110px; width: 140px;}
+    .roomParticipant{ top: 199px; left: 16px; font-size: 0.8em;}
     .room-enter-btn{ width: 60px; height: 30px; top: 175px; font-size: 0.8em;}
-    .slide-butt{ padding: 0px; top: 130px;}
+    .slide-butt{ padding: 0px; top: 150px;}
     .slide-butt img{width: 25px; height: 25px;}
-    .slide-left:hover{cursor: pointer;transform: scale(1,1.2); top:117px}
-    .slide-right:hover{cursor: pointer;transform: scale(1,1.2); top:117px}
-    .slide-left{ left: -1%; }
-    .slide-right{ right: -1%; }
-    .room-btn-container{ top: 280px; height: 30px; width: 500px; }
-    /* .createroom-butt:hover .tooltiptext {
-      width: 100px;
-      left:20px;
-      bottom:55px;
-      right:300px;
-      font-size: 1px;
-    } */
+    .slide-left:hover{cursor: pointer;transform: scale(1,1.2); top:138px}
+    .slide-right:hover{cursor: pointer;transform: scale(1,1.2); top:138px}
+    .slide-left{ left: -15px; }
+    .slide-right{ right: -15px; }
+    .room-btn-container{ top: 290px; height: 30px; width: 530px; }
     .createroom-butt{
       width: 35px;
       height: 35px;
@@ -121,8 +128,9 @@
       margin-left: 15px;
     }
     .ranking-info{ margin-left:10%;}
-  
-
+    #rank-nick{position:absolute;left: 15%; width:130px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;}
+    .rank>span{position: absolute;left:70%;}
+    .ranker>span{position: absolute;left:70%;}
   /******************promise*********************/
     .promise-block { top: 680px; height: 250px;}
     .promise-title-container{ padding: 5px 30px 5px 15px; margin-top: 0px;}
@@ -253,12 +261,12 @@
     height: 12%;
   }
   .logo-text{
+    white-space:nowrap;
     font-size: 30px;
     padding: 3%;
   }
   .login-block{ 
-    margin-left:30%;
-    margin-top:2%;
+    margin-top:6%;
   }
   .icon{
     margin-left:0%;
@@ -272,27 +280,30 @@
     width: 30px;
     height: 28px;
   }
+  .banner-login{
+    font-size: 13px;
+  }
 
 /******************room*********************/
   .rooms-block{
-    top: 50px;
-    height: 470px;
+    height: 440px;
   }
   .room-container{
     position:absolute;
-    width: 740px;
-    height: 310px;
+    width: 830px;
+    height: 320px;
   }
   .room-box{ 
-    width: 185px;
-    height: 300px;
+    width: 190px;
+    height: 280px;
     box-shadow: 8px 8px 4px #c2c2c2;
   }
+  .room-enter{width: 190px; height: 280px;}
   .room-delete{
     color:rgb(59, 59, 61);
     position: relative;
-    margin-top: 270px;
-    margin-left: 10px;
+    margin-top: 260px;
+    margin-left: 160px;
   }
   .roomLock{
     top: 15px;
@@ -310,35 +321,21 @@
     left: 10px;
     font-size: 0.8em;
     height: 50px;
-    width: 165px;
+    width: 170px;
   }
-  #room-thumbnail{ top: 120px; width: 160px;} 
-  #room-thumbnail img{ height:120px; width: 160px;}
-  .roomParticipant{ top: 220px; left: 7px; font-size: 0.7em;}
-  .room-enter-btn{
-    width: 60px;
-    height: 35px;
-    top: 220px;
-    font-size: 0.9em;
-  }
+  #room-thumbnail{ top: 105px; width: 170px;} 
+  #room-thumbnail img{ height:150px; width: 170px;}
+  .roomParticipant{ top: 260px; left: 12px; font-size: 0.85em;}
   .slide-butt{ padding: 0px; top: 180px;}
   .slide-butt img{width: 30px; height: 30px;}
   .slide-left:hover{cursor: pointer;transform: scale(1,1.2); top:165px}
   .slide-right:hover{cursor: pointer;transform: scale(1,1.2); top:165px}
-  .slide-left{ left: -2%; }
-  .slide-right{ right: 0%; }
+  .slide-left{ left: -25px; }
+  .slide-right{ right: -25px; }
   .room-btn-container{
-    top: 400px;
+    top: 380px;
     height: 40px;
-    width: 740px;
-  }
-  .createroom-butt:hover .tooltiptext {
-    visibility: visible;
-    width: 100px;
-    left:20px;
-    bottom:55px;
-    right:300px;
-    font-size: 13px;
+    width: 800px;
   }
   .createroom-butt{
     position: absolute;
@@ -346,9 +343,6 @@
     width: 40px;
     height: 40px;
     box-shadow: -7px -7px 20px 0px #ffffff, 2px 2px 10px 0px #a8a8a87e ;
-   }
-   .createroom-butt:hover{
-     box-shadow: -7px -7px 10px 0px #c2c2c270, 7px 7px 10px 0px #aeaec020 ;
    }
   .room-code-form{ width: 530px; height: 40px;}
   .createroom-butt img{width: 25px; height: 25px;}
