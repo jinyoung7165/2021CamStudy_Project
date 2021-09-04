@@ -13,10 +13,14 @@
             </div>
           {% endif %}
           <div class="banner-login">
-            <a id="my-profile" href="/profile" class="btn"><img id="welcomeImg" src="/img/welcome_noonsong.png" style="z-index:2"></a>
-            <span>&nbsp;&nbsp;{{'안녕하세요, ' + user.nick + '송!'}}</span>
-            <a id="my-profile-btn" href="/profile" class="btn">My Profile</a>
-            <a id="logout" href="/auth/logout" class="btn" style="text-decoration:none;"><button class="logout">Sign Out</button></a>
+            <div class="welcome-btn-cont">
+              <a id="my-profile-btn" href="/profile" class="btn">My Profile</a>
+              <a id="logout" href="/auth/logout" class="btn logout" style="text-decoration:none;">Sign Out</a>
+            </div>
+            <div class="welcome-cont">
+              <a id="my-profile" href="/profile" class="btn"><img id="welcomeImg" src="/img/welcome_noonsong.png" style="z-index:2"></a>
+              <span id="hello">&nbsp;&nbsp;{{'안녕하세요, ' + user.nick + '송!'}}</span>
+            </div>
           </div>  
           <input id="my-id" type="hidden" value="{{user.id}}">
           <div display="hidden" class="usernick" data-usernick={{user.nick}}></div>
@@ -93,7 +97,7 @@
     let leftSlide=document.querySelector('.slide-left');
     let rightSlide=document.querySelector('.slide-right');
     let slidewidth=slide[0].offsetWidth; 
-    let slideMargin=40;
+    let slideMargin=20;
     slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';
 
     if (window.matchMedia("screen and (min-width: 1200px)").matches) {
@@ -184,11 +188,11 @@
         <div class="ranking-left">
         {%for ranker in rankers%}
           {% if 3>i %}
-            <div class="ranker"><img src="/img/rank{{i+1}}.png"/>&nbsp;&nbsp;&nbsp;&nbsp;{{ranker.nick}} &nbsp;&nbsp;&nbsp; Lv.&nbsp;{{ranker.level}}</div>
+            <div class="ranker"><img src="/img/rank{{i+1}}.png"/>&nbsp;&nbsp;&nbsp;&nbsp;<span id="rank-nick">{{ranker.nick}}</span> &nbsp;&nbsp;&nbsp; <span>Lv.&nbsp;{{ranker.level}}</span></div>
             <hr style="border-top: 1px solid lightgray; border-bottom: none; margin: 0 2%; ">
             {%set i=i+1%}
           {% else %}
-            <div class="rank"><img src="/img/rank{{i+1}}.png"/>&nbsp;&nbsp;&nbsp;&nbsp;{{ranker.nick}} &nbsp;&nbsp;&nbsp; Lv.&nbsp;{{ranker.level}}</div>
+            <div class="rank"><img src="/img/rank{{i+1}}.png"/>&nbsp;&nbsp;&nbsp;&nbsp;<span id="rank-nick">{{ranker.nick}}</span> &nbsp;&nbsp;&nbsp; <span>Lv.&nbsp;{{ranker.level}}</span></div>
             <hr style="border-top: 1px solid lightgray; border-bottom: none; margin: 0 2%; ">
             {%if i==4%}</div><div class="ranking-right"> {%endif%}
             {%set i=i+1%}
