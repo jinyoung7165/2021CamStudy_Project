@@ -14,7 +14,13 @@ function addBtnEvent(e) { // 방 입장 클릭 시
 function addDeleteEvent(e) { // 방 입장 클릭 시
   roomid = e.target.dataset.id;
   if (confirm('정말로 삭제하시겠습니까?')==true){
-    axios.delete(`/library/${roomid}`);
+    axios.delete(`/library/${roomid}`)
+        .then(
+         console.log('delete')
+        )    
+        .catch(err=>{      
+          console.error(err)    
+        });
   } else {
     return res.render('/');
   }
