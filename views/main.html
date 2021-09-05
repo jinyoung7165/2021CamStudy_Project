@@ -176,6 +176,18 @@
         window.location.href=addr.concat(roomUuid);
       }
     }
+    function addDeleteEvent(e) { // 방 입장 클릭 시
+      roomid = e.target.dataset.id;
+      if (confirm('정말로 삭제하시겠습니까?')==true){
+        axios.delete(`/library/${roomid}`)
+      } else {
+        return res.render('/');
+      }
+    } 
+    document.querySelectorAll('.room-delete').forEach(function (btn) {
+      btn.addEventListener('click', addDeleteEvent);
+    }); 
+
   </script>
 {%endblock%}
 

@@ -11,21 +11,11 @@ function addBtnEvent(e) { // 방 입장 클릭 시
   }
   roomid = e.target.dataset.id;
 }
-function addDeleteEvent(e) { // 방 입장 클릭 시
-  roomid = e.target.dataset.id;
-  if (confirm('정말로 삭제하시겠습니까?')==true){
-    axios.delete(`/library/${roomid}`)
-  } else {
-    return res.render('/');
-  }
-}  
 
 document.querySelectorAll('.room-enter').forEach(function (btn) {
     btn.addEventListener('click', addBtnEvent);
 });
-document.querySelectorAll('.room-delete').forEach(function (btn) {
-  btn.addEventListener('click', addDeleteEvent);
-});
+
 
 socket.on('newRoom', function (data) { // 새 방 이벤트 시 새 방 생성
   const div = document.createElement('div');
