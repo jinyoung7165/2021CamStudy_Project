@@ -82,24 +82,8 @@
 {% endblock %}
 {%block script%}
 <script>
-    let logoA=document.getElementById('logoA');
-    logoA.setAttribute('href','/');
-    let homeA=document.getElementById('homeA');
-    homeA.setAttribute('href','/');
-    let ranking=document.getElementById('rankingA');
-    rankingA.setAttribute('href','https://www.cybersmu.site/#ranking');
-    //rankingA.setAttribute('href','http://localhost:8001/#ranking');
-    let promiseA=document.getElementById('promiseA');
-    promiseA.setAttribute('href','https://www.cybersmu.site/#promise');
-    //promiseA.setAttribute('href','http://localhost:8001/#promise');
-    let profileA=document.getElementById('profileA');
-    profileA.setAttribute('href','/profile');
-    let container2=document.querySelector('.container2');
-    let leftline=document.querySelector('.left-line');
-    let navbar=document.querySelector('.navbar');
-    container2.style.height='700px';
-    leftline.style.height='900px';
-    navbar.style.height='500px';
+   let logoA=document.getElementById('logoA');
+   logoA.setAttribute('href','/');
    window.onload = () => {
         if (new URL(location.href).searchParams.get('RoomError')) {
           alert(new URL(location.href).searchParams.get('RoomError'));
