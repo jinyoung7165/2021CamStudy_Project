@@ -65,11 +65,11 @@
                     {% for user in users %}
                     <!--사용자 레벨에 따라서 눈송이 사진 붙여넣기-->
                     <div class="user" id="attendies-user" data-nick="{{user.nick}}">
-                        {% if user.level>=0 and user.level< 10 %}
+                        {% if user.level>=0 and user.level< 5 %}
                             <img src="/img/level1_noonsong.png">       
-                        {% elif user.level>=10 and user.level < 30 %}
+                        {% elif user.level>=5 and user.level < 10 %}
                             <img src="/img/level2_noonsong.png">
-                        {% elif user.level >= 30 and user.level < 9999 %}
+                        {% elif user.level >= 10 and user.level < 9999 %}
                             <img src="/img/level3_noonsong.png">
                         {% elif user.level >= 9999 %}
                             <img src="/img/master_noonsong.png">
