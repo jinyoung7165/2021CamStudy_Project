@@ -13,11 +13,11 @@
 <div class='upper-profile'>
     <div id="profile-img">
         <p id="profile-tag">✨ 프로필</p>
-        {% if user.level>=0 and user.level< 10 %}
+        {% if user.level>=0 and user.level< 5 %}
             <img id="levelsong" src="/img/level1_noonsong.png">       
-        {% elif user.level>=10 and user.level < 30 %}
+        {% elif user.level>=5 and user.level < 10 %}
             <img id="levelsong" src="/img/level2_noonsong.png">
-        {% elif user.level >= 30 and user.level < 9999 %}
+        {% elif user.level >= 10 and user.level < 9999 %}
             <img id="levelsong" src="/img/level3_noonsong.png">
         {% elif user.level >= 9999 %}
             <img id="levelsong" src="/img/master_noonsong.png">

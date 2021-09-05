@@ -77,6 +77,8 @@ socket.on('userCount', count => {
     participant_num = count ;
 })
 
+
+
 function startCall() {
     navigator.mediaDevices.getUserMedia(mediaConstraints)
         .then(localStream => {
@@ -145,6 +147,7 @@ function handleVideoOffer(offer, sid, cname, vidinf) {
         }
     };
 
+    
     connections[sid].onnegotiationneeded = function () {
         connections[sid].createOffer()
             .then(function (offer) {
@@ -161,8 +164,9 @@ function handleVideoOffer(offer, sid, cname, vidinf) {
     connections[sid].setRemoteDescription(desc)
         .then(() => { return navigator.mediaDevices.getUserMedia(mediaConstraints) })
         .then((localStream) => {
-            localStream.getTracks().forEach(track => {
-                connections[sid].addTrack(track, localStream);
+            localStream.getTracks().forEach(track => { 
+                connections[sid].addTrack(track, localStream); 
+               
                 if (track.kind === 'video') {
                     videoTrackSent[sid] = track;
                     if (!videoAllowed)
@@ -171,7 +175,7 @@ function handleVideoOffer(offer, sid, cname, vidinf) {
             })
         })
         .then(() => {
-            return connections[sid].createAnswer();
+            return connections[sid].createAnswer(); 
         })
         .then(answer => {
             return connections[sid].setLocalDescription(answer);
@@ -229,24 +233,27 @@ socket.on('video-offer', handleVideoOffer);
 socket.on('newIcecandidate', handleNewIceCandidate);
 socket.on('video-answer', handleVideoAnswer);
 
+// conc가 room에 들어가있는 socket id들임 cname=usernick 배열임
 socket.on('join', async (conc, cnames,videoinfo) => {
     socket.emit('getCanvas');
     if (cnames)
-        cName = cnames;
+        cName = cnames; 
 
     if (videoinfo)
         videoInfo = videoinfo;
 
     if (conc) {
         await conc.forEach(sid => {
-            connections[sid] = new RTCPeerConnection(configuration);
+            connections[sid] = new RTCPeerConnection(configuration); // configuration 은 iceserver 객체임
 
+            
             connections[sid].onicecandidate = function (event) {
                 if (event.candidate) {
                     socket.emit('newIcecandidate', event.candidate, sid);
                 }
             };
 
+            // 위에서 newIcecandidate를 해주면 그 함수에서 connections[sid]에 새로운 newicecandidate를 추가해주니까 
             connections[sid].ontrack = function (event) {
                 if (!document.getElementById(sid)) {
                     let vidCont = document.createElement('div');
@@ -278,6 +285,7 @@ socket.on('join', async (conc, cnames,videoinfo) => {
                     videoContainer.appendChild(vidCont);
                 }
             };
+            
             connections[sid].onremovetrack = function (event) {
                 if (document.getElementById(sid)) {
                     document.getElementById(sid).remove();
@@ -343,13 +351,13 @@ socket.on('enterRoom',(usernick,level_show,level)=>{
     }
     nick.style.fontWeight="bold";
 
-    if(level>0 && level<10){
+    if(level>=0 && level<5){
         img.setAttribute('src','/img/level1_noonsong.png');
     }
-    else if(level>=10 && level<30){
+    else if(level>=5 && level<10){
         img.setAttribute('src','/img/level2_noonsong.png');
     }
-    else if (level>=30 && level < 9999){
+    else if (level>=10 && level < 9999){
         img.setAttribute('src','/img/level3_noonsong.png');
     }
     else if (level >= 9999){
