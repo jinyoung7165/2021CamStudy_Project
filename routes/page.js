@@ -105,6 +105,8 @@ router.post('/room',isLoggedIn, upload.single('img'), async (req, res, next) => 
       let sanitizeTitle = sanitizeHtml(req.body.title);
       let sanitizePw = sanitizeHtml(req.body.password);
       let sanitizeDescription = sanitizeHtml(req.body.description);
+      var regex = /\s/g;
+      sanitizePw.replace(regex, ''); 
       const newRoom = await Room.create({
         title: sanitizeTitle,
         uuid: makeuuid,
@@ -120,7 +122,7 @@ router.post('/room',isLoggedIn, upload.single('img'), async (req, res, next) => 
       io.emit('newRoom', newRoom); // 모든 클라이언트에 데이터를 보내는 메서드
       await newRoom.addUser(req.user.id);
       if(req.body.password){       
-        res.redirect(`/library/${makeuuid}?password=${req.body.password}`);
+        res.redirect(`/library/${makeuuid}?password=${sanitizePw}`);
       }
       else{res.redirect(`/library/${makeuuid}`);}
     } catch (error) {
