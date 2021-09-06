@@ -102,7 +102,9 @@ function uuidv4() {
 router.post('/room',isLoggedIn, upload.single('img'), async (req, res, next) => {
     try {
       const pw=req.body.password;
-      if(pw==' ' ||pw=='  '||pw=='   '||pw=='    '||pw=='     '||pw=='      '||pw=='       '||pw=='        '||pw=='         '||pw=='          '){
+      console.log(pw);
+      console.log(typeof(pw));
+      if(pw==" " ||pw=='  '||pw=='   '||pw=='    '||pw=='     '||pw=='      '||pw=='       '||pw=='        '||pw=='         '||pw=='          '){
         res.redirect('/room/?RoomError=공백은 비밀번호가 될 수 없습니다.');
       }
       let makeuuid=uuidv4();
