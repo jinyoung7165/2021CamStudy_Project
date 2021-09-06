@@ -175,8 +175,13 @@
         document.querySelectorAll('.room-enter').forEach(function (div) {
           if(div.dataset.id==roomUuid && div.dataset.password=="true"){
             const password = prompt('비밀번호를 입력하세요');
-            addr=addr.concat(roomUuid);
-            window.location.href=addr.concat(`?password=${password}`);
+            if(password.length<1||/\s/g.test(password)){
+              alert("비밀번호를 잘못 입력하셨습니다.");
+            }
+            else{
+              addr=addr.concat(roomUuid);
+              window.location.href=addr.concat(`?password=${password}`);
+            }
           } else if(div.dataset.id==roomUuid && div.dataset.password=="false") {
             window.location.href=addr.concat(roomUuid);
           }
