@@ -166,7 +166,7 @@
       var rinput = document.getElementById("room-code-input");
       if(rinput.value.length<1 || /\s/g.test(rinput.value) ){  /* 공백, 탭문자, 엔터, 값입력X 는 안되도록 함*/
         rinput.style.background="#e9f2ffc2"
-        rinput.placeholder="방코드를 공백 없이 제대로 입력해 주세요"
+        rinput.placeholder="방코드를 제대로 입력해 주세요"
         rinput.value=""
       }
       else{
@@ -175,7 +175,7 @@
         document.querySelectorAll('.room-enter').forEach(function (div) {
           if(div.dataset.id==roomUuid && div.dataset.password=="true"){
             const password = prompt('비밀번호를 입력하세요');
-            if(password.length<1||/\s/g.test(password)){
+            if(password.length<1 || /\r\n/g.test(password)){
               alert("비밀번호를 잘못 입력하셨습니다.");
             }
             else{

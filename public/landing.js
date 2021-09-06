@@ -4,7 +4,7 @@ let roomid;
 function addBtnEvent(e) { // 방 입장 클릭 시
   if (e.target.dataset.password == 'true') {
     const password = prompt('비밀번호를 입력하세요');
-    if(password.length<1||/\s/g.test(password)){
+    if(password.length<1||/\r\n/g.test(password)){
       alert("비밀번호를 잘못 입력하셨습니다.");
     }else{
       location.href = '/library/' + e.target.dataset.id + '?password=' + password;
