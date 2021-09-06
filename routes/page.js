@@ -101,7 +101,7 @@ function uuidv4() {
   //채팅방을 만드는 라우터 
 router.post('/room',isLoggedIn, upload.single('img'), async (req, res, next) => {
     try {
-      if (req.body.password.includes(' ')){
+      if (req.body.password.includes(' ') && /\s/g.test(req.body.password)){
         res.redirect(`/room/?RoomError=비밀번호에 공백은 포함될 수 없습니다.`);
       }
       let makeuuid=uuidv4();
