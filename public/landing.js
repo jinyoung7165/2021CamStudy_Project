@@ -49,13 +49,6 @@ socket.on('newRoom', function (data) { // 새 방 이벤트 시 새 방 생성
   roomP.textContent = data.participants_num+"/"+data.max;
   roomP.className="roomParticipant"
   divContainer.appendChild(roomP);
-  // const button = document.createElement('button');
-  // button.textContent = '입장';
-  // button.className='room-enter-btn'
-  // button.dataset.password = data.password ? 'true' : 'false';
-  // button.dataset.id = data.uuid;
-  // button.addEventListener('click', addBtnEvent);
-  // divContainer.appendChild(button);
   div.appendChild(divContainer);
   slideCount+=1;
   slides.style.width = (slidewidth+slideMargin) * (slideCount) - slideMargin + 'px';

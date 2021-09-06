@@ -52,7 +52,7 @@
       <!-- 1방 = 1room-box slide가 옆으로 움직이면서 컨테이너부분에서 보이는것-->
       <div class="room-slides"> 
         {%for room in rooms%}
-          <div class="room-box">
+          <div class="room-box" data-id="{{room.uuid}}">
             <div class="room-box-container">
               <span class="roomLock">
                 {% if room.password %}
@@ -171,17 +171,22 @@
       }
       else{
         var addr="https://www.cybersmu.site/library/";
-        //var addr="http://localhost:8001";
         var roomUuid = document.getElementById("room-code-input").value;
-        window.location.href=addr.concat(roomUuid);
+        document.querySelectorAll('.room-enter').forEach(function (div) {
+          if(div.dataset.id==roomUuid && div.dataset.password=="true"){
+            const password = prompt('비밀번호를 입력하세요');
+            addr=addr.concat(roomUuid);
+            window.location.href=addr.concat(`?password=${password}`);
+          } else if(div.dataset.id==roomUuid && div.dataset.password=="false") {
+            window.location.href=addr.concat(roomUuid);
+          }
+        });
       }
     }
-    function addDeleteEvent(e) { // 방 입장 클릭 시
+    function addDeleteEvent(e) {
       roomid = e.target.dataset.id;
       if (confirm('정말로 삭제하시겠습니까?')==true){
-        axios.delete(`/library/${roomid}`)
-      } else {
-        return res.render('/');
+        axios.delete(`/library/${roomid}`);
       }
     } 
     document.querySelectorAll('.room-delete').forEach(function (btn) {

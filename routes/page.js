@@ -201,19 +201,25 @@ router.get('/library/:id', async(req, res) => {
   return res.render('library', { roomId: req.params.id,users,room:resultroom})
 });
 
-router.delete('/library/:id', async(req, res) => {
-  const user=req.user.id;
-  const uuid=req.params.id;
-  const room=await Room.findOne({where:{uuid}});
-  if (!room) {
-    return res.redirect('/?RoomError=존재하지 않는 방입니다.');
-  }
-  await room.destroy({where:{uuid}});  
-  const io = req.app.get('io');
-  setTimeout(() => {
-    io.emit('removeRoom', uuid);
-  }, 100);
-  return res.render('/');
+router.delete('/library/:id', async(req, res,next) => {
+  try{
+    const user=req.user.id;
+    const uuid=req.params.id;
+    const room=await Room.findOne({where:{uuid}});
+    if (!room) {
+      return res.redirect('/?RoomError=존재하지 않는 방입니다.');
+    }
+    await room.destroy({where:{uuid}});  
+    const io = req.app.get('io');
+    setTimeout(() => {
+      io.emit('removeRoom', uuid);
+    }, 100);
+    return res.render('/');
+  } 
+  catch(error){
+    console.error(error);
+    next(error);
+  } 
 });
 
 // 방 퇴장 라우터 -> room, user 관계 업데이트
