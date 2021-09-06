@@ -37,8 +37,6 @@ socket.on('getCanvas', url => {
     function start() {
         ctx.drawImage(img, 0, 0);
     }
-
-    console.log('got canvas', url)
 })
 
 function setColor(newcolor) {
@@ -48,7 +46,7 @@ function setColor(newcolor) {
 
 function setEraser() {
     color = "white";
-    drawsize = 10;
+    drawsize = 15;
 }
 
 //might remove this
