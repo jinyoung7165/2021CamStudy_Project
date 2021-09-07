@@ -111,7 +111,7 @@ let socketnick = {};
 let videoSocket = {};
 let roomBoard = {};
 let time = {};
-
+let filterSocket = {};
 io.on('connect', (socket) => {
     socket.on("join", (roomid, usernick) => {
         socket.join(roomid);
@@ -120,12 +120,13 @@ io.on('connect', (socket) => {
         socketroom[socket.id] = roomid;   // roomid
         socketnick[socket.id] = usernick; // usernick
         videoSocket[socket.id] = 'on';    // 비디오 상태
+        filterSocket[socket.id] = 'on';
         time[socket.id] = startTime;
         console.log("connect startTime:"+ time[socket.id]);
         if (rooms[roomid] && rooms[roomid].length > 0) { //존재하는 방
             rooms[roomid].push(socket.id);
             socket.to(roomid).emit('chat', `${usernick}님이 채팅방에 입장하셨습니다.`, 'System', moment().format( "h:mm a"));
-            io.to(socket.id).emit('join', rooms[roomid].filter(pid => pid != socket.id), socketnick, videoSocket);
+            io.to(socket.id).emit('join', rooms[roomid].filter(pid => pid != socket.id), socketnick, videoSocket, filterSocket);
         }
         else { //내가 새로 만든 방이다
             rooms[roomid] = [socket.id];
@@ -140,12 +141,16 @@ io.on('connect', (socket) => {
             videoSocket[socket.id] = 'on';
         else if (msg == 'videooff')
             videoSocket[socket.id] = 'off';
+        else if (msg == 'filteron')
+            filterSocket[socket.id] = 'on';
+        else if (msg == 'filteroff')
+            filterSocket[socket.id] = 'off';
 
         socket.to(socketroom[socket.id]).emit('action', msg, socket.id);
     })
 
     socket.on('video-offer', (offer, sid) => {
-        socket.to(sid).emit('video-offer', offer, socket.id, socketnick[socket.id], videoSocket[socket.id]);
+        socket.to(sid).emit('video-offer', offer, socket.id, socketnick[socket.id], videoSocket[socket.id],filterSocket[socket.id]);
     })
 
     socket.on('video-answer', (answer, sid) => {

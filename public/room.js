@@ -20,6 +20,7 @@ const videobox=document.querySelector('.video-box');
 
 let videoAllowed = 1;
 let videoInfo = {};
+let filterInfo = {};
 let videoTrackReceived = {};
 let filterornot=0;
 
@@ -96,9 +97,10 @@ function startCall() {
         .catch(handleGetUserMediaError);
 }
 
-function handleVideoOffer(offer, sid, cname, vidinf) {
+function handleVideoOffer(offer, sid, cname, vidinf, filinf) {
     cName[sid] = cname;
     videoInfo[sid] = vidinf;
+    filterInfo[sid] = filinf;
     connections[sid] = new RTCPeerConnection(configuration);
 
     connections[sid].onicecandidate = function (event) {
@@ -126,7 +128,12 @@ function handleVideoOffer(offer, sid, cname, vidinf) {
             newvideo.playsinline = true;
             newvideo.id = `video${sid}`;
             newvideo.srcObject = event.streams[0];
-
+            
+            if (filterInfo[sid] == 'on')
+                newvideo.style.filter = 'blur(20px)';
+            else
+                newvideo.style.filter = 'blur(0px)';
+                
             if (videoInfo[sid] == 'on')
                 videoOff.style.visibility = 'hidden';
             else
@@ -234,13 +241,13 @@ socket.on('newIcecandidate', handleNewIceCandidate);
 socket.on('video-answer', handleVideoAnswer);
 
 // conc가 room에 들어가있는 socket id들임 cname=usernick 배열임
-socket.on('join', async (conc, cnames,videoinfo) => {
+socket.on('join', async (conc, cnames,videoinfo,filterinfo) => {
     socket.emit('getCanvas');
-    if (cnames)
-        cName = cnames; 
+    if (cnames) cName = cnames; 
 
-    if (videoinfo)
-        videoInfo = videoinfo;
+    if (videoinfo) videoInfo = videoinfo;
+
+    if (filterinfo) filterInfo = filterinfo;
 
     if (conc) {
         await conc.forEach(sid => {
@@ -274,6 +281,11 @@ socket.on('join', async (conc, cnames,videoinfo) => {
                     newvideo.id = `video${sid}`;
                     newvideo.srcObject = event.streams[0];
 
+                    if (filterInfo[sid] == 'on')
+                        newvideo.style.filter = 'blur(20px)';
+                    else
+                        newvideo.style.filter = 'blur(0px)';
+                        
                     if (videoInfo[sid] == 'on')
                         videoOff.style.visibility = 'hidden';
                     else
@@ -411,7 +423,7 @@ sendButton.addEventListener('click', () => {
     chatting.replaceAll(/\r/g,""); 
     
     const space1=''; const space2=' ';
-    if (/*chatting!=space1 && chatting!=space2 &&*/ chatting!='\n'){
+    if (chatting!=space1 && chatting!=space2 && chatting!='\n'){
         chatField.value = "";
         const mytime=moment().format("h:mm a");
         chatRoom.scrollTop = chatRoom.scrollHeight;
@@ -531,10 +543,12 @@ socket.on('action', (msg, sid) => {//남이 무엇을 했다~~는 걸 받음
         videoInfo[sid] = 'on';
     }
     else if(msg=='filteron'){
-        document.querySelector(`#video${sid}`).style.filter = 'blur(20px)';     
+        document.querySelector(`#video${sid}`).style.filter = 'blur(20px)'; 
+        filterInfo[sid] = 'on';
     }
     else if(msg=='filteroff'){
-        document.querySelector(`#video${sid}`).style.filter = 'blur(0px)';    
+        document.querySelector(`#video${sid}`).style.filter = 'blur(0px)'; 
+        filterInfo[sid] = 'off';   
     }
 })
 
