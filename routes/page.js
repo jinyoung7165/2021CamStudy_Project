@@ -75,53 +75,19 @@ router.get('/',async(req,res,next)=>{
           order:[['total_time','DESC']],
           limit: 10
         });
-        /*res.render('main',{
+        res.render('main',{
             title:'CamStudy',
             twits:posts,
             rooms:rooms,
             rankers:rankers,
-        });*/
-        res.render('error');
+        });
     }catch(err){
         console.error(err);
         next(err);
     }
 });
-
-router.get('/main',async(req,res,next)=>{
-  try{
-      const rooms=await Room.findAll({ //모든 방 가져옴 -> 정렬은 오래된순
-          include:[{
-              model:User,
-              attributes:['id','nick'],
-          }],
-          order:[['createdAt','ASC']],
-      });
-      const posts=await Post.findAll({ //모든 게시글 조회 -> 정렬은 최신순
-          include:[{
-              model:User,
-          },{
-              model:User,       //좋아요를 누른 사용자 정보 가져옴
-              as:'Liker',
-          }],
-          order:[['createdAt','DESC']],
-      });
-      const rankers=await User.findAll({ // total_time 오름차순 정렬 후 10개 자르기
-        where:{level_show:0},
-        attributes:['nick', 'level', 'total_time','level_show'],
-        order:[['total_time','DESC']],
-        limit: 10
-      });
-      res.render('main',{
-          title:'CamStudy',
-          twits:posts,
-          rooms:rooms,
-          rankers:rankers,
-      });
-  }catch(err){
-      console.error(err);
-      next(err);
-  }
+router.get('/notice',(req,res)=>{
+  res.render('notice');
 });
 router.get('/room', isLoggedIn, (req, res) => {
   res.render('newroom', { title: '채팅방 생성'});
