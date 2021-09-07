@@ -31,6 +31,9 @@ body{
   right: 90%;
   position: absolute;
 } */
+.container-notice{
+  text-align: center;
+}
 .banner{
   display: flex;
   width: 100%;
