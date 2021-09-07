@@ -255,20 +255,21 @@ router.post('/library/user',async(req,res,next)=>{
           attributes:['id'],
        }]
     }); 
+
+    const startTime = new Date(Date.parse(req.body.startTime));
     const endTime = new Date();
-    let startTime = new Date(Date.parse(req.body.startTime));
     const access_time = ((endTime.getTime() - startTime.getTime())/1000).toFixed(0); //1000
     const resulthour=parseFloat(leftuser.total_time)+parseFloat(access_time);
     const resultlevel=parseInt((resulthour/3600),10);
-    
+
     await User.update({
-      total_time: resulthour
+      total_time: resulthour,
     },{
       where: {id:req.body.user},
     }); 
     
     await User.update({
-      level: resultlevel
+      level: resultlevel,
     },{
       where: {id:req.body.user},
     }); 

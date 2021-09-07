@@ -110,16 +110,18 @@ let socketroom = {};  //각 사람별 어떤 룸에 있는지(roomid)
 let socketnick = {};
 let videoSocket = {};
 let roomBoard = {};
-let startTime;
+let time = {};
 
 io.on('connect', (socket) => {
     socket.on("join", (roomid, usernick) => {
         socket.join(roomid);
         let req=socket.request;
-        startTime = new Date();
+        let startTime = new Date();
         socketroom[socket.id] = roomid;   // roomid
         socketnick[socket.id] = usernick; // usernick
         videoSocket[socket.id] = 'on';    // 비디오 상태
+        time[socket.id] = startTime;
+        console.log("connect startTime:"+ time[socket.id]);
         if (rooms[roomid] && rooms[roomid].length > 0) { //존재하는 방
             rooms[roomid].push(socket.id);
             socket.to(roomid).emit('chat', `${usernick}님이 채팅방에 입장하셨습니다.`, 'System', moment().format( "h:mm a"));
@@ -185,10 +187,11 @@ io.on('connect', (socket) => {
         let roomid=socketroom[socket.id];
         delete socketroom[socket.id];
         let req=socket.request;
+        let startTime= time[socket.id];
         socket.leave(roomid);
         let userCount=rooms[roomid] ? rooms[roomid].length:0;
         axios.post('https://www.cybersmu.site/library/user/',{user:req.user.id,roomId:roomid,userCount,startTime});
-        // axios.post('http://localhost:8001/library/user/',{user:req.user.id,roomId:roomid,userCount,startTime});
+        //axios.post('http://localhost:8001/library/user/',{user:req.user.id,roomId:roomid,userCount,startTime});
         io.to(roomid).emit('exitRoom',req.user.nick);  
     });
 })
