@@ -31,7 +31,7 @@ module.exports = class Room extends Sequelize.Model {
       max: { 
         type: Sequelize.INTEGER,
         allowNull: false,
-        default:10,  // 임의로 설정
+        default:15,  // 임의로 설정
       },
       password: {
         type: Sequelize.STRING(10),
