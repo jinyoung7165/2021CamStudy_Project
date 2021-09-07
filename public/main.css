@@ -33,6 +33,7 @@ body{
 } */
 .container-notice{
   text-align: center;
+  font-family: "Pretendard-Regular";
 }
 .banner{
   display: flex;
