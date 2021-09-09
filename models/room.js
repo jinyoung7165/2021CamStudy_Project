@@ -37,15 +37,10 @@ module.exports = class Room extends Sequelize.Model {
         type: Sequelize.STRING(10),
         allowNull: false,
       },
-      option: {
+      option: { //0명일 때 방 자동 삭제 옵션 선택
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue:false,
-      },
-      total_participant: {
-        type: Sequelize.INTEGER(20),
-        allowNull: false,
-        defaultValue:0,
       },
       owner:{
         type: Sequelize.INTEGER,
