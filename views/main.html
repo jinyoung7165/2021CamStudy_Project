@@ -56,7 +56,7 @@
       <div class="room-slides"> 
         {%for room in rooms%}
           <div class="room-box" data-id="{{room.uuid}}">
-            <div class="room-box-container">
+            <div class="room-box-container"  data-uuid="{{room.uuid}}">
               <span class="roomLock">
                 {% if room.password %}
                   <i class="lock fas fa-lock fa-lg"></i>
@@ -174,7 +174,7 @@
       }
       else{
         var addr="https://www.cybersmu.site/library/";
-        //var addr="http://localhost:8001";
+        // var addr="http://localhost:8001";
         var roomUuid = document.getElementById("room-code-input").value;
         document.querySelectorAll('.room-enter').forEach(function (div) {
           if(div.dataset.id==roomUuid && div.dataset.password=="true"){
