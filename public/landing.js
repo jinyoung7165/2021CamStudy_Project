@@ -66,6 +66,19 @@ socket.on('mainCount', function (data) {//참가자 수 바로 보이게
   });
 });
 
+socket.on('newMainCount',async()=>{//참가자 수 바로 보이게
+  const res=await axios.get('/newmain');
+  const rooms = res.data;
+  rooms.map((room)=>{
+    document.querySelectorAll('.room-box-container').forEach(function (div) {
+      if (div.children[1].textContent == room.title) {
+        div.children[4].textContent=`${room.participants_num}/${room.max}`;
+      }
+    });
+  })
+  
+});
+
 socket.on('removeRoom', function (data) { // 방 제거 이벤트 시 id가 일치하는 방 제거
   document.querySelectorAll('.room-box').forEach(function (div) {
   if (div.dataset.id == data) {
