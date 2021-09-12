@@ -296,4 +296,15 @@ router.post('/library/user',async(req,res,next)=>{
     console.error(error);
   }
 });
+
+router.route('/newmain')
+.get(async (req, res, next) => {
+  try {
+    const rooms = await Room.findAll();
+    res.json(rooms);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 module.exports=router;
