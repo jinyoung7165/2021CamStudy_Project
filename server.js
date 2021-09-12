@@ -113,16 +113,16 @@ let roomBoard = {};
 let time = {};
 let filterSocket = {};
 io.on('connect', (socket) => {
+    io.to(socket.id).emit('newMainCount');
     socket.on("join", (roomid, usernick) => {
-        socket.join(roomid);
         let req=socket.request;
+        socket.join(roomid);
         let startTime = new Date();
         socketroom[socket.id] = roomid;   // roomid
         socketnick[socket.id] = usernick; // usernick
         videoSocket[socket.id] = 'on';    // 비디오 상태
-        filterSocket[socket.id] = 'on';
+        filterSocket[socket.id] = 'off';
         time[socket.id] = startTime;
-        console.log("connect startTime:"+ time[socket.id]);
         if (rooms[roomid] && rooms[roomid].length > 0) { //존재하는 방
             rooms[roomid].push(socket.id);
             socket.to(roomid).emit('chat', `${usernick}님이 채팅방에 입장하셨습니다.`, 'System', moment().format( "h:mm a"));
