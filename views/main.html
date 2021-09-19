@@ -7,7 +7,9 @@
               <div class="modal-content">    
                 <span class="modal-close" onclick="popupClose();">&times;</span>                                                         
                 <div><i class="fas fa-info-circle fa-lg" style="color:#1B3C77;"></i>
-                  &nbsp;&nbsp;&nbsp;레벨 오류 해결<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;공부 시간이 다시 측정됩니다.
+                  &nbsp;&nbsp;&nbsp;이벤트 최종 랭킹 발표<br> 
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;공지사항에서 랭킹을 확인해보세요.<br> 
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;많이 참여해주셔서 감사합니다🙌🏻
                   <div><br/></div>
                 </div>
                 <input type="radio" value=0 onchange="popupRadioChange();"> <u>다시 보지 않기</u>
@@ -174,7 +176,7 @@
       }
       else{
         var addr="https://www.cybersmu.site/library/";
-        // var addr="http://localhost:8001";
+        //var addr="http://localhost:8001";
         var roomUuid = document.getElementById("room-code-input").value;
         document.querySelectorAll('.room-enter').forEach(function (div) {
           if(div.dataset.id==roomUuid && div.dataset.password=="true"){
